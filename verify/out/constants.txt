@@ -1,4 +1,11 @@
-cubic prism: t/N >= h'/192, r/N >= h'/2304, c >= h'/9437184 for h' in {1/100,...,1}
-h_H = 1/5: t/N >= 1/960 (other term 1/732), r/N >= 1/11520, c >= 1/(4096*11520) = 2.119276e-08 > 2e-8
-  per-cycle factor sqrt(1-1/4096) = 0.9998779222; sharper sqrt((1+sqrt(1-4/4096))/2) = 0.9998778924; -log(1-1/4096)/11520 = 2.119535e-08
+cubic prism: t/N >= h'/192, r/N >= h'/2304, c >= h'/589824 for h' in {1/100,...,1}
+h_H = 1/5: t/N >= 1/960 (other term 1/732), r/N >= 1/11520, c >= 1/(256*11520) = 3.390842e-07 > 3e-7
+  per-cycle factor sqrt(1-1/256) = 0.9980449639; sharper sqrt((1+sqrt(1-4/256))/2) = 0.9980372592; -log(1-1/256)/11520 = 3.397482e-07
+  closed form of Corollary 'closed-form constants' at Delta = 3, h' = 1/5: 1/4792320 = 2.0867e-07
 general closed forms for prisms and squares hold at 77 (Delta, h_H) pairs, Delta = 2..12
+previous c(D=3, h=1/5) = 10^-43.062   (s = 61, q = 10^-12.101)
+previous c(D=3, h=9/50) = 10^-47.197   (s = 69, q = 10^-12.375)
+previous c(D=3, h=1) = 10^-15.370   (s = 13, q = 10^-7.912)
+previous c(D=4, h=1) = 10^-23.757   (s = 17, q = 10^-12.045)
+previous c(D=10, h=1) = 10^-85.259   (s = 41, q = 10^-42.042)
+previous constant, D = 3, h = 1/5: s = 61, q = 1/10802^3, c = 8.6648e-44 (paper: about 9e-44)

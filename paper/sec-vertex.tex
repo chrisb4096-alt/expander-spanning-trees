@@ -1,0 +1,314 @@
+\section{Vertex-touch bits and 2-connected expanders}\label{sec:vertex}
+
+This section proves Theorem~\ref{thm:main}. The cycle bits of Section~\ref{sec:trees} use the fact that a spanning tree contains no cycle. Here we use the dual fact that a spanning tree meets every cut, applied to the smallest cuts, the stars of single vertices. The conditional lower bound that the chain rule needs comes from effective resistances instead of from counting completions, and expansion keeps the resistances bounded at every girth.
+
+\subsection{Vertex-touch bits}
+
+Fix a split $E=A\sqcup B$. For a vertex $w$, let $S_A(w)$ and $S_B(w)$ be the sets of edges of $A$ and of $B$ at $w$, let $S(w):=S_A(w)\cup S_B(w)$ be its star, and let $N_A(w)$ and $N_B(w)$ be the sets of neighbours joined to $w$ by an edge of $S_A(w)$ and of $S_B(w)$. The vertex $w$ is \emph{mixed} if $S_A(w)$ and $S_B(w)$ are both nonempty. For a mixed vertex define
+\[
+  a_w(x_A):=\one\bigl[x_A\cap S_A(w)=\emptyset\bigr],\qquad b_w(x_B):=\one\bigl[x_B\cap S_B(w)=\emptyset\bigr].
+\]
+The bit $a_w$ depends only on the $A$-part of $x$ and $b_w$ only on the $B$-part. A spanning tree of a graph with at least two vertices has an edge at every vertex, so $a_w=b_w=1$ is impossible under $\UST(G)$. This is the forbidden cell of the cycle bits, with ``contains all edges'' replaced by ``contains no edge''.
+
+\subsection{Electrical facts}
+
+Let $K$ be a finite multigraph without loops, with parallel edges kept distinct, and give every edge unit conductance. For a function $\phi$ on the vertices let $\mathcal E_K(\phi):=\sum_{e}(\phi(e^+)-\phi(e^-))^2$, the sum over the edges $e$ of $K$ with endpoints $e^\pm$. For vertices $x\ne y$ the \emph{effective resistance} is given by the Dirichlet principle,
+\[
+  \frac1{R_K(x,y)}:=\min\bigl\{\mathcal E_K(\phi):\ \phi(x)=1,\ \phi(y)=0\bigr\},
+\]
+with $R_K(x,y)=\infty$ when $x$ and $y$ lie in different components, where the minimum is $0$~\cite[Ch.~2]{LyonsPeres16}. Orient each edge $e$ from $e^-$ to $e^+$. A \emph{flow} is a function $\vartheta$ on the edges, with net outflow $(\partial\vartheta)(v):=\sum_{e:e^-=v}\vartheta_e-\sum_{e:e^+=v}\vartheta_e$ at $v$ and energy $\sum_e\vartheta_e^2$; a \emph{unit flow from $x$ to $y$} has $\partial\vartheta=\one_x-\one_y$. We use six facts.
+\begin{enumerate}[label=(E\arabic*)]
+\item\label{E:kirchhoff} (Kirchhoff) If $K$ is connected and $e$ is an edge joining $u$ and $w$, then $\Pr_{T\sim\UST(K)}[e\in T]=R_K(u,w)$~\cite{Kirchhoff1847},~\cite[Ch.~4]{LyonsPeres16}.
+\item\label{E:rayleigh} (Rayleigh monotonicity) Deleting edges does not decrease $R_K(x,y)$. Identifying vertices, without identifying $x$ with $y$, does not increase $R_K(x,y)$.
+\item\label{E:metric} (Triangle inequality) $R_K(x,z)\le R_K(x,y)+R_K(y,z)$~\cite{KleinRandic93}.
+\item\label{E:spectral} If $K$ is connected, then $R_K(x,y)\le2/\lambda_2(L_K)$, where $\lambda_2(L_K)>0$ is the second smallest eigenvalue of the Laplacian $L_K$.
+\item\label{E:thomson} (Thomson) If $\vartheta$ is a unit flow from $x$ to $y$, then $R_K(x,y)\le\sum_e\vartheta_e^2$.
+\item\label{E:flow} If $K$ is connected and $\chi$ is a function on the vertices with $\sum_v\chi(v)=0$, then some flow $\vartheta$ has $\partial\vartheta=\chi$ and energy at most $\norm\chi^2/\lambda_2(L_K)$.
+\end{enumerate}
+\ref{E:rayleigh} and~\ref{E:spectral} follow from the definition. Deleting an edge removes a nonnegative term from $\mathcal E_K(\phi)$ for every $\phi$, so the minimum cannot increase. After identifying vertices, the admissible functions are those of $K$ that are constant on the identified classes, with the same energy since loops contribute $0$; a minimum over fewer functions cannot decrease. For~\ref{E:spectral}, let $\phi(x)=1$, $\phi(y)=0$ and let $\psi:=\phi-\bar\phi\one$ be orthogonal to constants. Then $\mathcal E_K(\phi)=\psi^{\top}L_K\psi\ge\lambda_2(L_K)\norm\psi^2\ge\lambda_2(L_K)(\psi(x)^2+\psi(y)^2)\ge\lambda_2(L_K)/2$, since $\psi(x)-\psi(y)=1$. The same argument shows that a path of length $k$ from $x$ to $y$ in $K$ gives $R_K(x,y)\le k$: by the Cauchy--Schwarz inequality the energy on the path is at least $1/k$. For~\ref{E:thomson}, if $\phi(x)=1$ and $\phi(y)=0$, then $1=\sum_v\phi(v)(\partial\vartheta)(v)=\sum_e\vartheta_e(\phi(e^-)-\phi(e^+))\le(\sum_e\vartheta_e^2)^{1/2}\mathcal E_K(\phi)^{1/2}$ by the Cauchy--Schwarz inequality; minimize over $\phi$. For~\ref{E:flow}, $L_K$ is positive semidefinite with kernel the constants, so $L_K\psi=\chi$ for some $\psi\perp\one$. Put $\vartheta_e:=\psi(e^-)-\psi(e^+)$. Then $(\partial\vartheta)(v)=\sum_{e\ni v}(\psi(v)-\psi(\text{other end of }e))=(L_K\psi)(v)=\chi(v)$, and the energy is $\psi^{\top}L_K\psi=\psi^{\top}\chi$. Since $\lambda_2(L_K)\norm\psi^2\le\psi^{\top}L_K\psi=\psi^{\top}\chi\le\norm\psi\norm\chi$, we get $\norm\psi\le\norm\chi/\lambda_2(L_K)$ and $\psi^{\top}\chi\le\norm\chi^2/\lambda_2(L_K)$.
+
+\begin{lemma}[deleting one edge]\label{lem:one-edge}
+Let $K$ be connected, let $e$ be an edge joining $u$ and $w$, and put $R':=R_{K-e}(u,w)$. Then $\Pr_{T\sim\UST(K)}[e\notin T]=1/(1+R')$, which is $0$ when $e$ is a bridge. If $e$ is not a bridge, then conditionally on $e\notin T$ the tree $T$ is a uniform spanning tree of $K-e$.
+\end{lemma}
+
+\begin{proof}
+For $\phi(u)=1$ and $\phi(w)=0$ we have $\mathcal E_K(\phi)=1+\mathcal E_{K-e}(\phi)$. Minimizing gives $1/R_K(u,w)=1+1/R'$, with $1/\infty=0$. By~\ref{E:kirchhoff}, $\Pr[e\notin T]=1-R_K(u,w)=1-R'/(1+R')=1/(1+R')$, and the value is $0$ when $R'=\infty$, that is, when $e$ is a bridge. The spanning trees of $K$ without $e$ are the spanning trees of $K-e$, so the last claim holds by uniformity.
+\end{proof}
+
+\subsection{Conditioning on stars}
+
+\begin{lemma}[spatial Markov property]\label{lem:markov}
+Let $F\subseteq E$ and $\sigma\subseteq F$ with $\Pr[T\cap F=\sigma]>0$. Then $\sigma$ is a forest. Let $K_\sigma$ be the multigraph obtained from $(V,E\setminus F)$ by identifying the vertices of each connected component of $(V,\sigma)$ and deleting the loops this creates, with every other edge keeping its identity. Conditionally on $T\cap F=\sigma$, the set $T\setminus F$ is a uniform spanning tree of $K_\sigma$.
+\end{lemma}
+
+\begin{proof}
+$\sigma$ lies in a tree, so it is a forest, and $(V,\sigma)$ has $c=N-\abs\sigma$ components, which are the nodes of $K_\sigma$. Since $T$ is uniform, $J:=T\setminus F$ is uniform over the sets $J\subseteq E\setminus F$ for which $\sigma\cup J$ is a spanning tree. Each component of $\sigma$ is connected, so $\sigma\cup J$ is connected if and only if $J$ connects the nodes of $K_\sigma$, and $\abs{\sigma\cup J}=N-1$ if and only if $\abs J=c-1$. A connected graph is a tree if and only if it has one edge fewer than vertices. So $\sigma\cup J$ is a spanning tree if and only if $J$ is a connected spanning subgraph of $K_\sigma$ with $c-1$ edges, that is, a spanning tree of $K_\sigma$. Such a $J$ uses no loop, since $c-1$ edges that connect $c$ nodes are all needed.
+\end{proof}
+
+Lemma~\ref{lem:contract} in Section~\ref{sec:trees} is the case $F=E\setminus I(C)$ written out explicitly.
+
+For a set $W$ of vertices write $G-W$ for the graph with $W$ and its incident edges deleted, and $G-X$ for the graph with an edge set $X$ deleted.
+
+\begin{lemma}[touch probabilities]\label{lem:touch}
+Let $A|B$ be a split, let $W$ be an independent set of mixed vertices, let $w\in W$, and put $F:=\bigcup_{x\in W\setminus\{w\}}S(x)$. For $u\in N_A(w)$ let $R_u:=R_{G_w^A}(u,w)$, where $G_w^A:=G-(W\setminus\{w\})-S_A(w)$, and put
+\[
+  p_A(w):=\prod_{u\in N_A(w)}\frac1{1+R_u}\qquad(\text{with }1/\infty=0).
+\]
+Define $G_w^B$ and $p_B(w)$ in the same way with $B$ in place of $A$. Then for every $\sigma\subseteq F$ with $\Pr[T\cap F=\sigma]>0$,
+\[
+  \Pr\bigl[T\cap S_A(w)=\emptyset\bigm|T\cap F=\sigma\bigr]\ \ge\ p_A(w),\qquad\Pr\bigl[T\cap S_B(w)=\emptyset\bigm|T\cap F=\sigma\bigr]\ \ge\ p_B(w).
+\]
+Moreover, with $\rho_w:=\max_{x,y\in N(w)}R_{G-W}(x,y)$, we have $p_A(w)\,p_B(w)\ge(2+\rho_w)^{-\deg(w)}$.
+\end{lemma}
+
+\begin{proof}
+We prove the bound for $A$; the case of $B$ is symmetric. Since $W$ is independent, $w$ is not an endpoint of any edge of $F$, and $E\setminus F$ is the edge set of $G-(W\setminus\{w\})$. By Lemma~\ref{lem:markov}, the conditional law of $T\setminus F$ is $\UST(K_\sigma)$. Every $x\in W\setminus\{w\}$ is isolated in $(V,E\setminus F)$ and is identified in $K_\sigma$ with the other vertices of its component of $(V,\sigma)$; this component contains a neighbour of $x$, which is not in $W$, because $T$ has an edge at $x$ and $W$ is independent. So $K_\sigma$ is the graph $G-(W\setminus\{w\})$ with the vertices of certain disjoint sets identified, and $w$ is identified with nothing, because no edge of $\sigma$ has $w$ as an endpoint. The edges of $S_A(w)$ are edges of $K_\sigma$, and $T\cap S_A(w)=(T\setminus F)\cap S_A(w)$.
+
+If $p_A(w)=0$ there is nothing to prove, so assume $p_A(w)>0$. Then every $u\in N_A(w)$ is joined to $w$ by a path in $G_w^A$, and the image of this path in $K_\sigma-S_A(w)$ joins (the class of) $u$ to $w$. Hence $K_\sigma-S_A(w)$ is connected, and so is $K_\sigma-X$ for every $X\subseteq S_A(w)$. List $S_A(w)=\{e_1,\dots,e_k\}$ with $e_j=u_jw$. Applying Lemma~\ref{lem:one-edge} to $K_\sigma-\{e_1,\dots,e_{j-1}\}$ for $j=1,\dots,k$, each time conditioning on the previous deletions, which have positive probability, gives
+\[
+  \Pr\bigl[T\cap S_A(w)=\emptyset\bigm|T\cap F=\sigma\bigr]=\prod_{j=1}^k\frac1{1+R_{K_\sigma-\{e_1,\dots,e_j\}}(u_j,w)} .
+\]
+The graph $K_\sigma-\{e_1,\dots,e_j\}$ is $G-(W\setminus\{w\})-\{e_1,\dots,e_j\}$ with some vertices other than $w$ identified. By~\ref{E:rayleigh}, first for the identifications and then for deleting the remaining edges $e_{j+1},\dots,e_k$,
+\[
+  R_{K_\sigma-\{e_1,\dots,e_j\}}(u_j,w)\le R_{G-(W\setminus\{w\})-\{e_1,\dots,e_j\}}(u_j,w)\le R_{G_w^A}(u_j,w)=R_{u_j}.
+\]
+This proves the first claim.
+
+For the second, let $u\in N_A(w)$ and pick $v\in N_B(w)$, which exists since $w$ is mixed. Since $W$ is independent, $u,v\notin W$. The graph $G-W$ is a subgraph of $G_w^A$, and $G_w^A$ contains the edge $vw$. By~\ref{E:rayleigh}, $R_{G_w^A}(u,v)\le R_{G-W}(u,v)\le\rho_w$ and $R_{G_w^A}(v,w)\le1$, so~\ref{E:metric} gives $R_u\le1+\rho_w$. Hence $p_A(w)\ge(2+\rho_w)^{-\abs{S_A(w)}}$, likewise $p_B(w)\ge(2+\rho_w)^{-\abs{S_B(w)}}$, and $\abs{S_A(w)}+\abs{S_B(w)}=\deg(w)$.
+\end{proof}
+
+The lemma conditions only on the stars of the other vertices of $W$, not on everything outside $S(w)$. Conditioning on everything outside a star can freeze it (Section~\ref{sec:limits}). The price is that the bound depends on resistances in the global graph $G-W$. The next lemma bounds the same product more carefully, by $\lambda_2$ of $G-W$, which Section~\ref{sec:expansion} controls by expansion.
+
+\begin{lemma}[telescoped touch bound]\label{lem:touch-flow}
+Let $A|B$ be a split of a simple graph $G$, let $W$ be an independent set of mixed vertices such that $H:=G-W$ is connected, and put $\kappa:=1/\lambda_2(L_H)$. Let $w\in W$, let $a:=\abs{S_A(w)}$, $b:=\abs{S_B(w)}$ and $d:=a+b=\deg(w)$, and let $F$ be as in Lemma~\ref{lem:touch}. Then for every $\sigma\subseteq F$ with $\Pr[T\cap F=\sigma]>0$,
+\[
+  \Pr\bigl[T\cap S_A(w)=\emptyset\bigm|T\cap F=\sigma\bigr]\ \ge\ \frac bd(1+\kappa)^{-a},\qquad\Pr\bigl[T\cap S_B(w)=\emptyset\bigm|T\cap F=\sigma\bigr]\ \ge\ \frac ad(1+\kappa)^{-b}.
+\]
+The product of the two bounds is $(ab/d^2)(1+\kappa)^{-d}$, which is at least $((D-1)/D^2)(1+\kappa)^{-D}$ if $d\le D$.
+\end{lemma}
+
+The graph $H$ has at least two vertices, since $w$ has neighbours on both sides and none of them is in $W$, so $\lambda_2(L_H)>0$.
+
+\begin{proof}
+We prove the bound for $A$. Write $S_A(w)=\{e_1,\dots,e_a\}$ with $e_j=u_jw$. As shown in the proof of Lemma~\ref{lem:touch}, $K_\sigma$ is $G-(W\setminus\{w\})$ with the vertices of certain disjoint sets identified, every $x\in W\setminus\{w\}$ is identified with a vertex of $H$, and $w$ is identified with nothing. Since $H$ is connected and $w$ has an edge of $S_B(w)$ into $H$, the graph $K_\sigma-S_A(w)$ is connected. The first display in that proof used only this, so
+\[
+  \Pr\bigl[T\cap S_A(w)=\emptyset\bigm|T\cap F=\sigma\bigr]=\prod_{j=1}^a\frac1{1+R_j},\qquad R_j:=R_{K_\sigma-\{e_1,\dots,e_j\}}(u_j,w)\le R_{G_j}(u_j,w),
+\]
+where $G_j:=G-(W\setminus\{w\})-\{e_1,\dots,e_j\}$ and the inequality is~\ref{E:rayleigh} for the identifications. The graph $G_j$ consists of $H$, the vertex $w$, and the $m_j:=d-j\ge b\ge1$ remaining edges from $w$ to the set $Y_j\subseteq V(H)$ of its remaining neighbours; $u_j\notin Y_j$ because $G$ is simple. Let $\chi:=\one_{u_j}-m_j^{-1}\one_{Y_j}$, a function on $V(H)$ with sum $0$ and $\norm\chi^2=1+1/m_j$. By~\ref{E:flow} some flow in $H$ has net outflow $\chi$ and energy at most $\kappa(1+1/m_j)$. Adding a flow of $1/m_j$ along each edge from $Y_j$ to $w$ gives a unit flow from $u_j$ to $w$ in $G_j$ with energy at most $\kappa(1+1/m_j)+1/m_j$. By~\ref{E:thomson}, $1+R_j\le(1+\kappa)(m_j+1)/m_j$, and
+\[
+  \prod_{j=1}^a\frac1{1+R_j}\ \ge\ (1+\kappa)^{-a}\prod_{j=1}^a\frac{d-j}{d-j+1}=(1+\kappa)^{-a}\,\frac{d-a}d=\frac bd(1+\kappa)^{-a}.
+\]
+For the last claim, $a,b\ge1$ gives $ab\ge a+b-1=d-1$, the function $t\mapsto(t-1)/t^2$ decreases for $t\ge2$, and $2\le d\le D$.
+\end{proof}
+
+Lemma~\ref{lem:touch} routes the current through a single neighbour of $w$ and bounds each factor separately. Spreading it over all remaining neighbours makes the losses telescope to $b/d$. In the exact checks of Appendix~\ref{app:checks} the smallest ratio of the exact conditional probability to this bound is $1.0$, on $K_{3,3}$.
+
+\subsection{The bound for one split}
+
+\begin{theorem}[vertex-touch bound for a split]\label{thm:touch-cut}
+Let $G$ be a connected graph with $N\ge2$ vertices, let $E=A\sqcup B$ be any split, and let $W=(w_1,\dots,w_r)$ be an independent set of mixed vertices in a fixed order. Let $p_A(w_k),p_B(w_k)\in[0,1]$ be numbers for which the two conditional bounds of Lemma~\ref{lem:touch} hold for every $\sigma$, for instance the quantities defined there or the bounds of Lemma~\ref{lem:touch-flow}. Then
+\[
+  \beta\bigl(\UST(G);A|B\bigr)\ \le\ \prod_{k=1}^r\Bigl(\frac{1+\sqrt{1-4p_A(w_k)p_B(w_k)}}2\Bigr)^{1/2}\ \le\ \exp\Bigl(-\frac12\sum_{k=1}^rp_A(w_k)\,p_B(w_k)\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Put $a_k:=a_{w_k}(T\cap A)$ and $b_k:=b_{w_k}(T\cap B)$. The vector $(a_k)_k$ is a function of $T\cap A$ and $(b_k)_k$ is a function of $T\cap B$, so Lemma~\ref{lem:dpi} gives $\beta(\UST(G);A|B)\le\opnorm{\sqrt\mu}$, where $\mu$ is the joint law of $(a,b)$. Apply Lemma~\ref{lem:chain} to the pairs $(X_k,Y_k)=(a_k,b_k)$ in the fixed order. Fix $k$ and a value $\pi$ of the past $(a_{<k},b_{<k})$ with positive probability, and let $K=K_k(\cdot\,|\,\pi)$. Then $K(1,1)=0$ because $T$ has an edge at $w_k$. Let $F_k:=\bigcup_{j\ne k}S(w_j)$. The past is a function of $T\cap F_k$, so the event $\{(a_{<k},b_{<k})=\pi\}$ is a union of events $\{T\cap F_k=\sigma\}$ with positive probability. By the hypothesis on $p_A,p_B$ and the tower property, $K(1,0)=\Pr[a_k=1\,|\,\pi]\ge p_A(w_k)$ and $K(0,1)=\Pr[b_k=1\,|\,\pi]\ge p_B(w_k)$. Lemma~\ref{lem:two-by-two} with $p=p_A(w_k)$ and $p'=p_B(w_k)$ gives $\opnorm{\sqrt K}^2\le(1+\sqrt{1-4p_A(w_k)p_B(w_k)})/2$, which bounds $\gamma_k^2$ in Lemma~\ref{lem:chain}. The last inequality uses $(1+\sqrt{1-4x})/2\le1-x\le e^{-x}$.
+\end{proof}
+
+The theorem holds for every graph, every split and every independent set of mixed vertices. It needs no expansion and no 2-connectivity; those enter only through the lower bounds on $p_A$ and $p_B$. With the quantities of Lemma~\ref{lem:touch}, it can be evaluated exactly for a given split with one Laplacian solve per vertex of $W$ and side, which is what the checks in Appendix~\ref{app:checks} do.
+
+\subsection{Expansion}\label{sec:expansion}
+
+\begin{lemma}[many mixed vertices]\label{lem:mixed-vertices}
+Let $G$ have no isolated vertices, maximum degree at most $D$ and $h(G)\ge h>0$. If $\abs A\ge m_0$ and $\abs B\ge m_0$, then at least $2hm_0/(D(D+h))$ vertices are mixed.
+\end{lemma}
+
+\begin{proof}
+Let $Z$ be the set of mixed vertices, and $V_A$ and $V_B$ the sets of vertices all of whose edges lie in $A$, respectively in $B$. Since there are no isolated vertices, $V=V_A\sqcup V_B\sqcup Z$, and no edge joins $V_A$ to $V_B$. Every edge of $A$ has both endpoints in $V_A\cup Z$, so $D(\abs{V_A}+\abs Z)\ge2\abs A\ge2m_0$, and likewise for $V_B$. Let $X$ be the smaller of $V_A$ and $V_B$, so $\abs X\le N/2$. Every edge leaving $X$ ends in $Z$. Hence $D\abs Z\ge\abs{\partial X}\ge h\abs X\ge h(2m_0/D-\abs Z)$, which rearranges to the claim.
+\end{proof}
+
+A graph is \emph{2-connected} if it has at least three vertices and $G-\{v\}$ is connected for every vertex $v$. A 2-connected graph has minimum degree at least $2$: if $v$ had a single neighbour $y$, then $G-\{y\}$ would separate $v$ from the remaining vertices. It also has no bridge: if $xy$ were a bridge, one of $x,y$ would have another neighbour, since $N\ge3$, and would be a cut vertex. Hence $\abs{\partial S}\ge2$ for every $S$ with $\emptyset\ne S\ne V$.
+
+The resistances in Lemma~\ref{lem:touch-flow} are controlled by $\lambda_2$ of the graph that remains after $W$ is deleted. The first tool turns edge expansion into a spectral gap.
+
+\begin{lemma}[Cheeger--Mohar lower bound]\label{lem:cheeger}
+Let $H$ be a connected graph with $n\ge2$ vertices, maximum degree at most $\Delta$ and $h(H)\ge i>0$. Then $i\le\Delta$ and
+\[
+  \lambda_2(L_H)\ \ge\ \mu(\Delta,i):=\Delta-\sqrt{\Delta^2-i^2}=\frac{i^2}{\Delta+\sqrt{\Delta^2-i^2}}\ \ge\ \frac{i^2}{2\Delta}.
+\]
+The function $\mu(\Delta,i)$ increases with $i$ and decreases with $\Delta$.
+\end{lemma}
+
+\begin{proof}
+A single vertex $v$ is admissible in the definition of $h(H)$, so $i\le\deg(v)\le\Delta$. Put $\lambda:=\lambda_2(L_H)$. If $\lambda\ge\Delta$, then $\lambda\ge\mu(\Delta,i)$ because $\mu(\Delta,i)\le\Delta$. Assume $\lambda<\Delta$, and let $f$ be an eigenvector for $\lambda$. It is nonzero and orthogonal to the constants, so it takes both signs; replacing $f$ by $-f$ if necessary, the set $U:=\{f>0\}$ has $\abs U\le n/2$. Let $g:=\max(f,0)$, normalized so that $\sum_vg(v)^2=1$. Since $(L_Hf)(v)=\lambda f(v)$ for $v\in U$,
+\[
+  \lambda=\sum_vg(v)(L_Hf)(v)=\sum_{uv\in E(H)}\bigl(g(u)-g(v)\bigr)\bigl(f(u)-f(v)\bigr)\ \ge\ \sum_{uv\in E(H)}\bigl(g(u)-g(v)\bigr)^2=:Q,
+\]
+because $(g(u)-g(v))(f(u)-f(v))\ge(g(u)-g(v))^2$ for the positive part $g$ of $f$. For $t\ge0$ the level set $\{g^2>t\}$ lies in $U$, so it has at most $n/2$ vertices and, if nonempty, at least $i$ times as many boundary edges as vertices. An edge $uv$ lies in $\partial\{g^2>t\}$ exactly for $t$ in an interval of length $\abs{g(u)^2-g(v)^2}$, so
+\[
+  \sum_{uv\in E(H)}\abs{g(u)^2-g(v)^2}=\int_0^\infty\abs{\partial\{g^2>t\}}\,dt\ \ge\ i\int_0^\infty\abs{\{g^2>t\}}\,dt=i .
+\]
+By the Cauchy--Schwarz inequality and $(g(u)+g(v))^2=2g(u)^2+2g(v)^2-(g(u)-g(v))^2$, the left side is at most $\sqrt Q\,\sqrt{2\sum_v\deg(v)g(v)^2-Q}\le\sqrt{Q(2\Delta-Q)}$. The map $t\mapsto t(2\Delta-t)$ increases on $[0,\Delta]$ and $Q\le\lambda<\Delta$, so $i^2\le\lambda(2\Delta-\lambda)$. With $\lambda<\Delta$ this gives $\lambda\ge\Delta-\sqrt{\Delta^2-i^2}$. The remaining claims follow from the second expression for $\mu$.
+\end{proof}
+
+This is Mohar's argument~\cite{Mohar89}. We include it because of the case distinction: the upper bound $i\le\sqrt{\lambda_2(2\Delta-\lambda_2)}$ that the argument gives for $\lambda_2\le\Delta$ can fail when $\lambda_2>\Delta$. For $K_3$, $\Delta=2$, $\lambda_2=3$ and $h=2>\sqrt3$. Only the lower bound on $\lambda_2$ is used below.
+
+\begin{lemma}[deleting a 3-separated set]\label{lem:sep3}
+Let $W$ be a set of vertices of a graph $G$ with pairwise distances at least $3$, and let $H:=G-W$ have at least two vertices. Then $h(H)\ge h(G)-1$ and $\lambda_2(L_H)\ge\lambda_2(L_G)-1$.
+\end{lemma}
+
+\begin{proof}
+$W$ is independent, and every vertex outside $W$ has at most one neighbour in $W$, since two such neighbours would be at distance at most $2$. Let $S\subseteq V(H)$ with $0<\abs S\le\abs{V(H)}/2\le N/2$. At most $\abs S$ edges join $S$ to $W$, so $\abs{\partial_HS}\ge\abs{\partial_GS}-\abs S\ge(h(G)-1)\abs S$. For the second claim let $f$ be a unit vector on $V(H)$ orthogonal to the constants, and extend it by $0$ on $W$ to a unit vector $\tilde f$ on $V$, which is orthogonal to the constants on $V$. Then
+\[
+  \lambda_2(L_G)\le\tilde f^{\top}L_G\tilde f=f^{\top}L_Hf+\sum_{v\in V(H)}f(v)^2\,\abs{N(v)\cap W}\le f^{\top}L_Hf+1 .
+\]
+Taking for $f$ an eigenvector of $\lambda_2(L_H)$ gives the claim.
+\end{proof}
+
+The second tool counts connected sets. For $S\subseteq V$ let $N(S)$ be the set of vertices outside $S$ with a neighbour in $S$.
+
+\begin{lemma}[counting connected sets]\label{lem:count}
+Let $u$ be a vertex of a graph $G$ and let $k\ge1$ and $j\ge0$ be integers. At most $\binom{k-1+j}{j}$ connected sets $S\ni u$ have $\abs S=k$ and $\abs{N(S)}=j$. Consequently, if $h(G)\ge h>0$ and $b\ge1$, at most
+\[
+  F(b):=\binom{\lfloor b/h\rfloor+b+1}{b+1}-1\ \le\ \Lambda^{b+1},\qquad\Lambda:=e\Bigl(1+\frac1h\Bigr),
+\]
+connected sets $S\ni u$ have $\abs S\le N/2$ and $\abs{\partial S}=b$.
+\end{lemma}
+
+\begin{proof}
+Fix an order of $V$. Given $S$, explore it from $u$: keep a queue, initially $(u)$, a set of discovered vertices, initially $\{u\}$, and a set of rejected vertices, initially empty. Remove the first vertex $v$ of the queue and examine its neighbours in order. A neighbour that is discovered or rejected is skipped. For any other neighbour $x$, write the bit $\one[x\in S]$; if it is $1$, mark $x$ discovered and append it to the queue, and otherwise mark $x$ rejected. Repeat until the queue is empty. Only vertices of $S$ enter the queue, and since $S$ is connected every vertex of $S$ is discovered, so every vertex of $S\setminus\{u\}$ writes exactly one $1$. A vertex of $N(S)$ is a neighbour of a vertex of $S$, so it is examined and writes exactly one $0$, and no other vertex is examined. The string therefore has $k-1$ ones and $j$ zeros. Given $G$ and the order, the string determines the run of the procedure, and hence $S$, the final set of discovered vertices. So $S$ is determined by a binary string with $k-1$ ones and $j$ zeros, which proves the first claim.
+
+For the second, $\abs S\le N/2$ gives $h\abs S\le b$, so $k:=\abs S\le K:=\lfloor b/h\rfloor$, and $j:=\abs{N(S)}\le b$ because every vertex of $N(S)$ is the endpoint of an edge of $\partial S$. By the hockey-stick identity, applied twice,
+\[
+  \sum_{k=1}^{K}\sum_{j=0}^{b}\binom{k-1+j}{j}=\sum_{k=1}^K\binom{k+b}{b}=\binom{K+b+1}{b+1}-1 .
+\]
+Finally $\binom{K+b+1}{b+1}\le\bigl(e(K+b+1)/(b+1)\bigr)^{b+1}$ and $K+b+1\le(b+1)(1+1/h)$.
+\end{proof}
+
+The first claim is a form of a lemma of Fomin and Villanger~\cite{FominVillanger12}, who bound by $\binom{k-1+j}{k-1}$ the number of connected sets of size $k$ containing a given vertex that can be separated from the rest of the graph by deleting $j$ vertices. We include the short proof.
+
+\begin{lemma}[random sparse deletion]\label{lem:delete}
+Let $G$ be a 2-connected graph with $N$ vertices, maximum degree at most $D$ and $h(G)\ge h>0$, and let $Z\subseteq V$. Let $0<h'\le h/(D+1)$ and $q\in(0,1]$, put
+\[
+  \theta:=\frac{1-h'/h}{D},\qquad m(b):=\max\{2,\lfloor\theta b\rfloor+1\},\qquad
+  \mathcal S(q):=D\sum_{b\ge2}F(b)\binom{b-1}{m(b)-1}q^{m(b)-1},
+\]
+with $F(b)$ as in Lemma~\ref{lem:count}, and suppose $\mathcal S(q)\le1/2$. Then there is an independent set $W\subseteq Z$ with $\abs W\ge q\abs Z/(2(D+1))$ such that $H:=G-W$ has at least two vertices and $h(H)\ge h'$. In particular $H$ is connected.
+\end{lemma}
+
+\begin{proof}
+Choose an independent set $W_0\subseteq Z$ greedily; each chosen vertex excludes itself and at most $D$ neighbours, so $\abs{W_0}\ge\abs Z/(D+1)$. Let $R\subseteq W_0$ contain each vertex independently with probability $q$. Call a pair $(w,S)$ \emph{dangerous} if $w\in R$, $S$ is a connected set of $G$ with $\abs S\le N/2$, $w\notin S$, $w\in N(S)$, and $\abs{N(S)\cap R}\ge m(b)$ for $b:=\abs{\partial S}$. The set $S$ may meet $R$. Let $R^*$ be $R$ minus every $w$ that lies in a dangerous pair.
+
+\emph{Expected size.} Fix $w\in W_0$ and condition on $w\in R$; the other vertices are still in $R$ independently, each with probability at most $q$. If $(w,S)$ is dangerous, then $S$ contains one of the at most $D$ neighbours $u$ of $w$, and $b\ge2$ since $G$ has no bridge. For given $u$ and $b$, Lemma~\ref{lem:count} gives at most $F(b)$ choices of $S$. The set $N(S)\setminus\{w\}$ has at most $b-1$ vertices, since $\abs{N(S)}\le b$, and at least $m(b)-1$ of them must lie in $R$; by a union bound over the subsets of size $m(b)-1$ this has conditional probability at most $\binom{b-1}{m(b)-1}q^{m(b)-1}$. Hence $\Pr[w\notin R^*\mid w\in R]\le\mathcal S(q)\le1/2$, and $\E\abs{R^*}\ge q\abs{W_0}/2$. Fix an outcome with $\abs{R^*}\ge q\abs{W_0}/2$ and put $W:=R^*$. It is independent and contained in $Z$. Every $w\in W$ has at least two neighbours, none in $W$, and if $W=\emptyset$ then $H=G$; so $H$ has at least two vertices.
+
+\emph{Expansion.} Suppose some $S\subseteq V(H)$ with $0<\abs S\le\abs{V(H)}/2$ has $\abs{\partial_HS}<h'\abs S$. The boundaries in $H$ of the components of $H[S]$ add up to $\partial_HS$, so some component has the same property, and we may assume that $S$ is connected. Then $\abs S\le N/2$; let $b:=\abs{\partial_GS}\ge h\abs S$. Every edge of $\partial_GS$ not in $\partial_HS$ goes to $W$, so $\abs{\partial_HS}=b-e(S,W)$.
+\begin{itemize}
+\item If $N(S)\cap W=\emptyset$, then $\abs{\partial_HS}=b\ge h\abs S\ge h'\abs S$, a contradiction.
+\item If $N(S)\cap W=\{w\}$, then $\abs{\partial_HS}\ge b-D\ge h\abs S-D$. Also $\abs{\partial_HS}\ge1$: the set $V\setminus(S\cup\{w\})$ is nonempty because $\abs S\le N/2$ and $N\ge3$, the graph $G-\{w\}$ is connected, and an edge of $G-\{w\}$ from $S$ to $V\setminus(S\cup\{w\})$ ends outside $W$, hence in $V(H)\setminus S$. If $\abs S\le1/h'$, then $\abs{\partial_HS}\ge1\ge h'\abs S$. If $\abs S>1/h'$, then $(h-h')\abs S-D>(h/h'-1)-D\ge0$ because $h/h'\ge D+1$, so $\abs{\partial_HS}\ge h\abs S-D>h'\abs S$. Both are contradictions.
+\item So $\abs{N(S)\cap W}\ge2$. Moreover $e(S,W)=b-\abs{\partial_HS}>b-h'\abs S\ge b(1-h'/h)$, and each vertex of $W$ has at most $D$ edges into $S$, so $\abs{N(S)\cap W}>\theta b$. Hence $\abs{N(S)\cap W}\ge m(b)$.
+\end{itemize}
+Pick $w\in N(S)\cap W$. Then $w\in R$, $w\notin S$, and $\abs{N(S)\cap R}\ge\abs{N(S)\cap W}\ge m(b)$, so $(w,S)$ is dangerous and $w\notin R^*=W$, a contradiction. Hence $h(H)\ge h'$, and $H$ is connected because $h'>0$.
+\end{proof}
+
+This is the alteration method in the form of a Peierls-type count. 2-connectivity is used twice: for $b\ge2$, and in the case of a single neighbour in $W$. Without it, deleting a vertex of $W$ could cut off a small piece of the graph, $R_{G-W}$ could be infinite, and the touch probabilities could be zero. Proposition~\ref{prop:blocks} shows that some restriction of this kind is needed.
+
+\subsection{The bound for 2-connected expanders}
+
+\begin{lemma}[easy direction of the Cheeger inequality]\label{lem:easy-cheeger}
+For every graph $G$, $h(G)\ge\lambda_2(L_G)/2$.
+\end{lemma}
+
+\begin{proof}
+Let $0<\abs S\le N/2$ and $\phi:=\one_S-(\abs S/N)\one$. Then $\phi\perp\one$, $\phi^{\top}L_G\phi=\abs{\partial S}$ and $\norm\phi^2=\abs S(N-\abs S)/N$, so the Courant--Fischer theorem gives $\abs{\partial S}\ge\lambda_2(L_G)\abs S(N-\abs S)/N\ge\lambda_2(L_G)\abs S/2$.
+\end{proof}
+
+\begin{proposition}[parametric bounds]\label{prop:touch-param}
+Let $G$ be a 2-connected simple graph with maximum degree at most $D$ and $h(G)\ge h>0$, and let $A|B$ be a split with $\abs A\ge m_0$ and $\abs B\ge m_0$, where $m_0>0$. Then $\beta(\UST(G);A|B)^2\le e^{-\kappa m_0}$ in each of the following cases.
+\begin{enumerate}[label=(\roman*)]
+\item $h'$ and $q$ are as in Lemma~\ref{lem:delete}, with $\mathcal S(q)\le1/2$, and
+\[
+  \kappa=\kappa_P(h',q):=\frac{2h}{D(D+h)}\cdot\frac q{2(D+1)}\cdot\frac{D-1}{D^2}\cdot\Bigl(1+\frac1{\mu(D,h')}\Bigr)^{-D}.
+\]
+\item $\lambda_2(L_G)\ge\lambda>1$ and
+\[
+  \kappa=\kappa_S(\lambda):=\frac{\lambda}{D(D+\lambda/2)}\cdot\frac1{D^2+1}\cdot\frac{D-1}{D^2}\cdot\Bigl(1-\frac1\lambda\Bigr)^{D}.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+$G$ has minimum degree at least $2$, so $D\ge2$. Let $Z$ be the set of mixed vertices. Suppose that $W\subseteq Z$ is independent, that $H:=G-W$ is connected, and that $\lambda_2(L_H)\ge\ell>0$. By Lemma~\ref{lem:touch-flow}, the numbers $p_A(w):=(b/d)(1+1/\ell)^{-a}$ and $p_B(w):=(a/d)(1+1/\ell)^{-b}$ satisfy the hypothesis of Theorem~\ref{thm:touch-cut}, with $p_A(w)p_B(w)\ge((D-1)/D^2)(1+1/\ell)^{-D}$, so
+\[
+  \beta(\UST(G);A|B)^2\le\exp\Bigl(-\abs W\,\frac{D-1}{D^2}\Bigl(1+\frac1\ell\Bigr)^{-D}\Bigr).\tag{$*$}
+\]
+(i) By Lemma~\ref{lem:mixed-vertices}, $\abs Z\ge2hm_0/(D(D+h))$. Lemma~\ref{lem:delete} gives an independent $W\subseteq Z$ with $\abs W\ge q\abs Z/(2(D+1))$ such that $H$ is connected, has at least two vertices and $h(H)\ge h'$. $H$ has maximum degree at most $D$, so Lemma~\ref{lem:cheeger} gives $\lambda_2(L_H)\ge\mu(D,h')$. Insert into~$(*)$.
+
+(ii) By Lemma~\ref{lem:easy-cheeger}, $h(G)\ge\lambda/2$, and the bound of Lemma~\ref{lem:mixed-vertices} increases with $h$, so $\abs Z\ge\lambda m_0/(D(D+\lambda/2))>0$. Choose $W\subseteq Z$ greedily with pairwise distances at least $3$. Each chosen vertex excludes the at most $1+D+D(D-1)=D^2+1$ vertices within distance $2$ of it, so $\abs W\ge\abs Z/(D^2+1)$, and $W$ is independent and nonempty. Each $w\in W$ has at least two neighbours, none in $W$, so $H$ has at least two vertices, and Lemma~\ref{lem:sep3} gives $\lambda_2(L_H)\ge\lambda-1>0$. So $H$ is connected, and $(*)$ with $\ell=\lambda-1$ gives the claim, since $(1+1/(\lambda-1))^{-D}=(1-1/\lambda)^D$.
+\end{proof}
+
+If $h>\lambda/2$ is known, $\lambda/2$ can be replaced by $h$ in the first factor of $\kappa_S$. The next theorem fixes the parameters in (i).
+
+\begin{theorem}[2-connected expanders]\label{thm:touch}
+Let $G$ be a 2-connected simple graph with $N$ vertices, $M$ edges, maximum degree at most $D$ and $h(G)\ge h>0$. Put $h_1:=\min(h,1)$ and
+\[
+  c=c(D,h):=\frac{h_1^{5D+4}}{(D+1)^{4(D+1)}\,e^{10(D+1)}} .
+\]
+For every split $A|B$ with $\abs A\ge m_0$ and $\abs B\ge m_0$, where $m_0>0$,
+\[
+  \beta\bigl(\UST(G);A|B\bigr)^2\ \le\ e^{-3cm_0},
+\]
+and for every balanced split $\beta(\UST(G);A|B)^2\le e^{-cN}$. If moreover $\lambda_2(L_G)\ge\lambda>1$, both bounds hold with $c$ replaced by
+\[
+  c_\lambda(D):=\frac{\lambda(D-1)(1-1/\lambda)^D}{3D^3(D+\lambda/2)(D^2+1)} .
+\]
+\end{theorem}
+
+\begin{proof}
+$G$ has minimum degree at least $2$, so $M\ge N$, and a balanced split has $m_0=M/3\ge N/3$. The second part is Proposition~\ref{prop:touch-param}(ii), since $\kappa_S(\lambda)=3c_\lambda(D)$.
+
+For the first part, $h(G)\ge h_1$, so we may apply Proposition~\ref{prop:touch-param}(i) with $h_1$ in place of $h$; we write $h$ for $h_1$, so $h\le1$. Take $h':=h/(D+1)$, so $\theta=1/(D+1)$, and $q:=q_0:=(8D\Lambda^3)^{-(D+1)}$ with $\Lambda=e(1+1/h)$.
+
+\emph{$\mathcal S(q_0)\le1/2$.} First, $m(b)-1=\max\{1,\lfloor\theta b\rfloor\}\ge\theta b/2$: if $\theta b<2$ the left side is at least $1$, and otherwise $\lfloor\theta b\rfloor\ge\theta b-1\ge\theta b/2$. So $q_0^{m(b)-1}\le q_0^{\theta b/2}$. With $\binom{b-1}{m(b)-1}\le2^{b-1}$ and $F(b)\le\Lambda^{b+1}$, the term of index $b$ in $\mathcal S(q_0)$ is at most $D\Lambda^{b+1}2^{b-1}q_0^{\theta b/2}=(D\Lambda/2)x^b$, where $x:=2\Lambda q_0^{\theta/2}$. Since $q_0^\theta=1/(8D\Lambda^3)$, we have $x^2=1/(2D\Lambda)\le1/16$, so $x\le1/4$ and
+\[
+  \mathcal S(q_0)\le\frac{D\Lambda}2\cdot\frac{x^2}{1-x}\le\frac{2D\Lambda x^2}3=\frac13 .
+\]
+
+\emph{The constant.} Lemma~\ref{lem:cheeger} gives $1/\mu(D,h')\le2D/h'^2=2D(D+1)^2/h^2$, and $1+2D(D+1)^2/h^2\le3D(D+1)^2/h^2$. Write $n:=D+1$. Using $D+h\le n$ and $\ln\Lambda\le1+\ln2+\ln(1/h)$,
+\[
+  \ln\frac3{\kappa_P(h',q_0)}\le\ln\frac{3Dn}{2h}+\ln(2n)+n\Bigl(\ln(8D)+3+3\ln2+3\ln\frac1h\Bigr)+\ln\frac{D^2}{D-1}+D\ln\frac{3Dn^2}{h^2}.
+\]
+The coefficient of $\ln(1/h)$ is $1+3n+2D=5D+4$. For the rest use $D<n$, $D^2/(D-1)\le D+2=n+1\le e^n$ and $D\le n-1$: the terms are at most $\ln\frac32+2\ln n$, $\ln2+\ln n$, $n\ln n+n(6\ln2+3)$, $n$, and $(n-1)(\ln3+3\ln n)$. Their sum is $4n\ln n+n(\ln3+6\ln2+4)\le4n\ln n+10n$. Hence $\kappa_P(h',q_0)/3\ge h^{5D+4}n^{-4n}e^{-10n}=c$, and Proposition~\ref{prop:touch-param}(i) gives $\beta^2\le e^{-3cm_0}$.
+\end{proof}
+
+So $\log(1/c)=(5D+4)\log(1/h_1)+O(D\log D)=O(D\log((D+1)/h_1))$ for all $D\ge2$ and $h>0$: for fixed $D$ the constant is polynomial in $h$. The closed form is chosen for simplicity, not sharpness. The previous version of Theorem~\ref{thm:touch} chose $W$ greedily with pairwise distances $s=2\lceil2D/h\rceil+1$ and used a resistance bound $16D^3/h^2$, which gave $c=\frac{2h}{3D^{s+1}(D+h)}(2+16D^3/h^2)^{-D}\le D^{-4D/h}$, exponentially small in $D/h$. Table~\ref{tab:constants} compares the constants.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{rrr|rrrr|r}
+$D$ & $h$ & $\lambda$ & previous & Thm.~\ref{thm:touch} & (i) at $q_0$ & (i) optimized & (ii)\\\hline
+3 & 0.05 & & 306.6 & 119.1 & 102.1 & 73.6 & \\
+3 & 0.1 & & 169.9 & 105.9 & 89.5 & 63.5 & \\
+3 & 0.2 & & 99.2 & 92.8 & 77.4 & 53.6 & \\
+4 & 0.1 & & 274.8 & 137.5 & 117.4 & 83.8 & \\
+4 & 0.2 & & 157.7 & 120.8 & 102.1 & 71.2 & \\
+4 & 0.4 & & 96.1 & 104.2 & 87.8 & 59.0 & \\
+6 & 0.2 & & 290.6 & 179.2 & 153.5 & 107.6 & \\
+6 & 0.5 & & 149.8 & 148.1 & 127.1 & 84.9 & \\
+6 & 0.76 & & 115.7 & 133.8 & 116.3 & 75.1 & \\\hline
+6 & 0.76 & 1.53 & 115.6 & 133.6 & 116.2 & 75.0 & 16.3\\
+8 & 1.35 & 2.71 & 123.6 & 169.1 & 150.3 & 86.2 & 14.5\\
+10 & 2 & 4 & 135.8 & 215.5 & 192.6 & 98.7 & 14.4\\
+16 & 4.13 & 8.25 & 184.0 & 362.7 & 327.3 & 144.6 & 15.2\\
+64 & 24.06 & 48.13 & 628.8 & 1735.3 & 1598.3 & 568.1 & 19.7
+\end{tabular}
+\caption{Values of $\ln(1/c)$, lower is better, where $\beta^2\le e^{-cN}$ for balanced splits. ``Previous'': the constant of the previous version. ``Thm.'': the closed form $c(D,h)$. ``(i) at $q_0$'': Proposition~\ref{prop:touch-param}(i), divided by $3$, with the parameters of the proof of Theorem~\ref{thm:touch}. ``(i) optimized'': the same with $\mu(D,h')$, $h'=\frac{ih}{12(D+1)}$ for the best $i\in\{1,\dots,12\}$, and the largest $q$ with $\mathcal S(q)\le1/2$ found by bisection. ``(ii)'': $c_\lambda(D)$. The last five rows take $\lambda=D-2\sqrt{D-1}$, the Ramanujan bound, and $h=\lambda/2$. All entries are floating-point evaluations (\texttt{verify/constants\_touch.py}). For the optimized column the condition $\mathcal S(q)\le1/2$ is also checked only in floating point, with the series truncated at $b=3000$ and an explicit geometric tail bound; it is not certified by interval arithmetic.}
+\label{tab:constants}
+\end{table}
+
+For $D=3$ and $h=1/5$ the closed form gives $c\ge5.2\cdot10^{-41}$, the parameters of the proof give $2.4\cdot10^{-34}$, and the optimized parameters about $5\cdot10^{-24}$; the previous constant was about $9\cdot10^{-44}$. At moderate $h$ and large $D$ the closed form is weaker than the previous constant, while the optimized column is stronger in every row. For 6-regular Ramanujan graphs, $\lambda_2\ge6-2\sqrt5$ gives $c\ge8.0\cdot10^{-8}$.
+
+Not every row describes graphs that exist for large $N$. Bisection-width bounds of Monien and Preis~\cite{MoniePreis06} give $h\le1/3+o(1)$ for cubic and $h\le4/5+o(1)$ for 4-regular graphs; all rows with $D\le4$ lie below these. For random cubic graphs the bisection width is at most $0.139822N$ with high probability~\cite{LichevMitsche23}, so $h\le0.2797+o(1)$ for them; a recent preprint of Gaspers~\cite{Gaspers26}, which we have not checked, claims bisection bounds that would give $h\le0.2796+o(1)$ for every graph of maximum degree $3$ and $h\le2/3+o(1)$ for maximum degree $4$. We omit the rows $D=3$, $h=0.3$ and $D=4$, $h=0.67$ for this reason. Ramanujan 6-regular graphs have $h\ge0.76$ by Lemma~\ref{lem:easy-cheeger}.
+
+The remaining losses are the factor $q$ of the random deletion, the worst-case flow bound, and the use of a sparse set $W$ instead of all mixed vertices. For specific graphs and splits, Theorem~\ref{thm:touch-cut} can be evaluated directly; in the checks of Appendix~\ref{app:checks}, with the resistance bounds of Lemma~\ref{lem:touch}, it gives $\beta\le e^{-xN}$ with $x$ between about $5\cdot10^{-4}$ and $1.6\cdot10^{-3}$ on cubic graphs of girth $8$ to $12$ and on 2-connected random cubic graphs with $N$ up to $600$. These are floating-point evaluations for particular splits, not bounds over all splits. Section~\ref{sec:star-limits} shows that bounds of the form of Theorem~\ref{thm:touch-cut} cannot give $c\ge\mathrm{poly}(h)$ with a degree independent of $D$ on some graphs, conditionally on an expansion estimate that we do not prove.

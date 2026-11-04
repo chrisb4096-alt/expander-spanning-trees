@@ -1,6 +1,6 @@
 \section{Known tools}\label{sec:tools}
 
-This section collects the tools the proof uses. None of them is new. We give short proofs where this keeps the paper self-contained, and say where each statement comes from.
+This section collects the tools the proof uses. Apart from the elementary averaging step of Lemma~\ref{lem:avg-cond}, which we did not find stated in this form, none of them is new. We give short proofs where this keeps the paper self-contained, and say where each statement comes from.
 
 \subsection{Affinity with products is a matrix norm}
 
@@ -61,23 +61,64 @@ The key point is that $F$ depends only on $x'$ and $G$ only on $y'$, even though
 for any two joint laws (they write $1-\frac12H^2$ for $\BC$). Take $Z_i=(X_i,Y_i)$, $P=\mu$, and $Q=a\otimes b$ a product across $X|Y$. Each conditional $Q_{Z_i|Z^{i-1}=h}$ is then a product across $X_i|Y_i$, so each factor is at most $\gamma_i$ by Lemma~\ref{lem:LP}. Maximizing over $Q$ gives Lemma~\ref{lem:chain}. For independent pairs the lemma is the additivity of $J_{1/2}$~\cite[Lemma~12]{LapidothPfister19}, or the multiplicativity of operator norms under tensor products.
 
 \begin{remark}[what ``adaptive'' means]\label{rem:adaptive}
-In Lemma~\ref{lem:chain} the kernels may depend on the entire joint past of both coordinates. The coordinates themselves, and their order, are fixed in advance. In our application the cycles and their order are chosen before the tree is sampled. Choosing the next statistic as a function of both parties' earlier bits would not be covered: such a choice is not a function of one side alone, so Lemma~\ref{lem:dpi} would not apply.
+In Lemma~\ref{lem:chain} the kernels may depend on the entire joint past of both coordinates. The coordinates themselves, and their order, are fixed in advance. In our applications the cycles or vertices, and their order, are chosen before the tree is sampled. Choosing the next statistic as a function of both parties' earlier bits would not be covered: such a choice is not a function of one side alone, so Lemma~\ref{lem:dpi} would not apply.
 \end{remark}
 
 The conditional hypothesis cannot be replaced by a hypothesis on marginals. Let $(X_1,Y_1)$ be $(0,1)$ or $(1,0)$ with probability $\frac12$ each, and copy it to every later pair. Each pair alone has norm $1/\sqrt2$, but $\opnorm{\sqrt\mu}=1/\sqrt2$ for every $r$. Lemma~\ref{lem:chain} is consistent with this, since after the first pair the kernels are point masses and $\gamma_k=1$.
 
 \begin{lemma}[one forbidden cell]\label{lem:two-by-two}
-Let $K$ be a distribution on $\{0,1\}^2$ with $K(1,1)=0$, $K(0,1)\ge p$ and $K(1,0)\ge p$. Then
+Let $K$ be a distribution on $\{0,1\}^2$ with $K(1,1)=0$, $K(1,0)\ge p$ and $K(0,1)\ge p'$. Then $4pp'\le1$ and
 \[
-  \opnorm{\sqrt K}^2=\frac{1+\sqrt{1-4K(0,1)K(1,0)}}2\le\frac{1+\sqrt{1-4p^2}}2\le1-p^2 .
+  \opnorm{\sqrt K}^2=\frac{1+\sqrt{1-4K(0,1)K(1,0)}}2\le\frac{1+\sqrt{1-4pp'}}2\le1-pp' .
+\]
+In particular, for $p'=p$ the bound is $(1+\sqrt{1-4p^2})/2\le1-p^2$.
+\end{lemma}
+
+\begin{proof}
+Write $a=K(0,0)$, $b=K(0,1)$, $c=K(1,0)$. The singular values $\sigma_1\ge\sigma_2$ of $\sqrt K=\left(\begin{smallmatrix}\sqrt a&\sqrt b\\ \sqrt c&0\end{smallmatrix}\right)$ satisfy $\sigma_1^2+\sigma_2^2=a+b+c=1$ and $\sigma_1\sigma_2=\abs{\det\sqrt K}=\sqrt{bc}$. So $\sigma_1^2$ is the larger root of $s^2-s+bc=0$, which is the stated formula, and it decreases in $bc\ge pp'$. Also $4bc\le(b+c)^2\le1$. The last step is $\sqrt{1-x}\le1-x/2$.
+\end{proof}
+
+The middle bound is attained by independent copies of the kernel with $K(0,1)=K(1,0)=p$, so for kernels with one forbidden cell, Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two} lose nothing.
+
+The same computation works for every kernel. A rare cell instead of a forbidden one, or any correlation at all, gives a penalty.
+
+\begin{lemma}[any $2\times2$ kernel]\label{lem:two-by-two-general}
+Let $K$ be a distribution on $\{0,1\}^2$, write $K_{ij}:=K(i,j)$, and put $\Delta:=\abs{\sqrt{K_{00}K_{11}}-\sqrt{K_{01}K_{10}}}$. Then $\Delta\le\frac12$ and
+\[
+  \opnorm{\sqrt K}^2=\frac{1+\sqrt{1-4\Delta^2}}2\le1-\Delta^2 .
+\]
+\begin{enumerate}[label=(\alph*)]
+\item\label{tbt:rare} (rare cell) If $K_{11}\le\delta$, $K_{10}\ge p$ and $K_{01}\ge p'$, then $\Delta\ge(\sqrt{pp'}-\sqrt\delta)_+$.
+\item\label{tbt:cov} (covariance) If $(x,y)\sim K$, then $K_{00}K_{11}-K_{01}K_{10}=\mathrm{Cov}(x,y)$, and $\Delta$ is at least $\abs{\mathrm{Cov}(x,y)}/\min(\sigma_x,\sigma_y)$, which is at least $2\abs{\mathrm{Cov}(x,y)}$, where $\sigma_x^2:=\mathrm{Var}(x)$ and $0/0:=0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+As in the proof of Lemma~\ref{lem:two-by-two}, the singular values of $\sqrt K$ satisfy $\sigma_1^2+\sigma_2^2=1$ and $\sigma_1\sigma_2=\abs{\det\sqrt K}=\Delta$, so $2\Delta\le1$ and $\sigma_1^2=(1+\sqrt{1-4\Delta^2})/2$. (a) $\Delta\ge\sqrt{K_{01}K_{10}}-\sqrt{K_{00}K_{11}}\ge\sqrt{pp'}-\sqrt\delta$, since $K_{00}\le1$, and $\Delta\ge0$. (b) $K_{00}K_{11}-K_{01}K_{10}=K_{11}(K_{00}+K_{01}+K_{10}+K_{11})-(K_{10}+K_{11})(K_{01}+K_{11})=\Pr[x=y=1]-\Pr[x=1]\Pr[y=1]$. If $s:=\sqrt{K_{00}K_{11}}+\sqrt{K_{01}K_{10}}=0$, both products vanish and $\Delta=\mathrm{Cov}=0$. Otherwise $\Delta=\abs{\mathrm{Cov}}/s$, and by the Cauchy--Schwarz inequality $s\le\sqrt{(K_{00}+K_{01})(K_{11}+K_{10})}=\sigma_x$, and likewise $s\le\sigma_y$. Finally $\sigma_x\le\frac12$.
+\end{proof}
+
+Part~(a) at $\delta=0$ is Lemma~\ref{lem:two-by-two}. For $\delta\le pp'/4$ it still gives $\opnorm{\sqrt K}^2\le1-pp'/4$. The positive part matters: for the uniform kernel, $p=p'=0.01$ and $\delta=\frac14$, the expression $\sqrt{pp'}-\sqrt\delta$ is negative while $\Delta=0$. Section~\ref{sec:edge-pairs} uses part~(b) for pairs of edges, whose covariance under the uniform spanning tree is explicit.
+
+\subsection{Conditioning on a rectangle}
+
+In Section~\ref{sec:complete} the set of usable coordinates depends on a random configuration that both sides can see. The next lemma conditions on such a configuration and averages the resulting bounds.
+
+\begin{lemma}[averaged rectangle conditioning]\label{lem:avg-cond}
+Let $\mu$ be a distribution on $\mathcal X\times\mathcal Y$, let $\phi$ and $\psi$ be maps on $\mathcal X$ and on $\mathcal Y$, and put $Z:=(\phi(X),\psi(Y))$. For each value $z$ with $\mu(Z=z)>0$ let $\mu_z:=\mu(\,\cdot\,|\,Z=z)$. Then
+\[
+  \beta(\mu;X|Y)^2\ \le\ \sum_z\mu(Z=z)\,\beta(\mu_z;X|Y)^2 .
 \]
 \end{lemma}
 
 \begin{proof}
-Write $a=K(0,0)$, $b=K(0,1)$, $c=K(1,0)$. The singular values $\sigma_1\ge\sigma_2$ of $\sqrt K=\left(\begin{smallmatrix}\sqrt a&\sqrt b\\ \sqrt c&0\end{smallmatrix}\right)$ satisfy $\sigma_1^2+\sigma_2^2=a+b+c=1$ and $\sigma_1\sigma_2=\abs{\det\sqrt K}=\sqrt{bc}$. So $\sigma_1^2$ is the larger root of $s^2-s+bc=0$, which is the stated formula, and it decreases in $bc\ge p^2$. The last step is $\sqrt{1-x}\le1-x/2$.
+Let $q=a\otimes b$ be a product distribution. For $z=(z_1,z_2)$ the set $R_z:=\phi^{-1}(z_1)\times\psi^{-1}(z_2)$ is a rectangle, and these sets partition $\mathcal X\times\mathcal Y$. If $q(R_z)>0$, the restriction of $q$ to $R_z$, renormalized, is a product distribution $q_z$. Since $\mu$ vanishes outside the cells with $\mu(Z=z)>0$,
+\[
+  \BC(\mu,q)=\sum_z\sqrt{\mu(Z=z)\,q(R_z)}\ \BC(\mu_z,q_z)\le\sum_z\sqrt{\mu(Z=z)\,q(R_z)}\ \beta(\mu_z;X|Y),
+\]
+where the sums run over $z$ with $\mu(Z=z)q(R_z)>0$. The Cauchy--Schwarz inequality and $\sum_zq(R_z)\le1$ bound the right side by $(\sum_z\mu(Z=z)\beta(\mu_z;X|Y)^2)^{1/2}$. Maximize over $q$.
 \end{proof}
 
-The middle bound is attained by independent copies of the kernel with $K(0,1)=K(1,0)=p$, so for kernels with one forbidden cell, Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two} lose nothing.
+The bound is an average over $z$, not a maximum, so a few values of $z$ with $\beta(\mu_z)$ close to $1$ cost only their probability. Putting $Z$ in front as the first coordinate of Lemma~\ref{lem:chain} would not work: the chain rule takes the worst past, and if some value of $z$ leaves no usable coordinates, every later kernel can be trivial.
 
 \subsection{From circuits to balanced products}\label{sec:circuits}
 

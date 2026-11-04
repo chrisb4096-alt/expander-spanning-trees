@@ -1,6 +1,6 @@
 \section{Cycle bits and the local lemma}\label{sec:trees}
 
-This section proves the bound on $\beta(\UST(G);A|B)$ for a single split, in terms of a family of crossing cycles. It is the only part of the paper that uses spanning trees.
+This section gives the local argument behind Theorem~\ref{thm:general} and Corollary~\ref{cor:prism-square}. It bounds $\beta(\UST(G);A|B)$ for a single split in terms of crossing cycles, the counterpart of Theorem~\ref{thm:touch-cut} with cycles in place of vertices. Section~\ref{sec:matroid} extends it to the circuits of an arbitrary matroid.
 
 Fix a split $E=A\sqcup B$. A cycle $C$ is \emph{mixed} if $E(C)$ meets both $A$ and $B$. For a mixed cycle define the two bits
 \[
@@ -47,23 +47,53 @@ Chords of $C$ only enlarge the denominator's choice sets, and parallel edges of 
 The lemma conditions on $T$ outside \emph{all} edges incident to $C$, not just outside $E(C)$. This matters. If one conditioned only on $T\setminus E(C)$, the cycle could freeze. For example, let $C$ be a triangle and let a further vertex $w$ be joined to all three vertices of $C$. Given that all three edges at $w$ are in $T$, no edge of $C$ can be. Lemma~\ref{lem:local} leaves those three edges free.
 \end{remark}
 
+\subsection{A framed bound}
+
+Lemma~\ref{lem:local} bounds the probability of a whole configuration on $E(C)$. The chain rule needs less: a lower bound for the event that $T$ contains all edges of $C$ on one side, given the past. The next two lemmas give such a bound in which every vertex of $C$ is charged once, while Lemma~\ref{lem:local} charges almost every vertex once for each side. Section~\ref{sec:matroid} explains them as the graphic case of a matroid statement: every edge of $C$ is certified by the star of one of its endpoints, a cut that meets $C$ in two edges.
+
+\begin{lemma}[star bound]\label{lem:star-frame}
+Let $G$ be connected, let $F\subseteq E$ and $\sigma\subseteq F$ satisfy $\Pr[T\cap F=\sigma]>0$, and let $v$ be a vertex at which no edge of $F$ lies. Then every edge $e$ at $v$ satisfies $\Pr[e\in T\mid T\cap F=\sigma]\ge1/\deg(v)$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:markov}, $T\setminus F$ is a uniform spanning tree of the multigraph $K_\sigma$ given $T\cap F=\sigma$, and $K_\sigma$ is connected. No edge of $\sigma$ lies at $v$, so $v$ is a node of $K_\sigma$ by itself, and its edges in $K_\sigma$ are its $\deg(v)$ edges in $G$, none of them a loop. By~\ref{E:kirchhoff}, $\Pr[e\in T\mid T\cap F=\sigma]=R_{K_\sigma}(v,v')$, where $v'$ is the other end of $e$. The function that is $1$ at $v$ and $0$ elsewhere has energy $\deg(v)$, so $1/R_{K_\sigma}(v,v')\le\deg(v)$.
+\end{proof}
+
+\begin{lemma}[framed cycles]\label{lem:framed-cycle}
+Let $G$ be connected and let $C$ be a cycle with vertices $v_1,\dots,v_\ell$ in cyclic order, $\ell\ge3$, and edges $e_j=v_jv_{j+1}$, indices modulo $\ell$. Let $S\subsetneq E(C)$, and let $F\subseteq E$ be a set of edges none of which has an endpoint in $V(C)$. Then for every $\sigma\subseteq F$ with $\Pr[T\cap F=\sigma]>0$,
+\[
+  \Pr\bigl[S\subseteq T\bigm|T\cap F=\sigma\bigr]\ \ge\ \prod_{j:\ e_j\in S}\frac1{\deg(v_{j+1})} .
+\]
+\end{lemma}
+
+\begin{proof}
+Since $S\ne E(C)$, the set $S$ is a disjoint union of maximal runs $e_j,e_{j+1},\dots,e_{j+t}$ of consecutive edges, none of which goes all the way around. List the edges of $S$ as $s_1,\dots,s_k$, run after run, each run in increasing order. If $s_i=e_j$, the only edges of $C$ at $v_{j+1}$ are $e_j$ and $e_{j+1}$, and $e_{j+1}$ is either not in $S$ or listed after $s_i$. No edge of $F$ has an endpoint on $C$. So no edge of $F\cup\{s_1,\dots,s_{i-1}\}$ lies at $v_{j+1}$. By induction on $i$, the event $\{T\cap F=\sigma,\ s_1,\dots,s_{i-1}\in T\}$ has positive probability, and Lemma~\ref{lem:star-frame} with the edge set $F\cup\{s_1,\dots,s_{i-1}\}$ bounds the conditional probability of $s_i\in T$ given it by $1/\deg(v_{j+1})$. Multiply.
+\end{proof}
+
 \subsection{The bound for one split}
 
 \begin{theorem}[affinity bound for a split]\label{thm:cut}
-Let $G$ be a connected graph with maximum degree $D$, let $E=A\sqcup B$ be any split of its edges, and let $C_1,\dots,C_r$ be pairwise vertex-disjoint mixed cycles. For each $k$ put $p_k:=\max_{x_0\in V(C_k)}\prod_{y\in V(C_k)\setminus\{x_0\}}\deg(y)^{-1}$. Then
+Let $G$ be a connected simple graph with maximum degree $D$, let $E=A\sqcup B$ be any split of its edges, and let $C_1,\dots,C_r$ be pairwise vertex-disjoint mixed cycles. For each $k$ put
 \[
-  \beta\bigl(\UST(G);A|B\bigr)\ \le\ \prod_{k=1}^r\Bigl(\frac{1+\sqrt{1-4p_k^2}}2\Bigr)^{1/2}\ \le\ \prod_{k=1}^r\bigl(1-p_k^2\bigr)^{1/2}.
+  p_k:=\max_{x_0\in V(C_k)}\prod_{y\in V(C_k)\setminus\{x_0\}}\deg(y)^{-1},\qquad w_k:=\prod_{y\in V(C_k)}\deg(y)^{-1},\qquad q_k:=\max(p_k^2,w_k).
 \]
-In particular, if every $C_k$ has length at most $\ell$, then $\beta(\UST(G);A|B)\le\bigl(1-D^{-2(\ell-1)}\bigr)^{r/2}$.
+Then
+\[
+  \beta\bigl(\UST(G);A|B\bigr)\ \le\ \prod_{k=1}^r\Bigl(\frac{1+\sqrt{1-4q_k}}2\Bigr)^{1/2}\ \le\ \prod_{k=1}^r\bigl(1-q_k\bigr)^{1/2}.
+\]
+In particular, if every $C_k$ has length at most $\ell$, then $\beta(\UST(G);A|B)\le\bigl(1-D^{-\ell}\bigr)^{r/2}$.
 \end{theorem}
 
 \begin{proof}
-Let $T\sim\UST(G)$ and put $u_k:=u_{C_k}(T\cap A)$ and $v_k:=v_{C_k}(T\cap B)$. The vector $u=(u_1,\dots,u_r)$ is a function of $T\cap A$ and $v$ is a function of $T\cap B$. By Lemma~\ref{lem:dpi}, $\beta(\UST(G);A|B)\le\opnorm{\sqrt\mu}$, where $\mu$ is the joint law of $(u,v)$ with rows indexed by $u$ and columns by $v$. Order the pairs as $(u_1,v_1),\dots,(u_r,v_r)$; the order is fixed before $T$ is sampled. By Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two} it suffices to show that for every $k$ and every value $\pi$ of the past $(u_{<k},v_{<k})$ with positive probability,
-\[
-  \Pr\bigl[(u_k,v_k)=(1,1)\bigm|\pi\bigr]=0,\qquad\Pr\bigl[(u_k,v_k)=(0,1)\bigm|\pi\bigr]\ge p_k,\qquad\Pr\bigl[(u_k,v_k)=(1,0)\bigm|\pi\bigr]\ge p_k .
-\]
-The first holds because $T$ contains no cycle. For the others, let $F_k:=T\setminus I(C_k)$. An edge of $C_j$ with $j\ne k$ has both endpoints in $V(C_j)$, which is disjoint from $V(C_k)$, so $E(C_j)\cap I(C_k)=\emptyset$. Hence the past $(u_{<k},v_{<k})$ is a function of $F_k$, and the event $\{(u_{<k},v_{<k})=\pi\}$ is a union of events $\{F_k=F\}$. Pick $e_A\in E(C_k)\cap A$ and $e_B\in E(C_k)\cap B$. If $T\cap E(C_k)=E(C_k)\setminus\{e_A\}$, then $e_A\notin T$ while every edge of $E(C_k)\cap B$ is in $T$, so $(u_k,v_k)=(0,1)$. Likewise $E(C_k)\setminus\{e_B\}$ gives $(1,0)$. By Lemma~\ref{lem:local}, both events have conditional probability at least $p_k$ given every value $F$ of $F_k$ with positive probability. By the tower property the same bounds hold given $\pi$, since conditioning on $\pi$ averages the conditional laws given $F_k=F$ over the values $F$ compatible with $\pi$.
+Let $T\sim\UST(G)$ and put $u_k:=u_{C_k}(T\cap A)$ and $v_k:=v_{C_k}(T\cap B)$. The vector $u=(u_1,\dots,u_r)$ is a function of $T\cap A$ and $v$ is a function of $T\cap B$. By Lemma~\ref{lem:dpi}, $\beta(\UST(G);A|B)\le\opnorm{\sqrt\mu}$, where $\mu$ is the joint law of $(u,v)$ with rows indexed by $u$ and columns by $v$. Order the pairs as $(u_1,v_1),\dots,(u_r,v_r)$; the order is fixed before $T$ is sampled. Orient each $C_k$ cyclically, and let $w_k^A$ and $w_k^B$ be the products of $1/\deg(v)$ over the heads $v$ of the edges of $C_k$ in $A$ and in $B$; every vertex of $C_k$ is the head of exactly one edge, so $w_k^Aw_k^B=w_k$. By Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two}, and since $\max(p_k,w_k^A)\max(p_k,w_k^B)\ge q_k$, it suffices to show that for every $k$ and every value $\pi$ of the past $(u_{<k},v_{<k})$ with positive probability,
+\begin{gather*}
+  \Pr\bigl[(u_k,v_k)=(1,1)\bigm|\pi\bigr]=0,\qquad\Pr\bigl[(u_k,v_k)=(0,1)\bigm|\pi\bigr]\ge\max(p_k,w_k^B),\\
+  \Pr\bigl[(u_k,v_k)=(1,0)\bigm|\pi\bigr]\ge\max(p_k,w_k^A) .
+\end{gather*}
+The first holds because $T$ contains no cycle. For the others, let $F_k:=T\setminus I(C_k)$. An edge of $C_j$ with $j\ne k$ has both endpoints in $V(C_j)$, which is disjoint from $V(C_k)$, so $E(C_j)\cap I(C_k)=\emptyset$. Hence the past $(u_{<k},v_{<k})$ is a function of $F_k$, and the event $\{(u_{<k},v_{<k})=\pi\}$ is a union of events $\{F_k=F\}$. Pick $e_A\in E(C_k)\cap A$ and $e_B\in E(C_k)\cap B$. If $T\cap E(C_k)=E(C_k)\setminus\{e_A\}$, then $e_A\notin T$ while every edge of $E(C_k)\cap B$ is in $T$, so $(u_k,v_k)=(0,1)$. Likewise $E(C_k)\setminus\{e_B\}$ gives $(1,0)$. By Lemma~\ref{lem:local}, both events have conditional probability at least $p_k$ given every value $F$ of $F_k$ with positive probability. By the tower property the same bounds hold given $\pi$, since conditioning on $\pi$ averages the conditional laws given $F_k=F$ over the values $F$ compatible with $\pi$. For the bounds $w_k^A$ and $w_k^B$, note that the past is also a function of $T\cap F'_k$ with $F'_k:=E(C_1)\cup\dots\cup E(C_{k-1})$, and no edge of $F'_k$ has an endpoint on $C_k$. Since $u_k=1$ forces $v_k=0$, Lemma~\ref{lem:framed-cycle} with $S=E(C_k)\cap A\subsetneq E(C_k)$ gives $\Pr[(u_k,v_k)=(1,0)\mid T\cap F'_k=\sigma]\ge w_k^A$ for every admissible $\sigma$, and the same averaging applies. The bound with $B$ is symmetric.
 \end{proof}
+
+Neither of $p_k^2$ and $w_k$ dominates the other: $w_k\ge p_k^2$ exactly when the product of the $\abs{C_k}-1$ smallest degrees on $C_k$ is at least the largest one. For cycles of length $\ell\ge3$ in a graph of maximum degree $D$, the uniform bound improves from $D^{-2(\ell-1)}$, which an earlier version of this paper used, to $D^{-\ell}$.
 
 The incident sets $I(C_j)$ and $I(C_k)$ may share an edge joining the two cycles. This does not matter, because the bits use cycle edges only. The theorem holds for every split, balanced or not, and every family of vertex-disjoint mixed cycles. The geometric input of Section~\ref{sec:geometry} is a lower bound on $r$ for balanced splits.
 

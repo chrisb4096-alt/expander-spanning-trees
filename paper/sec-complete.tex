@@ -1,0 +1,261 @@
+\section{The complete graph and dense graphs}\label{sec:complete}
+
+This section treats the uniform spanning tree of the complete graph $K_n$ and then dense graphs with a linear spectral gap. Neither argument of the previous sections applies directly. The cycle bits give a per-cycle factor $1-O(n^{-3})$, and Theorem~\ref{thm:touch-cut} needs an independent set of vertices, while the independent sets of $K_n$ have one vertex. We keep the vertex-touch bits but drop independence. We condition on the tree edges inside a vertex set $W$, use only the vertices of $W$ that these edges do not touch, and average over the conditioning with Lemma~\ref{lem:avg-cond}. Three ingredients make the constant reasonable for $K_n$: a star-deletion bound that is sharp on complete graphs (Lemma~\ref{lem:kn-star}), the exact law of the set of vertices of $W$ that the tree leaves isolated inside $W$ (Lemma~\ref{lem:kn-iso}), and a choice of $W$ that depends on the split and covers a constant fraction of the vertices.
+
+Throughout, $\mu_n:=\UST(K_n)$ is the uniform distribution on the $n^{n-2}$ labelled trees, viewed as a distribution on the $M=n(n-1)/2$ edge indicators, and a balanced split is any partition $E(K_n)=A\sqcup B$ with $\abs A,\abs B\ge M/3$. The split need not come from a partition of the vertices. For a vertex $v$ write $\deg_A(v)$ and $\deg_B(v)$ for the numbers of edges of $A$ and of $B$ at $v$. For $0\le p\le\frac14$ put
+\[
+  \Lambda(p):=\frac{1+\sqrt{1-4p}}2,\qquad g(p):=-\ln\Lambda(p),
+\]
+so that Lemma~\ref{lem:two-by-two} reads $\opnorm{\sqrt K}^2\le\Lambda(pp')$. The function $\Lambda$ is decreasing and concave, and $g$ is increasing and convex, with $g(p)\ge-\ln(1-p)\ge p$. For $m\ge1$ put $c_m:=(1+1/m)^{-m}$, which decreases to $1/e$.
+
+\begin{theorem}[complete graphs]\label{thm:complete}
+Let $n\ge3$ and let $A|B$ be a balanced split of $E(K_n)$. For every integer $1\le r\le n-2$, with $m:=n-r$ and $\Lambda_0:=\Lambda\bigl(c_m(1-\frac1m)/9\bigr)$,
+\[
+  \beta(\mu_n;A|B)^2\ \le\ \Phi_n(r):=\sum_{s=0}^{r}\binom rs(\Lambda_0-1)^s\Bigl(\frac mn\Bigr)^s\Bigl(1-\frac sn\Bigr)^{r-s-1} .
+\]
+Consequently, for every $n\ge3$,
+\[
+  -\ln\beta(\mu_n;A|B)^2\ \ge\ 0.0069032\,n-\tfrac12\ln n-2.01\ \ge\ \frac n{146}-\frac12\ln n-3 .
+\]
+\end{theorem}
+
+The coefficient $0.0069032$ is $1/144.86$. The sum $\Phi_n(r)$ is $\E[\Lambda_0^{\abs I}]$ for the random set $I$ of Lemma~\ref{lem:kn-iso} below, so it depends only on $n$ and $r$, not on the split.
+
+\begin{corollary}[circuits for $\UST(K_n)$]\label{cor:complete}
+Let $n\ge3$, and let $C$ be a smooth decomposable probabilistic circuit with nonnegative weights over the $M=n(n-1)/2$ edge variables of $K_n$, \emph{whose leaves have arity at most $2M/3$}, with size $\abs C$ counted as nodes plus wires. If $\TV(\mu_n,Q_C)\le1-\delta$ with $\delta>0$, then
+\[
+  \abs C\ \ge\ \frac{\delta^2\,e^{n/146}}{e^3\sqrt n} .
+\]
+\end{corollary}
+
+\begin{proof}
+Corollary~\ref{cor:reduction} gives $\abs C\ge\delta^2/\max\beta^2$, and Theorem~\ref{thm:complete} gives $\max\beta^2\le e^3\sqrt n\,e^{-n/146}$.
+\end{proof}
+
+Determinism and exactness are not assumed, and different product terms of the circuit may use different balanced splits. All constants are absolute. The bound is nontrivial whenever $\delta>e^{3/2}n^{1/4}e^{-n/292}$, so for every fixed error $\TV<1$ once $n$ is large. The restriction on the arity of leaves cannot simply be dropped: one leaf of arity $M$ represents $\mu_n$ exactly. Proposition~\ref{prop:complete-upper} below shows that the exponent $\Theta(n)$ is the truth. Since $M=\Theta(n^2)$, this is $2^{\Theta(\sqrt M)}$, not exponential in the number of variables.
+
+\subsection{Bits, conditioning and sharp star deletion}
+
+The first two lemmas hold in any connected simple graph $G=(V,E)$; Section~\ref{sec:dense} uses them again. Fix a split $A|B$ of $E$ and a set $W$ of $r$ vertices, and put $U:=V\setminus W$ and $m:=\abs U$. For $w\in W$ let $S^U_A(w)$ and $S^U_B(w)$ be the sets of edges of $A$ and of $B$ between $w$ and $U$, and put $d_A(w):=\abs{S^U_A(w)}$, $d_B(w):=\abs{S^U_B(w)}$ and $d_U(w):=d_A(w)+d_B(w)$. Define
+\[
+  a_w:=\one\bigl[T\cap S^U_A(w)=\emptyset\bigr],\qquad b_w:=\one\bigl[T\cap S^U_B(w)=\emptyset\bigr].
+\]
+The bit $a_w$ is a function of $x_A$ and $b_w$ is a function of $x_B$.
+
+Let $E(W)$ be the set of edges with both ends in $W$, and let $z(T):=T\cap E(W)$. Its two parts $T\cap E(W)\cap A$ and $T\cap E(W)\cap B$ are functions of $x_A$ and of $x_B$, so $z$ has the form required in Lemma~\ref{lem:avg-cond}. For a value $z$ let $W'_z$ be the set of vertices of $W$ that no edge of $z$ touches, and put $I:=W'_{z(T)}$, the set of vertices of $W$ that are isolated in the forest $T\cap E(W)$. If $z(T)=z$ and $w\in W'_z$, then $T$ has no edge from $w$ to $W$, but it has an edge at $w$, so $a_w=b_w=1$ is impossible. This is the forbidden cell. Without conditioning on $z$ it is not forbidden, since $w$ may be attached to the tree through $W$.
+
+\begin{lemma}[sharp star deletion]\label{lem:kn-star}
+Suppose that $m\ge2$ and that $G[U]$ is connected, and put $\lambda_U:=\lambda_2(L_{G[U]})>0$. Fix a value $z$ of $z(T)$ and a vertex $w\in W'_z$ with $d_U(w)\ge1$. Let $F:=\bigcup_{x\in W'_z\setminus\{w\}}(S^U_A(x)\cup S^U_B(x))$ and let $\sigma\subseteq F$ satisfy $\Pr[z(T)=z,\ T\cap F=\sigma]>0$. Write $\Pr_{z,\sigma}$ for the conditional law given these two events. Then
+\begin{align*}
+  \Pr_{z,\sigma}[a_w=1]\ &\ge\ p_A(w):=\frac{d_B(w)}{d_U(w)}\Bigl(1+\frac1{\lambda_U}\Bigr)^{-d_A(w)},\\
+  \Pr_{z,\sigma}[b_w=1]\ &\ge\ p_B(w):=\frac{d_A(w)}{d_U(w)}\Bigl(1+\frac1{\lambda_U}\Bigr)^{-d_B(w)} .
+\end{align*}
+In particular $p_w:=p_A(w)p_B(w)=\theta_A(w)\theta_B(w)(1+1/\lambda_U)^{-d_U(w)}$ with $\theta_A:=d_A/d_U$ and $\theta_B:=d_B/d_U$. For $G=K_n$ we have $\lambda_U=m=d_U(w)$, and $p_w=c_m\theta_A(w)\theta_B(w)$.
+\end{lemma}
+
+\begin{proof}
+Write $d_A,d_B,d_U$ for $d_A(w),d_B(w),d_U(w)$, and assume $d_B\ge1$; otherwise the first bound is $0$. Apply Lemma~\ref{lem:markov} with the edge set $E(W)\cup F$ and the configuration $z\cup\sigma$. Conditionally, $T\setminus(E(W)\cup F)$ is a uniform spanning tree of the multigraph $K'$ obtained from $G_0:=G-E(W)-F$ by identifying the vertices of each component of $(V,z\cup\sigma)$ and deleting loops. No edge of $z\cup\sigma$ touches $w$: $z$ does not because $w\in W'_z$, and every edge of $F$ joins a vertex of $W\setminus\{w\}$ to $U$. So $w$ is a node of $K'$ by itself, and its edges in $K'$ are exactly its $d_U$ edges to $U$. The graph $K'$ is connected, since it has a spanning tree.
+
+Let $e_1,\dots,e_{d_A}$ be the edges of $S^U_A(w)$, with endpoints $u_1,\dots,u_{d_A}\in U$, and put $K'_i:=K'-e_1-\dots-e_i$ and $Y_i:=(S^U_A(w)\cup S^U_B(w))\setminus\{e_1,\dots,e_i\}$, so that $k_i:=\abs{Y_i}=d_U-i\ge d_B\ge1$. Let $H_i$ be the graph on $U\cup\{w\}$ with the edges of $G[U]$ and of $Y_i$. The graph $K'_i$ arises from $G_0-e_1-\dots-e_i$, which contains $H_i$ as a subgraph, by identifying vertices, never $w$ with another vertex, and deleting loops. By~\ref{E:rayleigh}, $R_{K'_i}(w,u_i)\le R_{H_i}(w,u_i)$, where $u_i$ stands for its image in $K'_i$.
+
+We bound $R_{H_i}(w,u_i)$ by Thomson's principle~\ref{E:thomson}. Let $D_i\subseteq U$ be the set of the $k_i$ endpoints of $Y_i$; it does not contain $u_i$, because $G$ is simple. Send $1/k_i$ along each edge of $Y_i$, from $w$ to $D_i$. By~\ref{E:flow}, some flow in $G[U]$ has net outflow $\chi:=\one_{D_i}/k_i-\one_{u_i}$ and energy at most $\norm\chi^2/\lambda_U=(1+1/k_i)/\lambda_U$. The two flows use disjoint edges and together form a unit flow from $w$ to $u_i$, so
+\[
+  R_{K'_i}(w,u_i)\ \le\ R_{H_i}(w,u_i)\ \le\ \frac1{k_i}+\frac{1+1/k_i}{\lambda_U},\qquad 1+R_{K'_i}(w,u_i)\le\frac{k_i+1}{k_i}\Bigl(1+\frac1{\lambda_U}\Bigr).
+\]
+In particular $u_i$ and $w$ are connected in $K'_i$, so $e_i$ is not a bridge of $K'_{i-1}$, and by induction every $K'_i$ is connected. By Lemma~\ref{lem:one-edge}, applied $d_A$ times, with the tree uniform on $K'_{i-1}$ given $e_1,\dots,e_{i-1}\notin T$,
+\[
+  \Pr_{z,\sigma}[a_w=1]=\prod_{i=1}^{d_A}\frac1{1+R_{K'_i}(w,u_i)}\ \ge\ \Bigl(1+\frac1{\lambda_U}\Bigr)^{-d_A}\prod_{i=1}^{d_A}\frac{d_U-i}{d_U-i+1}=\frac{d_B}{d_U}\Bigl(1+\frac1{\lambda_U}\Bigr)^{-d_A}.
+\]
+The bound for $b_w$ is the same with $A$ and $B$ exchanged. For $G=K_n$, $G[U]=K_m$ has $\lambda_2(L_{K_m})=m$, and every $w\in W$ has $d_U(w)=m$.
+\end{proof}
+
+For $K_n$ the bound is sharp: in exact enumeration for $n\le8$, the smallest ratio of $\Pr_{z,\sigma}[a_w=1]$ to $p_A(w)$ over all pasts is $1.000$ to three decimals (Appendix~\ref{app:checks}). An earlier version of this paper bounded $p_A(w)p_B(w)$ through the event that $w$ is a leaf, by $e^{-1}\theta_Ae^{-4\theta_A}$ for $\theta_A\le\frac12$, which is smaller by a factor of about $3.7$ at $\theta_A=\frac12$.
+
+\begin{lemma}[master bound]\label{lem:kn-master}
+In the setting of Lemma~\ref{lem:kn-star}, put $p_w:=0$ if $d_U(w)=0$. Then
+\[
+  \beta(\UST(G);A|B)^2\ \le\ \E\Bigl[\prod_{w\in I}\Lambda(p_w)\Bigr],\qquad I=W'_{z(T)} .
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $z$ with $\Pr[z(T)=z]>0$, and order $W'_z$ as $w_1,\dots,w_s$; the order is fixed once $z$ is. Let $\mu_z$ be the law of $T$ given $z(T)=z$. By Lemma~\ref{lem:dpi}, $\beta(\mu_z;A|B)$ is at most the norm of the square root of the joint law of $((a_{w_k})_k,(b_{w_k})_k)$ under $\mu_z$. For the pair $(a_{w_k},b_{w_k})$, every value $\pi$ of the joint past $(a_{w_i},b_{w_i})_{i<k}$ is a function of $T\cap F$, where $F$ is the set of Lemma~\ref{lem:kn-star} for $w=w_k$. So the conditional law $K_k(\cdot\,|\,\pi)$ is an average over $\sigma$ of the laws in Lemma~\ref{lem:kn-star}. It has $K_k(1,1\,|\,\pi)=0$, $K_k(1,0\,|\,\pi)=\Pr[a_{w_k}=1\,|\,z,\pi]\ge p_A(w_k)$ and $K_k(0,1\,|\,\pi)\ge p_B(w_k)$. Lemma~\ref{lem:two-by-two} gives $\gamma_k^2\le\Lambda(p_{w_k})$, also when $p_{w_k}=0$, and Lemma~\ref{lem:chain} gives $\beta(\mu_z;A|B)^2\le\prod_{w\in W'_z}\Lambda(p_w)$. Lemma~\ref{lem:avg-cond} averages over $z$.
+\end{proof}
+
+\subsection{The isolated vertices of \texorpdfstring{$W$}{W} in \texorpdfstring{$K_n$}{K\_n}}
+
+In $K_n$ the law of $I$ is explicit. Let $\mathsf T(x):=\sum_{k\ge1}k^{k-1}x^k/k!$ be the tree function, which converges for $\abs x\le1/e$, has nonnegative coefficients and satisfies $\mathsf T(x)=xe^{\mathsf T(x)}$, so that $\mathsf T(te^{-t})=t$ for $0\le t\le1$.
+
+\begin{lemma}[isolated vertices]\label{lem:kn-iso}
+Let $W\subseteq V(K_n)$ with $\abs W=r$ and $m=n-r\ge1$, let $T\sim\mu_n$ and $I=W'_{z(T)}$.
+\begin{enumerate}[label=(I\arabic*)]
+\item\label{iso:one} For $S\subseteq W$ with $\abs S=s$, $\Pr[S\subseteq I]=(m/n)^s(1-s/n)^{r-s-1}$.
+\item\label{iso:mgf} For every real $\Lambda$,
+\[
+  \E\bigl[\Lambda^{\abs I}\bigr]=\sum_{s=0}^r\binom rs(\Lambda-1)^s\Bigl(\frac mn\Bigr)^s\Bigl(1-\frac sn\Bigr)^{r-s-1}=\frac{r!}{m\,n^{r-1}}\,[x^r]\exp\bigl(m(\mathsf T(x)-x)+m\Lambda x\bigr).
+\]
+\item\label{iso:mean} For numbers $\Lambda_w\ge0$ ($w\in W$) with mean $\bar\Lambda$, $\E\prod_{w\in I}\Lambda_w\le\E\bigl[\bar\Lambda^{\abs I}\bigr]$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\ref{iso:one} The event $S\subseteq I$ says that $T$ avoids the set $H_S$ of edges between $S$ and $W$. For a simple graph $H$ on $V$, $L_{K_n-H}=nI-J-L_H$, and $L_H$ commutes with $J$, so on $\one^\perp$ the eigenvalues of $L_{K_n-H}$ are $n-\mu_i$, where $\mu_1,\dots,\mu_{n-1}$ are the eigenvalues of $L_H$ on $\one^\perp$. By the matrix-tree theorem, $\tau(K_n-H)=n^{-1}\prod_{i=1}^{n-1}(n-\mu_i)$. The graph $H_S$ is the join of a clique on $S$ and an independent set on $W\setminus S$, plus $m$ isolated vertices. For $1\le s<r$ its eigenvectors are explicit: vectors of sum zero supported on $S$ have eigenvalue $r$, vectors of sum zero supported on $W\setminus S$ have eigenvalue $s$, $(r-s)\one_S-s\one_{W\setminus S}$ has eigenvalue $r$, and the rest of $\one^\perp$ is spanned by vectors that are constant on $W$, with eigenvalue $0$. So $\tau(K_n-H_S)=n^{-1}\cdot n^m(n-r)^s(n-s)^{r-s-1}$; divide by $n^{n-2}$. The cases $s=0$ (no edges) and $s=r$ (a clique on $W$, with eigenvalue $r$ of multiplicity $r-1$) give the same formula.
+
+\ref{iso:mgf} The first equality follows from $\Lambda^{\abs I}=\sum_{S\subseteq I}(\Lambda-1)^{\abs S}$ and~\ref{iso:one}. For the second, fix a forest $F$ with vertex set $W$ and components of sizes $c_1,\dots,c_t$. By Lemma~\ref{lem:markov}, the trees with $T\cap E(W)=F$ correspond to the spanning trees of the multigraph $\Gamma_F$ in which each component of $F$ is one node, joined by $c_i$ parallel edges to each vertex of $U$, and $U$ carries $K_m$. Eliminating the $t$ component nodes from the Laplacian of $\Gamma_F$, whose diagonal block on them is $\mathrm{diag}(c_im)$, leaves the Schur complement $L_{K_m}+rI-(r/m)J=(n/m)L_{K_m}$ on $U$. Deleting the row and column of one vertex of $U$ before eliminating, the matrix-tree theorem gives
+\[
+  \tau(\Gamma_F)=\prod_i(c_im)\cdot\Bigl(\frac nm\Bigr)^{m-1}m^{m-2}=n^{m-1}m^{t-1}\prod_ic_i .
+\]
+So $\Pr[T\cap E(W)=F]=n^{1-r}m^{-1}\prod_i(mc_i)$. There are $\prod_ic_i^{c_i-2}$ forests with given components, and the isolated vertices of $F$ are its components of size $1$. Summing over set partitions of $W$,
+\[
+  \E\bigl[\Lambda^{\abs I}\bigr]=\frac1{m\,n^{r-1}}\sum_{\pi}\prod_{P\in\pi}w(\abs P),\qquad w(1)=m\Lambda,\quad w(c)=mc^{c-1}\ (c\ge2),
+\]
+and the exponential formula gives $r!\,[x^r]\exp(\sum_cw(c)x^c/c!)$ for the sum, with $\sum_cw(c)x^c/c!=m(\mathsf T(x)-x)+m\Lambda x$.
+
+\ref{iso:mean} Permutations of $V$ that fix $W$ as a set preserve $\mu_n$ and act transitively on the $s$-subsets of $W$, so given $\abs I=s$ the set $I$ is uniform among them. Hence $\E\prod_{w\in I}\Lambda_w=\sum_s\Pr[\abs I=s]\,e_s(\Lambda)/\binom rs$, where $e_s$ is the elementary symmetric polynomial, and Maclaurin's inequality~\cite{HLP52} gives $e_s(\Lambda)/\binom rs\le\bar\Lambda^s$.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:complete}}
+
+\emph{Choice of $W$.} Put $q_v:=\deg_A(v)/(n-1)$ and $a:=\abs A/M\in[\frac13,\frac23]$. De Caen's inequality~\cite{deCaen98} $\sum_v\deg_A(v)^2\le\abs A\bigl(2\abs A/(n-1)+n-2\bigr)$ and $\sum_v\deg_A(v)=2\abs A=an(n-1)$ give
+\[
+  \frac1n\sum_vq_v(1-q_v)=\frac1n\Bigl(\frac{2\abs A}{n-1}-\frac{\sum_v\deg_A(v)^2}{(n-1)^2}\Bigr)\ \ge\ \frac{a(1-a)\,n}{2(n-1)}\ \ge\ \frac19 .
+\]
+Let $W$ be a uniform $r$-set and $w$ a uniform element of $W$. Then $w$ is uniform on $V$, and given $w$ the set $U$ is a uniform $m$-subset of $V\setminus\{w\}$, so $d_A(w)$ is hypergeometric: $m$ draws from $n-1$ neighbours of which $\deg_A(w)$ are $A$-neighbours. Its variance formula gives
+\begin{align*}
+  \E\bigl[\theta_A(w)\theta_B(w)\bigm|w\bigr]&=\frac{\E[d_A(w)(m-d_A(w))\,|\,w]}{m^2}\\
+  &=q_w(1-q_w)\Bigl(1-\frac{r-1}{m(n-2)}\Bigr)\ \ge\ q_w(1-q_w)\Bigl(1-\frac1m\Bigr).
+\end{align*}
+Averaging over $w$, some $r$-set $W$ has $\frac1r\sum_{w\in W}\theta_A(w)\theta_B(w)\ge(1-\frac1m)/9$. Fix such a $W$; it depends on the split, and is chosen before the tree is sampled.
+
+\emph{Main inequality.} By Lemma~\ref{lem:kn-star}, $p_w=c_m\theta_A(w)\theta_B(w)\le\frac14$, and the mean of the $p_w$ over $W$ is at least $p_0:=c_m(1-\frac1m)/9$. Since $\Lambda$ is concave and decreasing, the mean $\bar\Lambda$ of the numbers $\Lambda(p_w)$ satisfies $\bar\Lambda\le\Lambda(\text{mean of }p_w)\le\Lambda(p_0)=\Lambda_0$. Lemmas~\ref{lem:kn-master} and~\ref{lem:kn-iso} give
+\[
+  \beta(\mu_n;A|B)^2\ \le\ \E\prod_{w\in I}\Lambda(p_w)\ \le\ \E\bigl[\bar\Lambda^{\abs I}\bigr]\ \le\ \E\bigl[\Lambda_0^{\abs I}\bigr]=\Phi_n(r).
+\]
+
+\emph{Explicit bound.} Let $\alpha:=0.38$, $r:=\lfloor\alpha n\rfloor$, so that $1\le r\le n-2$ and $m\ge0.62n$ for $n\ge3$, and let $\rho:=0.384\,e^{-0.384}<1/e$, so that $\mathsf T(\rho)=0.384$. The power series $\exp(m(\mathsf T(x)-x)+m\Lambda_0x)$ has nonnegative coefficients, so its coefficient of $x^r$ is at most its value at $\rho$ divided by $\rho^r$. Since $c_m\ge1/e$, $p_0\ge\frac1{9e}-\frac1{9em}$, and since $\abs{\Lambda'(p)}=(1-4p)^{-1/2}\le1.094$ for $p\le\frac1{9e}$, we have $\Lambda_0\le\Lambda_\infty+\frac{1.094}{9em}$ with $\Lambda_\infty:=\Lambda(\frac1{9e})=0.957301\ldots$. With Robbins' bound $\ln r!\le r\ln r-r+\frac12\ln(2\pi r)+\frac1{12r}$~\cite{Robbins55}, Lemma~\ref{lem:kn-iso}\ref{iso:mgf} gives
+\[
+  \ln\Phi_n(r)\ \le\ -r\Bigl(1+\ln\frac{\rho n}r\Bigr)+mK+\ln\frac nm+\frac12\ln(2\pi r)+\frac1{12}+\frac{1.094\,\rho}{9e},\qquad K:=\mathsf T(\rho)-\rho+\Lambda_\infty\rho .
+\]
+The function $x\mapsto x(1+\ln(\rho n/x))$ is concave, so on $[\alpha n-1,\alpha n]\ni r$ it is at least its smaller endpoint value, which is at least $\alpha n(1+\ln(\rho/\alpha))-(1+\ln(\rho/\alpha))$, since $1+\ln(\rho/\alpha)>0$. With $m\le(1-\alpha)n+1$, $m\ge0.62n$ and $r\le\alpha n$,
+\[
+  -\ln\Phi_n(r)\ \ge\ Rn-\tfrac12\ln n-C_0,\qquad R:=\alpha\Bigl(1+\ln\frac\rho\alpha\Bigr)-(1-\alpha)K,
+\]
+\[
+  C_0:=\Bigl(1+\ln\frac\rho\alpha\Bigr)+K-\ln0.62+\tfrac12\ln(2\pi\alpha)+\tfrac1{12}+\frac{1.094\,\rho}{9e}.
+\]
+Numerically $K=0.37283\ldots$, $R=0.00690327\ldots>0.0069032$ and $C_0=2.00752\ldots<2.01$. Finally $0.0069032>1/146$.\qed
+
+\begin{remark}[what the proof loses, and what is known about the truth]\label{rem:kn-ceiling}
+The proof has three relaxations, and their scope matters.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{The scalar average.} After the choice of $W$ the proof replaces the numbers $\Lambda(p_w)$ by the single number $\Lambda_0$. For that substitution, Jensen's inequality gives $\Phi_n(r)\ge\Lambda_0^{\E\abs I}$, and $\E\abs I=r(m/n)(1-1/n)^{r-2}\le n\,\alpha(1-\alpha)e^{-\alpha}e^{2/n}$ with $\alpha=r/n$ by~\ref{iso:one}. Since $\max_\alpha\alpha(1-\alpha)e^{-\alpha}=0.16112\ldots$, at $\alpha=(3-\sqrt5)/2$, and $g(\frac1{9e})=0.04364\ldots$, this relaxation cannot certify more than about $0.00703$ per vertex, and Theorem~\ref{thm:complete} reaches $98\%$ of that. This ceiling applies to the prescribed uniform average with de Caen's bound only. It is not a ceiling for split-dependent choices of $W$, for the heterogeneous product of Lemma~\ref{lem:kn-master}, or for single-vertex bits in general. For example, for the quasi-star split (the edges at the $s n$ vertices of largest index form $A$, with $s=1-\sqrt{2/3}$), taking $W$ outside the hub vertices with $\alpha=0.38$ gives a per-vertex kernel $p=\frac{s}{1-\alpha}(1-\frac s{1-\alpha})/e$ and, by the same chain of inequalities, an exponent of about $0.0135$ per vertex (computed; Appendix~\ref{app:checks}).
+\item \emph{The kernel.} The kernels of Lemma~\ref{lem:kn-star} satisfy $p_w\le c_m/4$, so any bound of the form $\prod_w\Lambda(p_w)$ over at most $n$ vertices with these kernels certifies at most $n\,g(c_m/4)$, and $g(c_m/4)\to g(\frac1{4e})=0.1081\ldots$. This is a limit of these kernel bounds, not of every statistic of one vertex.
+\item \emph{The truth.} For each split, $\BC(\mu_n,\mu_A\otimes\mu_B)\le\beta(\mu_n;A|B)$, where $\mu_A\otimes\mu_B$ is the product of the two marginals, so $-2\ln\BC/n$ is an upper bound on the true rate $-\ln\max\beta^2/n$. Exact values for $n\le7$ and Monte Carlo estimates up to $n=160$ (not certified) give values decreasing to between $0.17$ and $0.18$ at $n=160$ (the spread is Monte Carlo error), for a quasi-star split. So the true rate lies between $0.0069$ and, by this estimate, about $0.17$; we do not know where. Reaching a rate near $0.17$ with the kernels of Lemma~\ref{lem:kn-star} would, by (b), need statistics that involve several vertices or a different argument. This is relative to that target only: the estimate is an upper bound, and the true rate may be below $0.108$.
+\end{enumerate}
+For $6\le n\le9$, exact computation of $\beta(\mu_n;A|B)$ on the splits we tried, including splits found by local search, gives $-\ln\beta/n$ between $0.06$ and $0.15$ (Appendix~\ref{app:checks}).
+\end{remark}
+
+The proof works for any balance threshold: if $\abs A,\abs B\ge aM$ with $0<a\le\frac12$, de Caen's inequality gives $\frac1n\sum_vq_v(1-q_v)\ge a(1-a)/2$, and the rest goes through with $1/9$ replaced by $a(1-a)/2$.
+
+\subsection{Dense graphs}\label{sec:dense}
+
+Lemma~\ref{lem:kn-iso} is specific to $K_n$. For other graphs we average over $z$ with a cruder bound.
+
+\begin{lemma}[edge products of the tree]\label{lem:forest-mgf}
+Let $G$ be connected, $F\subseteq E$ and $y_e\ge1$ for $e\in F$. Then
+\[
+  \E\prod_{e\in T\cap F}y_e\ \le\ \exp\Bigl(\sum_{e\in F}(y_e-1)\Pr[e\in T]\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Expand $\prod_{e\in F}(1+(y_e-1)\one[e\in T])=\sum_{S\subseteq F}\prod_{e\in S}(y_e-1)\,\one[S\subseteq T]$, with nonnegative coefficients. By the transfer-current theorem of Burton and Pemantle~\cite{BurtonPemantle93}, $\Pr[S\subseteq T]=\det Y_S$ for a positive semidefinite matrix $Y_S$ whose diagonal entries are the probabilities $\Pr[e\in T]$, $e\in S$, and Hadamard's inequality gives $\det Y_S\le\prod_{e\in S}\Pr[e\in T]$. So the expectation is at most $\prod_{e\in F}(1+(y_e-1)\Pr[e\in T])$; use $1+x\le e^x$.
+\end{proof}
+
+\begin{theorem}[dense graphs]\label{thm:dense}
+Let $G$ be a connected simple graph on $n\ge3$ vertices with minimum degree $d_{\min}$, maximum degree $d_{\max}$ and $\lambda_2:=\lambda_2(L_G)$, and let $A|B$ be an edge split with $\abs A,\abs B\ge a\abs E$, where $0<a\le\frac12$. Put $t:=ad_{\min}/d_{\max}$ and $\varphi(x):=(e^x-1)/x$. Let $r$ be an integer with $1\le r<\lambda_2$ and $m:=n-r\ge2$, and put
+\[
+  \bar p:=\frac{m(m-1)}{(n-1)(n-2)}\cdot\frac{d_{\min}\lambda_2\,t(1-t)}{(2+\lambda_2/d_{\min})\,d_{\max}^2}\cdot e^{-d_{\max}/(\lambda_2-r)},\qquad g^*:=g\Bigl(\tfrac14\bigl(1+\tfrac1m\bigr)^{-\max(0,\,d_{\min}-r+1)}\Bigr).
+\]
+Then $\bar p\le\frac14$ and
+\[
+  -\ln\beta(\UST(G);A|B)^2\ \ge\ r\,g(\bar p)\Bigl(1-\frac{2(r-1)\varphi(2g^*)}{\lambda_2}\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{Spectral facts.} For $U=V\setminus W$ with $\abs W=r$, let $x$ be an eigenvector of $L_{G[U]}$ for $\lambda_2(L_{G[U]})$, orthogonal to $\one_U$, extended by $0$ to $V$. It is orthogonal to $\one_V$, and $x^\top L_Gx=x^\top L_{G[U]}x+\sum_{u\in U}\abs{N(u)\cap W}x_u^2\le(\lambda_2(L_{G[U]})+r)\norm x^2$, so $\lambda_U:=\lambda_2(L_{G[U]})\ge\lambda_2-r>0$ by the Courant--Fischer theorem. In particular $G[U]$ is connected. Also $\lambda_U\le m$, since adding edges to $G[U]$ does not decrease eigenvalues and $\lambda_2(L_{K_m})=m$. By~\ref{E:kirchhoff} and~\ref{E:spectral}, $\Pr[e\in T]\le2/\lambda_2$ for every edge.
+
+\emph{Choice of $W$.} Let $\theta_v:=\deg_A(v)/\deg(v)$ and $\bar\theta:=\frac1n\sum_v\theta_v$. From $\sum_v\deg(v)\theta_v=2\abs A\ge a\sum_v\deg(v)\ge an\,d_{\min}$ and $\sum_v\deg(v)\theta_v\le d_{\max}n\bar\theta$ we get $\bar\theta\ge t$, and in the same way $1-\bar\theta\ge t$. Let $S:=\sum_v\deg(v)\theta_v(1-\theta_v)$. With $x_e:=\one[e\in A]$, $(\theta_u-\theta_v)^2\le2(\theta_u-x_e)^2+2(x_e-\theta_v)^2$ for an edge $e=uv$, and summing over edges gives $\sum_{uv\in E}(\theta_u-\theta_v)^2\le2\sum_v\sum_{e\ni v}(x_e-\theta_v)^2=2S$. The left side is at least $\lambda_2\sum_v(\theta_v-\bar\theta)^2$ by the Courant--Fischer theorem. Hence
+\[
+  S\ \ge\ d_{\min}\sum_v\theta_v(1-\theta_v)=d_{\min}\Bigl(n\bar\theta(1-\bar\theta)-\sum_v(\theta_v-\bar\theta)^2\Bigr)\ \ge\ d_{\min}\Bigl(nt(1-t)-\frac{2S}{\lambda_2}\Bigr),
+\]
+so $S\ge nd_{\min}\lambda_2t(1-t)/(\lambda_2+2d_{\min})$ and $\frac1n\sum_v\deg_A(v)\deg_B(v)\ge\frac{d_{\min}}nS\ge d_{\min}\lambda_2t(1-t)/(2+\lambda_2/d_{\min})$. If $W$ is a uniform $r$-set and $w$ a uniform element of $W$, then $U$ is a uniform $m$-subset of $V\setminus\{w\}$, and $\E[d_A(w)d_B(w)\,|\,w]=\deg_A(w)\deg_B(w)\,m(m-1)/((n-1)(n-2))$, since each pair of an $A$-neighbour and a $B$-neighbour lies in $U$ with this probability. So some $r$-set $W$ has $\frac1r\sum_{w\in W}d_A(w)d_B(w)/d_{\max}^2\ge\bar p\,e^{d_{\max}/(\lambda_2-r)}$; fix it.
+
+\emph{Kernels.} By Lemma~\ref{lem:kn-star} we have $p_w=\theta_A(w)\theta_B(w)(1+1/\lambda_U)^{-d_U(w)}$, and this is at least $(d_A(w)d_B(w)/d_{\max}^2)\,e^{-d_{\max}/(\lambda_2-r)}$, using $d_U(w)\le d_{\max}$, $\lambda_U\ge\lambda_2-r$ and $(1+1/x)^{-d}\ge e^{-d/x}$. So the mean of the $p_w$ over $W$ is at least $\bar p$, and $\bar p\le\frac14$ because every $p_w\le\theta_A\theta_B\le\frac14$. Also $d_U(w)\ge d_{\min}-(r-1)$ and $\lambda_U\le m$ give $p_w\le\frac14(1+\frac1m)^{-\max(0,d_{\min}-r+1)}$, so $g_w:=g(p_w)\le g^*$.
+
+\emph{Averaging over $z$.} By Lemma~\ref{lem:kn-master}, $\beta^2\le\E\prod_{w\in I}e^{-g_w}$. Every $w\in W\setminus I$ is touched by an edge of $z(T)$, and $g_w\ge0$, so
+\[
+  \prod_{w\in I}e^{-g_w}\ \le\ e^{-\sum_{w\in W}g_w}\prod_{uv\in T\cap E(W)}e^{g_u+g_v} .
+\]
+Lemma~\ref{lem:forest-mgf} with $y_{uv}:=e^{g_u+g_v}$ and $\Pr[e\in T]\le2/\lambda_2$, then $e^x-1\le x\varphi(2g^*)$ for $0\le x\le2g^*$, give
+\[
+  -\ln\beta^2\ \ge\ \sum_{w\in W}g_w-\frac{2\varphi(2g^*)}{\lambda_2}\sum_{uv\in E(W)}(g_u+g_v)\ \ge\ \Bigl(1-\frac{2(r-1)\varphi(2g^*)}{\lambda_2}\Bigr)\sum_{w\in W}g_w,
+\]
+since each $w$ lies in at most $r-1$ edges of $E(W)$. If the bracket is negative, the theorem's bound is negative and holds trivially. Otherwise use $\sum_wg_w\ge r\,g(\text{mean of }p_w)\ge r\,g(\bar p)$, by convexity and monotonicity of $g$.
+\end{proof}
+
+\begin{corollary}[linear spectral gap]\label{cor:dense}
+Let $0<\kappa\le1$ and $0<a\le\frac12$. If $G$ has $n\ge\max(20,18/\kappa)$ vertices and $\lambda_2(L_G)\ge\kappa n$, then every edge split with $\abs A,\abs B\ge a\abs E$ has
+\[
+  -\ln\beta(\UST(G);A|B)^2\ \ge\ \frac{a\kappa^4e^{-1.14/\kappa}}{485}\,n .
+\]
+Consequently every smooth decomposable PC with nonnegative weights over the $M=\abs E$ edge variables, with leaves of arity at most $2M/3$ and $\TV(\UST(G),Q_C)\le1-\delta$, has $\abs C\ge\delta^2\exp(\kappa^4e^{-1.14/\kappa}n/1455)=\delta^22^{\Omega(n)}$.
+\end{corollary}
+
+\begin{proof}
+Put $\eps:=\kappa\ln2/6$ and $r:=\lfloor\eps n\rfloor$, so $1\le r<\kappa n\le\lambda_2$ and $m\ge(1-\eps)n\ge0.88n$. The Rayleigh quotient of $\one_v-\one/n$ gives $\lambda_2\le\frac n{n-1}\deg(v)$ for every $v$, so $d_{\min}\ge\kappa(n-1)$, and $d_{\max}\le n-1$. Hence $d_{\min}/d_{\max}\ge\kappa$, $t\ge a\kappa$ and $t(1-t)\ge a\kappa/2$ (as $t\le\frac12$), $d_{\min}\lambda_2/d_{\max}^2\ge\kappa^2$, $2+\lambda_2/d_{\min}\le2+\frac n{n-1}\le3.5$, $\lambda_2-r\ge(1-\frac{\ln2}6)\kappa n$, so $d_{\max}/(\lambda_2-r)\le1.14/\kappa$, and $m(m-1)/((n-1)(n-2))\ge\frac12$ for $n\ge20$. So $\bar p\ge a\kappa^3e^{-1.14/\kappa}/14$. Since $g^*\le g(\frac14)=\ln2$ and $\varphi$ is increasing, $2(r-1)\varphi(2g^*)/\lambda_2\le2\eps n\cdot\frac3{2\ln2}/(\kappa n)=\frac12$. Theorem~\ref{thm:dense} and $g(p)\ge p$ give $-\ln\beta^2\ge\frac r2\bar p$, and $r\ge\eps n-1\ge\eps n/2$ for $n\ge18/\kappa$. Finally $\frac{\eps}4\cdot\frac{a\kappa^3}{14}=\frac{\ln2}{336}a\kappa^4\ge a\kappa^4/485$. The circuit bound is Corollary~\ref{cor:reduction} with $a=\frac13$.
+\end{proof}
+
+The hypothesis is equivalent, up to constants, to linear edge expansion: $h(G)\ge\lambda_2/2$ by Lemma~\ref{lem:easy-cheeger}, and $h(G)\ge cn$ gives $\lambda_2\ge h^2/(2d_{\max})\ge c^2n/2$ by Lemma~\ref{lem:cheeger}. For example, $K_{n/2,n/2}$ has $\lambda_2=n/2$. For the random graph $G(n,\frac12)$, the corollary applies with $\kappa=\frac14$ \emph{conditionally} on the standard concentration fact that $\lambda_2(L_G)\ge n/4$ with probability tending to one, which we do not re-derive here. The constant is poor. It comes from using $d_{\max}$ in the exponent of Lemma~\ref{lem:kn-star} and from the crude averaging over $z$ of Lemma~\ref{lem:forest-mgf}; even for $K_n$, Theorem~\ref{thm:dense} gives a much smaller rate than Theorem~\ref{thm:complete}.
+
+\subsection{Minimum degree is not enough}
+
+A linear minimum degree does not suffice for the method, because of sparse cuts.
+
+\begin{proposition}[two cliques and a matching]\label{prop:two-cliques}
+Let $h\ge3$ and let $G_h$ consist of two disjoint copies of $K_h$ joined by a perfect matching, so $n=2h$, the minimum degree is $h=n/2$, and $\lambda_2(L_{G_h})=2$. Let $A$ consist of the edges of the first clique and the matching, and $B$ of the edges of the second clique. This split is balanced, and
+\[
+  \beta(\UST(G_h);A|B)^2\ \ge\ P_1:=\Pr\bigl[\abs{T\cap\text{matching}}=1\bigr]=\Bigl(1+\frac2h\Bigr)^{-(h-1)}\ >\ e^{-2} .
+\]
+\end{proposition}
+
+\begin{proof}
+$M=h^2$, $\abs A=\binom h2+h$ and $\abs B=\binom h2\ge h^2/3$ for $h\ge3$. The Laplacian is $\bigl(\begin{smallmatrix}L_{K_h}+I&-I\\-I&L_{K_h}+I\end{smallmatrix}\bigr)$. On vectors $(x,x)$ it acts as $L_{K_h}$ and on vectors $(x,-x)$ as $L_{K_h}+2I$, so its spectrum is $\{0,h^{(h-1)},2,(h+2)^{(h-1)}\}$ and $\tau(G_h)=h^{h-2}(h+2)^{h-1}$ by the matrix-tree theorem. The trees with exactly one matching edge are a spanning tree of each clique plus one of the $h$ matching edges, so there are $h\cdot h^{2(h-2)}$ of them, and $P_1=(h/(h+2))^{h-1}$. Also $(h-1)\ln(1+2/h)<2$. On this event the law of $T$ is uniform over the triples (tree of the first clique, matching edge, tree of the second clique), which is a product distribution $q$ across $A|B$. So $\UST(G_h)\ge P_1q$ pointwise, and $\BC(\UST(G_h),q)\ge\sqrt{P_1}$.
+\end{proof}
+
+So for these graphs the right-hand side of Corollary~\ref{cor:reduction}, $\delta^2/\max\beta^2$, is less than $\delta^2e^2$; this is a limit of the reduction, not a lower bound on circuits. Theorem~\ref{thm:dense} applies with $r=1$ but gives only a weak bound, and Corollary~\ref{cor:dense} gives no uniform exponential rate, because $\lambda_2=2$ while $n$ grows. A weaker statement still holds under an extra hypothesis. Marginalizing a smooth decomposable PC to the variables of the first clique (replace each leaf by its sum over the other variables) gives a smooth decomposable PC of no larger size, $\TV$ does not increase under marginalization, and the marginal of $\UST(G_h)$ on the first clique is at least $P_1\,\UST(K_h)$ pointwise. So if every leaf touches at most $\frac23\binom h2$ edges of the first clique and $\TV(\UST(G_h),Q_C)\le P_1-\delta$, Corollary~\ref{cor:complete} for $K_h$ gives $\abs C\ge\delta^2e^{h/146}/(e^3\sqrt h)$. This needs $\TV$ below about $e^{-2}\approx0.135$, and the global arity bound $2M/3$ does not imply the clique-specific one. Whether $\UST(G_h)$ needs circuits of size $2^{\Omega(n)}$ at every fixed error $\TV<1$ is open.
+
+\subsection{An exact circuit of size \texorpdfstring{$2^{O(n)}$}{2\textasciicircum O(n)}}
+
+\begin{proposition}[exact upper bound]\label{prop:complete-upper}
+$\mu_n$ has an exact smooth, decomposable and deterministic probabilistic circuit with nonnegative weights, univariate literal leaves and $O(n^43^n)$ nodes plus wires.
+\end{proposition}
+
+\begin{proof}
+For a vertex set $S$ and $v\in S$, let $f(S,v)$ be the indicator, a function of the variables $x_{E(S)}$, that the edges of $x$ inside $S$ form a spanning tree of $S$. The vertex $v$ only guides the recursion. Put $f(\{v\},v):=1$. For $\abs S\ge2$ let $s_0:=\min(S\setminus\{v\})$ and
+\[
+  f(S,v)=\sum_{\substack{S'\subseteq S\setminus\{v\}\\ s_0\in S'}}\ \sum_{u\in S'} f(S',u)\cdot[x_{vu}=1]\cdot f(S\setminus S',v)\cdot\prod_{e\in E(S',S\setminus S')\setminus\{vu\}}[x_e=0] .
+\]
+If $t$ is a spanning tree of $S$, let $S'$ be the vertex set of the component of $t-v$ that contains $s_0$, and let $u$ be the unique vertex of $S'$ adjacent to $v$ in $t$. Then $t$ restricted to $S'$ and to $S\setminus S'$ are spanning trees, and $vu$ is the only edge of $t$ between $S'$ and $S\setminus S'$, so the summand for $(S',u)$ is $1$. Conversely, a summand equal to $1$ describes a spanning tree whose decomposition is that summand, so at most one summand is nonzero for every $x$. By induction on $\abs S$, the recursion computes $f(S,v)$, and every sum node is deterministic. The four factors of a summand have the disjoint scopes $E(S')$, $\{vu\}$, $E(S\setminus S')$ and $E(S',S\setminus S')\setminus\{vu\}$, whose union is $E(S)$, so the circuit is decomposable and smooth. The output is $n^{-(n-2)}f(V,1)$. There are $\binom ns s$ pairs $(S,v)$ with $\abs S=s$, each with at most $\sum_t\binom{s-2}{t-1}t$ summands of $O(1+t(s-t))$ wires, so the size is $\sum_s\binom ns s\cdot O(s^32^s)=O(n^43^n)$.
+\end{proof}
+
+We expect this subset recursion is folklore; we did not find it stated for probabilistic circuits.
+
+\begin{corollary}[the order of growth]\label{cor:complete-order}
+For every fixed $\delta\in(0,1]$, the smallest smooth decomposable circuit with nonnegative weights and leaves of arity at most $2M/3$ with $1-\TV(\mu_n,Q_C)\ge\delta$ has size $2^{\Theta(n)}=2^{\Theta(\sqrt M)}$. Equivalently, $\max_{A|B\text{ balanced}}\beta(\mu_n;A|B)^2=e^{-\Theta(n)}$.
+\end{corollary}
+
+\begin{proof}
+The lower bounds are Corollary~\ref{cor:complete} and Theorem~\ref{thm:complete}. The circuit of Proposition~\ref{prop:complete-upper} has $\delta=1$, and Corollary~\ref{cor:reduction} applied to it gives $\max\beta^2\ge1/\abs C=3^{-n}/O(n^4)$.
+\end{proof}

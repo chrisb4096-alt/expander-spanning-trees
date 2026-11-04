@@ -1,0 +1,28 @@
+l1-to-low-rank lemma: 3000 random cases, smallest slack 0 (equality case attains 0)
+K33: N=6 M=9 D=3 trees=81; non-tree (N-1)-sets tested 109
+   m=1 rank=16 (>= 2^m=2) blocks=0 approx-slack-min=- normalized-slack-min=- good-pair ratio min=- beta=0.551 squares lhs/rhs max=1.000
+   m=1 rank=16 (>= 2^m=2) blocks=0 approx-slack-min=- normalized-slack-min=- good-pair ratio min=- beta=0.603 squares lhs/rhs max=1.000
+   m=1 rank=10 (>= 2^m=2) blocks=0 approx-slack-min=- normalized-slack-min=- good-pair ratio min=- beta=0.653 squares lhs/rhs max=1.000
+cube: N=8 M=12 D=3 trees=384; non-tree (N-1)-sets tested 163
+   m=2 rank=36 (>= 2^m=4) blocks=380 approx-slack-min=0.508 normalized-slack-min=0.5 good-pair ratio min=7.59 beta=0.494 squares lhs/rhs max=1.000
+   m=2 rank=36 (>= 2^m=4) blocks=380 approx-slack-min=0.516 normalized-slack-min=0.5 good-pair ratio min=7.59 beta=0.520 squares lhs/rhs max=1.000
+   m=2 rank=35 (>= 2^m=4) blocks=380 approx-slack-min=0.554 normalized-slack-min=0.5 good-pair ratio min=7.59 beta=0.488 squares lhs/rhs max=1.000
+prism5: N=10 M=15 D=3 trees=1805; non-tree (N-1)-sets tested 196
+   m=2 rank=46 (>= 2^m=4) blocks=1781 approx-slack-min=0.605 normalized-slack-min=0.5 good-pair ratio min=9.69 beta=0.513 squares lhs/rhs max=1.000
+   m=2 rank=75 (>= 2^m=4) blocks=1781 approx-slack-min=0.776 normalized-slack-min=0.5 good-pair ratio min=9.69 beta=0.460 squares lhs/rhs max=1.000
+   m=2 rank=49 (>= 2^m=4) blocks=1781 approx-slack-min=0.597 normalized-slack-min=0.5 good-pair ratio min=9.69 beta=0.450 squares lhs/rhs max=1.000
+petersen: N=10 M=15 D=3 trees=2000; non-tree (N-1)-sets tested 192
+   m=2 rank=77 (>= 2^m=4) blocks=1995 approx-slack-min=0.682 normalized-slack-min=0.5 good-pair ratio min=16.4 beta=0.440 squares lhs/rhs max=1.000
+   m=2 rank=74 (>= 2^m=4) blocks=1995 approx-slack-min=0.782 normalized-slack-min=0.5 good-pair ratio min=16.4 beta=0.410 squares lhs/rhs max=1.000
+   m=2 rank=77 (>= 2^m=4) blocks=1995 approx-slack-min=0.607 normalized-slack-min=0.5 good-pair ratio min=16.4 beta=0.471 squares lhs/rhs max=1.000
+prism6: N=12 M=18 D=3 trees=8100; non-tree (N-1)-sets tested 223
+   m=2 rank=78 (>= 2^m=4) blocks=7972 approx-slack-min=0.736 normalized-slack-min=0.5 good-pair ratio min=11.5 beta=0.427 squares lhs/rhs max=1.000
+   m=2 rank=68 (>= 2^m=4) blocks=7980 approx-slack-min=0.752 normalized-slack-min=0.5 good-pair ratio min=10.8 beta=0.451 squares lhs/rhs max=1.000
+   m=2 rank=173 (>= 2^m=4) blocks=7972 approx-slack-min=1.07 normalized-slack-min=0.5 good-pair ratio min=11.5 beta=0.335 squares lhs/rhs max=1.000
+mobladder6: N=12 M=18 D=3 trees=8112; non-tree (N-1)-sets tested 230
+   m=2 rank=102 (>= 2^m=4) blocks=7984 approx-slack-min=0.902 normalized-slack-min=0.5 good-pair ratio min=11.5 beta=0.389 squares lhs/rhs max=1.000
+   m=3 rank=169 (>= 2^m=8) blocks=7992 approx-slack-min=0.994 normalized-slack-min=0.5 good-pair ratio min=10.8 beta=0.387 squares lhs/rhs max=1.000
+   m=2 rank=182 (>= 2^m=4) blocks=7984 approx-slack-min=1.06 normalized-slack-min=0.5 good-pair ratio min=11.5 beta=0.355 squares lhs/rhs max=1.000
+prism8: N=16 M=24 D=3 trees=150528; non-tree (N-1)-sets tested 262
+   m=4 rank=519 (>= 2^m=16) blocks=145160 approx-slack-min=1.08 normalized-slack-min=0.25 good-pair ratio min=8.64 beta=0.290 squares lhs/rhs max=1.000
+ALL PASS

@@ -1,0 +1,92 @@
+K1 (interval arithmetic) rho = 0.2615544680, Lambda_inf = 0.95730133, K = 0.37283197, R in [0.0069032712, 0.0069032712] (1/R = 144.8589), C0 <= 2.007515, max |Lambda'| <= 1.093371
+K1 max alpha(1-alpha)e^-alpha = 0.16112 at (3-sqrt5)/2 (grid max 0.16112), g(1/(9e)) = 0.04364, ceiling = 0.007031, R/ceiling = 0.9819
+K1 g(1/(4e)) = 0.10811
+K1 quasi-star: s = 0.18350, p = 0.076656, exponent per vertex = 0.01357
+K2 exact Phi_n(floor(0.38n)), 3 <= n <= 300: smallest slack against 0.0069032n - ln(n)/2 - 2.01 is 2.564 (n=3), against n/146 - ln(n)/2 - 3 is 3.554 (n=3)
+K2 Cauchy bound, 3 <= n <= 10^6: smallest slack against 0.0069032n - ln(n)/2 - 2.01 is 1.0762 (n=8), against Rn - ln(n)/2 - C0 is 1.0737 (n=8); -ln Phi/n at n=10^6 >= 0.006895
+K3 n=7 r=3 (16807 trees): max error (I1) 5.6e-17, (I2) 1.1e-16; largest (I3) excess -5.0e-05
+K3 n=7 r=4 (16807 trees): max error (I1) 2.8e-17, (I2) 2.2e-16; largest (I3) excess -9.1e-05
+K3 n=8 r=4 (262144 trees): max error (I1) 0.0e+00, (I2) 2.2e-16; largest (I3) excess -2.2e-04
+K3 Monte Carlo n=300 r=114 Lambda=0.9: E Lambda^|I| = 7.4355e-03 +- 1.2e-04, (I2) gives 7.4295e-03
+K3 Monte Carlo n=300 r=114 Lambda=0.97: E Lambda^|I| = 2.3152e-01 +- 1.0e-03, (I2) gives 2.3167e-01
+K4 n=6 random W=[3, 4]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=6 random W=[2, 4, 5]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=6 star   W=[2, 4]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=6 star   W=[1, 2, 4]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=6 bip    W=[4, 5]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=6 bip    W=[0, 4, 5]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=7 random W=[1, 2]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=7 random W=[2, 3, 6]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=7 star   W=[1, 5]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=7 star   W=[0, 1, 3]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=7 bip    W=[0, 6]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=7 bip    W=[2, 4, 6]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=8 random W=[0, 6]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=8 random W=[3, 4, 5]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=8 star   W=[1, 7]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=8 star   W=[1, 2, 7]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=8 bip    W=[2, 4]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 n=8 bip    W=[0, 3, 5]: smallest Pr[a_w=1 | z, sigma] / p_A(w) = 1.000000
+K4 smallest ratio over all instances: 1.000000
+K5 n=6 random |A|= 7 r=1: beta=0.4988 <= 0.4988 <= 0.9444 <= 0.94438 <= 0.94438; Phi_n(r)^(1/2)=0.98128 (mean p_w >= p_0: True)  -ln(beta)/n=0.1159  OK
+K5 n=6 random |A|= 7 r=2: beta=0.4988 <= 0.5102 <= 0.9058 <= 0.92441 <= 0.92441; Phi_n(r)^(1/2)=0.97655 (mean p_w >= p_0: True)  -ln(beta)/n=0.1159  OK
+K5 n=6 random |A|= 7 r=3: beta=0.4988 <= 0.5217 <= 0.9046 <= 0.93651 <= 0.93651; Phi_n(r)^(1/2)=0.98000 (mean p_w >= p_0: True)  -ln(beta)/n=0.1159  OK
+K5 n=6 clique |A|= 6 r=1: beta=0.5443 <= 0.5443 <= 0.9444 <= 0.94438 <= 0.94438; Phi_n(r)^(1/2)=0.98128 (mean p_w >= p_0: True)  -ln(beta)/n=0.1014  OK
+K5 n=6 clique |A|= 6 r=2: beta=0.5443 <= 0.5641 <= 0.9051 <= 0.92441 <= 0.92441; Phi_n(r)^(1/2)=0.97655 (mean p_w >= p_0: True)  -ln(beta)/n=0.1014  OK
+K5 n=6 clique |A|= 6 r=3: beta=0.5443 <= 0.6804 <= 0.9044 <= 0.93651 <= 0.93651; Phi_n(r)^(1/2)=0.98000 (mean p_w >= p_0: True)  -ln(beta)/n=0.1014  OK
+K5 n=6 star   |A|=10 r=1: beta=0.6944 <= 0.6944 <= 0.9648 <= 0.96485 <= 0.96485; Phi_n(r)^(1/2)=0.98128 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 star   |A|=10 r=2: beta=0.6944 <= 0.6944 <= 0.9321 <= 0.94494 <= 0.94494; Phi_n(r)^(1/2)=0.97655 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 star   |A|=10 r=3: beta=0.6944 <= 0.6944 <= 0.9044 <= 0.93651 <= 0.93651; Phi_n(r)^(1/2)=0.98000 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 bip    |A|= 5 r=1: beta=0.6944 <= 0.6944 <= 0.9648 <= 0.96485 <= 0.96485; Phi_n(r)^(1/2)=0.98128 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 bip    |A|= 5 r=2: beta=0.6944 <= 0.6944 <= 0.9321 <= 0.94494 <= 0.94494; Phi_n(r)^(1/2)=0.97655 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 bip    |A|= 5 r=3: beta=0.6944 <= 0.6944 <= 0.9044 <= 0.93651 <= 0.93651; Phi_n(r)^(1/2)=0.98000 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 worst  |A|=10 r=1: beta=0.6944 <= 0.6944 <= 0.9648 <= 0.96485 <= 0.96485; Phi_n(r)^(1/2)=0.98128 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 worst  |A|=10 r=2: beta=0.6944 <= 0.6944 <= 0.9321 <= 0.94494 <= 0.94494; Phi_n(r)^(1/2)=0.97655 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=6 worst  |A|=10 r=3: beta=0.6944 <= 0.6944 <= 0.9044 <= 0.93651 <= 0.93651; Phi_n(r)^(1/2)=0.98000 (mean p_w >= p_0: True)  -ln(beta)/n=0.0608  OK
+K5 n=7 random |A|=10 r=1: beta=0.4054 <= 0.4054 <= 0.9426 <= 0.94255 <= 0.94255; Phi_n(r)^(1/2)=0.98073 (mean p_w >= p_0: True)  -ln(beta)/n=0.1290  OK
+K5 n=7 random |A|=10 r=2: beta=0.4054 <= 0.4173 <= 0.9088 <= 0.92405 <= 0.92405; Phi_n(r)^(1/2)=0.97365 (mean p_w >= p_0: True)  -ln(beta)/n=0.1290  OK
+K5 n=7 random |A|=10 r=3: beta=0.4054 <= 0.4207 <= 0.8827 <= 0.91786 <= 0.91786; Phi_n(r)^(1/2)=0.97428 (mean p_w >= p_0: True)  -ln(beta)/n=0.1290  OK
+K5 n=7 clique |A|=10 r=1: beta=0.5102 <= 0.5102 <= 0.9499 <= 0.94991 <= 0.94991; Phi_n(r)^(1/2)=0.98073 (mean p_w >= p_0: True)  -ln(beta)/n=0.0961  OK
+K5 n=7 clique |A|=10 r=2: beta=0.5102 <= 0.5102 <= 0.9085 <= 0.92405 <= 0.92405; Phi_n(r)^(1/2)=0.97365 (mean p_w >= p_0: True)  -ln(beta)/n=0.0961  OK
+K5 n=7 clique |A|=10 r=3: beta=0.5102 <= 0.5357 <= 0.8828 <= 0.91786 <= 0.91786; Phi_n(r)^(1/2)=0.97428 (mean p_w >= p_0: True)  -ln(beta)/n=0.0961  OK
+K5 n=7 star   |A|=10 r=1: beta=0.5102 <= 0.5102 <= 0.9499 <= 0.94991 <= 0.94991; Phi_n(r)^(1/2)=0.98073 (mean p_w >= p_0: True)  -ln(beta)/n=0.0961  OK
+K5 n=7 star   |A|=10 r=2: beta=0.5102 <= 0.5102 <= 0.9085 <= 0.92405 <= 0.92405; Phi_n(r)^(1/2)=0.97365 (mean p_w >= p_0: True)  -ln(beta)/n=0.0961  OK
+K5 n=7 star   |A|=10 r=3: beta=0.5102 <= 0.5357 <= 0.8828 <= 0.91786 <= 0.91786; Phi_n(r)^(1/2)=0.97428 (mean p_w >= p_0: True)  -ln(beta)/n=0.0961  OK
+K5 n=7 bip    |A|=10 r=1: beta=0.4611 <= 0.4611 <= 0.9499 <= 0.94991 <= 0.94991; Phi_n(r)^(1/2)=0.98073 (mean p_w >= p_0: True)  -ln(beta)/n=0.1106  OK
+K5 n=7 bip    |A|=10 r=2: beta=0.4611 <= 0.4617 <= 0.9085 <= 0.92405 <= 0.92405; Phi_n(r)^(1/2)=0.97365 (mean p_w >= p_0: True)  -ln(beta)/n=0.1106  OK
+K5 n=7 bip    |A|=10 r=3: beta=0.4611 <= 0.4735 <= 0.8828 <= 0.91786 <= 0.91786; Phi_n(r)^(1/2)=0.97428 (mean p_w >= p_0: True)  -ln(beta)/n=0.1106  OK
+K5 n=7 worst  |A|= 9 r=1: beta=0.5240 <= 0.5240 <= 0.9499 <= 0.94991 <= 0.94991; Phi_n(r)^(1/2)=0.98073 (mean p_w >= p_0: True)  -ln(beta)/n=0.0923  OK
+K5 n=7 worst  |A|= 9 r=2: beta=0.5240 <= 0.5242 <= 0.9085 <= 0.92405 <= 0.92405; Phi_n(r)^(1/2)=0.97365 (mean p_w >= p_0: True)  -ln(beta)/n=0.0923  OK
+K5 n=7 worst  |A|= 9 r=3: beta=0.5240 <= 0.5365 <= 0.8828 <= 0.91786 <= 0.91786; Phi_n(r)^(1/2)=0.97428 (mean p_w >= p_0: True)  -ln(beta)/n=0.0923  OK
+K5 n=8 random |A|=14 r=2: beta=0.3107 <= 0.3222 <= 0.9033 <= 0.91758 <= 0.91758; Phi_n(r)^(1/2)=0.97151 (mean p_w >= p_0: True)  -ln(beta)/n=0.1461  OK
+K5 n=8 random |A|=14 r=3: beta=0.3107 <= 0.3359 <= 0.8843 <= 0.91421 <= 0.91421; Phi_n(r)^(1/2)=0.96991 (mean p_w >= p_0: True)  -ln(beta)/n=0.1461  OK
+K5 n=8 clique |A|=10 r=2: beta=0.4158 <= 0.4303 <= 0.9031 <= 0.91758 <= 0.91758; Phi_n(r)^(1/2)=0.97151 (mean p_w >= p_0: True)  -ln(beta)/n=0.1097  OK
+K5 n=8 clique |A|=10 r=3: beta=0.4158 <= 0.4891 <= 0.8839 <= 0.91421 <= 0.91421; Phi_n(r)^(1/2)=0.96991 (mean p_w >= p_0: True)  -ln(beta)/n=0.1097  OK
+K5 n=8 star   |A|=15 r=2: beta=0.4871 <= 0.4871 <= 0.9155 <= 0.92772 <= 0.92772; Phi_n(r)^(1/2)=0.97151 (mean p_w >= p_0: True)  -ln(beta)/n=0.0899  OK
+K5 n=8 star   |A|=15 r=3: beta=0.4871 <= 0.4878 <= 0.8839 <= 0.91421 <= 0.91421; Phi_n(r)^(1/2)=0.96991 (mean p_w >= p_0: True)  -ln(beta)/n=0.0899  OK
+K5 n=8 bip    |A|=12 r=2: beta=0.4450 <= 0.4452 <= 0.9155 <= 0.92772 <= 0.92772; Phi_n(r)^(1/2)=0.97151 (mean p_w >= p_0: True)  -ln(beta)/n=0.1012  OK
+K5 n=8 bip    |A|=12 r=3: beta=0.4450 <= 0.4458 <= 0.8839 <= 0.91421 <= 0.91421; Phi_n(r)^(1/2)=0.96991 (mean p_w >= p_0: True)  -ln(beta)/n=0.1012  OK
+K5 n=9 random |A|=18 r=3: beta=0.2661 <= 0.2811 <= 0.8747 <= 0.90421 <= 0.90421; Phi_n(r)^(1/2)=0.96646 (mean p_w >= p_0: True)  -ln(beta)/n=0.1471  OK
+K5 n=9 clique |A|=15 r=3: beta=0.3745 <= 0.4062 <= 0.8744 <= 0.90421 <= 0.90421; Phi_n(r)^(1/2)=0.96646 (mean p_w >= p_0: True)  -ln(beta)/n=0.1091  OK
+K5 n=9 star   |A|=21 r=3: beta=0.4705 <= 0.4705 <= 0.8906 <= 0.91579 <= 0.91579; Phi_n(r)^(1/2)=0.96646 (mean p_w >= p_0: True)  -ln(beta)/n=0.0838  OK
+K5 n=9 bip    |A|=14 r=3: beta=0.4335 <= 0.4338 <= 0.8906 <= 0.91579 <= 0.91579; Phi_n(r)^(1/2)=0.96646 (mean p_w >= p_0: True)  -ln(beta)/n=0.0929  OK
+K5 -ln(beta)/n over all splits: min 0.0608, max 0.1471
+K6 h=3: tau=75 (formula 75), P1=0.360000 (formula 0.360000), beta^2=0.640000, e^-2=0.135335, lambda_2=2.000000, |A|=6, |B|=3, M/3=3.00
+K6 h=4: tau=3456 (formula 3456), P1=0.296296 (formula 0.296296), beta^2=0.578704, e^-2=0.135335, lambda_2=2.000000, |A|=10, |B|=6, M/3=5.33
+K6 h=5: tau=300125 (formula 300125), P1=0.260308 (formula 0.260308), beta^2=0.539775, e^-2=0.135335, lambda_2=2.000000, |A|=15, |B|=10, M/3=8.33
+K7 Lemma lem:forest-mgf on 150 instances: largest ratio of the two sides 1.0000
+K7 Corollary cor:dense arithmetic: ln2/336 = 0.002063 >= 1/485 = 0.002062, 1/(1 - ln2/6) = 1.1306 <= 1.14: True
+K8 n=6 quasi-star: BC(mu, mu_A x mu_B) = 0.52285 <= beta = 0.69444; -2 ln BC / n = 0.2162
+K8 n=7 quasi-star: BC(mu, mu_A x mu_B) = 0.40251 <= beta = 0.51020; -2 ln BC / n = 0.2600
+K8 n=40 quasi-star, 300 Pruefer samples: -2 ln BC / n ~ 0.203 (Monte Carlo, not certified)
+K8 n=160 quasi-star, 300 Pruefer samples: -2 ln BC / n ~ 0.179 (Monte Carlo, not certified)
+K9 n=3: recursion generates 3 trees, no duplicates and exactly the labelled trees: True
+K9 n=4: recursion generates 16 trees, no duplicates and exactly the labelled trees: True
+K9 n=5: recursion generates 125 trees, no duplicates and exactly the labelled trees: True
+K9 n=6: recursion generates 1296 trees, no duplicates and exactly the labelled trees: True
+K9 n=7: recursion generates 16807 trees, no duplicates and exactly the labelled trees: True
+K9 counts f(V,0) = n^(n-2) for 2 <= n <= 12: OK
+K9 circuit size (nodes + wires) n=8: 303,113  (n^4 3^n = 26,873,856)
+K9 circuit size (nodes + wires) n=10: 5,655,851  (n^4 3^n = 590,490,000)
+K9 circuit size (nodes + wires) n=12: 95,300,245  (n^4 3^n = 11,019,960,576)
+check_complete: all checks passed

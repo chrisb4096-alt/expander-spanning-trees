@@ -17,6 +17,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
@@ -39,21 +40,23 @@
 \newcommand{\cC}{\mathcal{C}}
 \newcommand{\cT}{\mathcal{T}}
 \newcommand{\cU}{\mathcal{U}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cB}{\mathcal{B}}
 \newcommand{\one}{\mathbf{1}}
 \newcommand{\sqrtm}[1]{\sqrt{#1}^{\,\circ}}
 \emergencystretch=3em
 
-\title{Uniform spanning trees of expander prisms and squares\\ versus nonnegative probabilistic circuits}
+\title{Uniform spanning trees of expanders and complete graphs\\ versus nonnegative probabilistic circuits}
 \author{Chris Blaschke\\Ax0s}
-\date{November 3, 2026. Preprint, not peer reviewed.}
+\date{November 4, 2026 (version 2). Preprint, not peer reviewed.}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Let $H$ be a connected graph with maximum degree at most $\Delta$ and edge expansion at least $h_0>0$, and let $G$ be the prism $H\square K_2$ or the square $H^2$. Let $P$ be the uniform spanning tree of $G$, viewed as a distribution on the $M$ edge indicators, and let $N$ be the number of vertices. We prove that every smooth decomposable probabilistic circuit with nonnegative weights and leaves of arity at most $2M/3$ whose distribution is within total variation $\eps<1$ of $P$ has size at least $(1-\eps)^2e^{cN}$, with an explicit $c=c(\Delta,h_0)>0$. Determinism is not assumed. By the matrix-tree theorem, $P$ has a generating circuit of size polynomial in $N$, and all its marginals are ratios of determinants. Since $M=\Theta(N)$, the optimal size of nonnegative smooth decomposable circuits for these distributions is $2^{\Theta(M)}$ at every fixed error below one.
+Let $G$ be a 2-connected graph with $N$ vertices, $M$ edges, maximum degree at most $D$ and edge expansion at least $h>0$, and let $P$ be its uniform spanning tree, viewed as a distribution on the $M$ edge indicators. We prove that every smooth decomposable probabilistic circuit with nonnegative weights and leaves of arity at most $2M/3$ whose distribution is within total variation $\eps<1$ of $P$ has size at least $(1-\eps)^2e^{cN}$, with an explicit $c=c(D,h)>0$ that is polynomial in $h$ for fixed $D$, and at least $8\cdot10^{-8}$ for 6-regular Ramanujan graphs. The bound assumes neither determinism nor a condition on girth. It applies, with high probability, to random $d$-regular graphs for every fixed $d\ge3$, and to the Ramanujan graphs of Lubotzky, Phillips and Sarnak. By the matrix-tree theorem, $P$ has a generating circuit of size polynomial in $N$, and all its marginals are ratios of determinants. Since $M=\Theta(N)$, the optimal size of nonnegative smooth decomposable circuits for these distributions is $2^{\Theta(M)}$ at every fixed error below one. The same argument gives $e^{\Omega(N)}$ lower bounds for circuits and monotone arithmetic circuits whose support is exactly the set of spanning trees. For the complete graph $K_n$, with $M=\binom n2$ variables and unbounded degree, every circuit of the first kind within total variation $\eps<1$ of the uniform spanning tree has size at least $(1-\eps)^2e^{n/146}/(e^3\sqrt n)$, and the optimal size is $2^{\Theta(n)}$; earlier lower bounds for $K_n$ concerned exact representation or arbitrarily close approximation. The same method gives $2^{\Omega(n)}$ for every graph whose Laplacian spectral gap is at least $\kappa n$, with a rate depending only on $\kappa$, while two cliques joined by a perfect matching show that minimum degree $n/2$ is not enough for it.
 
-The proof bounds, for every balanced split of the edges, the largest Bhattacharyya coefficient between $P$ and a product distribution across the split. We pass to two indicator bits per short cycle that crosses the split, and bound the square-root matrix of their joint law with an adaptive chain rule. The spatial Markov property of the uniform spanning tree gives the conditional lower bound on two local events needed for the chain rule. The information-theoretic tools are known: the chain rule is a case of an exercise in Polyanskiy and Wu, and the identification of the optimized affinity with a matrix norm is due to Lapidoth and Pfister. The circuit reduction is from our earlier paper on dimers. We believe the local cycle-bit reduction for spanning trees and the resulting constant-error bound for a natural distribution on sparse bounded-degree families are new. The constant $c$ is very small (about $2\cdot10^{-8}$ for a cubic example).
+The proof bounds, for every balanced split of the edges, the largest Bhattacharyya coefficient between $P$ and a product distribution across the split. We pass to two bits per vertex with edges on both sides, recording whether the tree avoids that vertex's edges on each side, and bound the square-root matrix of their joint law with an adaptive chain rule. The conditional lower bound the chain rule needs comes from Kirchhoff's formula and Rayleigh monotonicity, after conditioning on the stars of a sparse set of vertices; a telescoped flow bound controls it by the spectral gap of the graph left after that set is deleted, and a random deletion with a Peierls-type count over connected sets keeps that graph an expander when $G$ is 2-connected. Some restriction beyond expansion is needed because the uniform spanning tree factorizes over blocks. For bounded-degree expanders we determine exactly when balanced splits give a bound. The degree of our polynomial in $h$ grows with $D$, and 2-connected hub graphs show that this growth is forced for any bound from the star bits we use; bits for pairs of edges at a vertex give $h^3/(10935D^5)$ on those graphs, and we conjecture that such bits give $c\ge1/\operatorname{poly}(D,1/h)$ for all 2-connected bounded-degree expanders. The information-theoretic tools are known: the chain rule is a case of an exercise in Polyanskiy and Wu, and the identification of the optimized affinity with a matrix norm is due to Lapidoth and Pfister. The circuit reduction is from our earlier paper on dimers. For $K_n$, whose independent sets have one vertex, we instead condition on the tree inside a set of a constant fraction of the vertices, use a star-deletion bound that is sharp on complete graphs and the exact law of the vertices that this tree leaves isolated, and average over the conditioning. A second, local argument with two bits per short cycle gives much better constants for prisms and squares of expanders (about $3\cdot10^{-7}$ for a cubic example) and an $e^{\Omega(L)}$ bound for the $L\times L$ grid. The two arguments are the circuit and cocircuit cases of one argument for uniform bases of matroids. We prove a local form of it for every matroid and a global form for balanced matroids, and obtain $2^{\Omega(n)}$ bounds for a family of binary matroids that are neither graphic nor cographic. Finally, we show that subtraction does not help structured-decomposable circuits. On every 2-connected bounded-degree expander they need size $2^{\Omega(N)}$, without smoothness, at every fixed error $\frac12\norm{P-Q}_1\le\eps<\frac12$, and at every fixed $\eps<1$ if the output $Q$ sums to $1$, even though $Q$ may take negative values; the threshold $\frac12$ is sharp only for unnormalized outputs. One inequality for disjoint permutation blocks of $P$ gives both bounds, and normalized squares of structured circuits obey the nonnegative bound. For unstructured decomposable circuits with subtraction we prove lower bounds only for restricted classes: on bounded-degree expanders, support-exact representation needs size $2^{N^{\Omega(1/d)}}$ at product-depth $d$ and $N^{\Omega(\log N)}$ for formulas, by transferring arguments of Raz and of Raz and Yehudayoff through a large complete minor, and sums of $r$ structured circuits on unrelated vtrees need total size $2^{\Omega_r(N)}$, both for support-exact representation and at error $\eps<\frac12$, though with astronomically small constants. The general question stays open. For exact representation it is equivalent to the syntactically multilinear complexity of the spanning-tree polynomial. A small approximating circuit must cancel all but an exponentially small fraction of its mass.
 \end{abstract}
 
 \tableofcontents
@@ -61,9 +64,13 @@ The proof bounds, for every balanced split of the edges, the largest Bhattachary
 \input{sec-intro}
 \input{sec-prelim}
 \input{sec-tools}
+\input{sec-vertex}
+\input{sec-complete}
 \input{sec-trees}
 \input{sec-geometry}
 \input{sec-main}
+\input{sec-matroid}
+\input{sec-signed}
 \input{sec-limits}
 \input{sec-related}
 \input{sec-open}

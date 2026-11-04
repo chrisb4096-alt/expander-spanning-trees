@@ -1,0 +1,212 @@
+\section{Matroids: circuits and cocircuits}\label{sec:matroid}
+
+The cycle bits of Section~\ref{sec:trees} and the vertex-touch bits of Section~\ref{sec:vertex} are instances of the same matroid argument, applied to the cycle matroid $M(G)$ and its dual. A cycle of $G$ is a circuit of $M(G)$, and the frame of Lemma~\ref{lem:framed-cycle} consists of vertex stars, which are cuts. A vertex star is a cut, and the touch bound of Lemma~\ref{lem:touch} is certified by effective resistances, that is, by flows, which together with the certified edge are combinations of circuits. This section proves the local (framed) version of the argument for the uniform basis of an arbitrary matroid, and the global (resistance) version for balanced matroids. The only structural input of the local version is orthogonality: a circuit and a cocircuit never meet in exactly one element.
+
+\subsection{Background}
+
+We use standard matroid terminology~\cite{Oxley11}. Let $\cM$ be a matroid on a finite set $E$ with $n:=\abs E$, rank $r$, set of bases $\cB(\cM)$ and closure operator $\operatorname{cl}$. Write $U(\cM)$ for the uniform distribution on $\cB(\cM)$, viewed as a distribution on $\{0,1\}^E$, and $B$ for a random basis with this law. The \emph{leverage} of $e$ in $\cM$ is $\lambda(e;\cM):=\Pr_{U(\cM)}[e\in B]$. A \emph{cut} is a set $E\setminus Z$ with $Z$ a flat, and a \emph{cycle} is a cut of the dual $\cM^*$. Cocircuits are the complements of hyperplanes, so they are cuts, and circuits are cycles. Every flat is an intersection of hyperplanes, so a cut is a union of cocircuits, and a union of cocircuits is a cut. In a graph, the cuts of $M(G)$ are the unions of bonds and the cycles are the unions of circuits; both are wider notions than the binary cycle and cocycle spaces. Every vertex star $\delta(v)$ is a cut of $M(G)$, since the edges not at $v$ span no edge at $v$.
+
+We use these standard facts~\cite[Chapters~1--3]{Oxley11}. The bases of $\cM^*$ are the complements of the bases of $\cM$. If $B$ is a basis and $e\notin B$, then $B+e$ contains a unique circuit $C(e,B)$, and $B-f+e$ is a basis for every $f\in C(e,B)$. A circuit $C$ and a cocircuit $D$ never satisfy $\abs{C\cap D}=1$ (orthogonality). For disjoint $\sigma,\tau\subseteq E$, the minor $N=\cM/\sigma\setminus\tau$ on $E\setminus(\sigma\cup\tau)$ has rank function $r_N(Z)=r(Z\cup\sigma)-r(\sigma)$, so that $x\in\operatorname{cl}_N(Z)$ if and only if $x\in\operatorname{cl}(Z\cup\sigma)$.
+
+A basis contains no nonempty cycle, and it meets every nonempty cut: if $B\subseteq Z$ for a flat $Z$, then $Z=\operatorname{cl}(Z)\supseteq\operatorname{cl}(B)=E$. For $\cM=M(G)$ with $G$ connected, $U(\cM)=\UST(G)$.
+
+\begin{proposition}[duality]\label{prop:mat-dual}
+For every split $E=X\sqcup Y$, $\beta(U(\cM);X|Y)=\beta(U(\cM^*);X|Y)$. A PC for $U(\cM)$ becomes a PC for $U(\cM^*)$ with the same size, scopes, smoothness, decomposability, leaf arity and total variation distance by replacing each leaf input $x_e$ with $1-x_e$.
+\end{proposition}
+
+\begin{proof}
+$B\mapsto E\setminus B$ maps $\cB(\cM)$ onto $\cB(\cM^*)$ and sends $(B\cap X,B\cap Y)$ to $(X\setminus B,Y\setminus B)$, a bijection on each side separately. So the matrices $\sqrt{U(\cM)}$ and $\sqrt{U(\cM^*)}$ of Lemma~\ref{lem:LP} differ by a permutation of rows and a permutation of columns, and have the same operator norm. The leaf substitution is the bijection $x\mapsto\one-x$ of $\{0,1\}^E$; it changes no scope, and it maps $Q_C$ to the law of $\one-x$ under $Q_C$, so it preserves total variation distance to the law of $E\setminus B$.
+\end{proof}
+
+\subsection{Conditioning and exchange}
+
+\begin{lemma}[conditioning is a minor]\label{lem:mat-minor}
+Let $F\subseteq E$ and $\sigma\subseteq F$ with $\Pr[B\cap F=\sigma]>0$, and put $\tau:=F\setminus\sigma$. Given $B\cap F=\sigma$, the set $B\setminus F$ is a uniform basis of $\cM/\sigma\setminus\tau$.
+\end{lemma}
+
+\begin{proof}
+Some basis $B_0$ satisfies $B_0\cap F=\sigma$, so $\sigma$ is independent and $r(E\setminus\tau)=r$. Hence $N:=\cM/\sigma\setminus\tau$ has rank $r-\abs\sigma$, and its independent sets are the sets $I\subseteq E\setminus F$ with $I\cup\sigma$ independent in $\cM$. If $B\cap F=\sigma$, then $B\setminus F$ is independent in $N$ and has $r-\abs\sigma$ elements, so it is a basis of $N$. Conversely, if $B'$ is a basis of $N$, then $B'\cup\sigma$ is independent in $\cM$ with $r$ elements, so it is a basis that meets $F$ in $\sigma$. The map $B\mapsto B\setminus F$ is therefore a bijection between the bases with $B\cap F=\sigma$ and the bases of $N$.
+\end{proof}
+
+\begin{lemma}[exchange bound]\label{lem:mat-exchange}
+If $D$ is a cut of a matroid $N$ and $e\in D$, then $\lambda(e;N)\ge1/\abs D$. Dually, if $C$ is a cycle of $N$ and $e\in C$, then $1-\lambda(e;N)\ge1/\abs C$.
+\end{lemma}
+
+\begin{proof}
+The flat $Z:=E(N)\setminus D$ does not contain $e$. Let $H\supseteq Z$ be a maximal flat with $e\notin H$. If $r_N(H)\le r(N)-2$, pick $x\notin\operatorname{cl}_N(H+e)$; then $\operatorname{cl}_N(H+x)$ is a larger flat, and it does not contain $e$, since otherwise the exchange property would put $x$ in $\operatorname{cl}_N(H+e)$. So $H$ is a hyperplane, and $D':=E(N)\setminus H$ is a cocircuit with $e\in D'\subseteq D$.
+
+Let $B$ be a basis with $e\notin B$. The circuit $C(e,B)$ contains $e\in D'$, so by orthogonality it contains some $f\in D'$ with $f\ne e$, and $f\in B$. Then $B-f+e$ is a basis. Fix one such $f$ for each $B$. The resulting map from bases without $e$ to bases with $e$ has at most $\abs{D'}-1$ preimages over each $B'$, namely among the sets $B'-e+f$ with $f\in D'\setminus\{e\}$. So the number of bases without $e$ is at most $(\abs{D'}-1)$ times the number with $e$, which gives $\lambda(e;N)\ge1/\abs{D'}\ge1/\abs D$. The second claim is the first in $N^*$.
+\end{proof}
+
+For $\cM=M(G)$ and $D=\delta(v)$ this is $\Pr[e\in T]\ge1/\deg(v)$, and for a cycle $C$ it is $R(e^+,e^-)\le(\abs C-1)/\abs C$. We did not find Lemma~\ref{lem:mat-exchange} stated for matroids, but it is elementary and probably folklore.
+
+\begin{lemma}[cuts survive minors]\label{lem:mat-survive}
+Let $D$ be a cut of $\cM$ and $e\in D$, and let $\sigma,\tau\subseteq E\setminus\{e\}$ be disjoint with $D\cap\sigma=\emptyset$. Then $\lambda(e;\cM/\sigma\setminus\tau)\ge1/\abs{D\setminus\tau}\ge1/\abs D$.
+\end{lemma}
+
+\begin{proof}
+Put $N:=\cM/\sigma\setminus\tau$, $H:=E\setminus D$, and $Z:=H\setminus(\sigma\cup\tau)$. Since $\sigma\subseteq H$, we have $\operatorname{cl}(Z\cup\sigma)\subseteq H$, so $e\notin\operatorname{cl}_N(Z)$. Hence $D_N:=E(N)\setminus\operatorname{cl}_N(Z)$ is a cut of $N$ that contains $e$, and $D_N\subseteq E(N)\setminus Z=D\setminus\tau$. Apply Lemma~\ref{lem:mat-exchange} in $N$.
+\end{proof}
+
+\subsection{Framed pieces and the local theorem}
+
+\begin{definition}[framed pieces]\label{def:frame}
+A \emph{framed piece} of $\cM$ is a triple $(K,\pi,(D_e)_{e\in K})$, where $\pi$ is a cyclic permutation of $K$ with a single cycle, and either
+\begin{itemize}
+\item (circuit type) $K$ is a circuit and every $D_e$ is a cut, or
+\item (cocircuit type) $K$ is a cocircuit and every $D_e$ is a cycle,
+\end{itemize}
+such that $D_e\cap K=\{e,\pi(e)\}$ for every $e\in K$. Its \emph{weight} is $w(K):=\prod_{e\in K}\abs{D_e}^{-1}$ and its \emph{territory} is $\Theta(K):=\bigcup_{e\in K}D_e$, which contains $K$. Two pieces $K,K'$ are \emph{compatible} if $K'\cap\Theta(K)=\emptyset$ and $K\cap\Theta(K')=\emptyset$. A piece is \emph{mixed} for a split $X|Y$ if it meets both $X$ and $Y$.
+\end{definition}
+
+Every circuit $K$ with $\abs K\ge2$ has a frame: for any cyclic order $\pi$, put $D_e:=E\setminus\operatorname{cl}(K\setminus\{e,\pi(e)\})$. This is a cut; it contains $e$ and $\pi(e)$ because $K-\pi(e)$ and $K-e$ are independent, and it misses the rest of $K$. Dually, every cocircuit with at least two elements has a frame by cycles. Loops and coloops have no frames, but a one-element set cannot be mixed. So the content of the hypotheses below is that the frames are small and avoid the other pieces.
+
+\paragraph{Graphs.} Let $C=v_1e_1v_2e_2\cdots v_ke_kv_1$ be a cycle of a simple graph $G$ with $k\ge3$, $\pi(e_j):=e_{j+1}$ and $D_{e_j}:=\delta(v_{j+1})$, indices mod $k$. This is a circuit-type piece of $M(G)$ with weight $\prod_{v\in V(C)}\deg(v)^{-1}$. Its territory is the set of edges with an endpoint in $V(C)$, so two cycles are compatible exactly when they are vertex-disjoint.
+
+\begin{lemma}[frame bound]\label{lem:mat-frame}
+Let $(K,\pi,D)$ be a circuit-type framed piece, let $S\subsetneq K$, and let $F\subseteq E\setminus K$ with $D_e\cap F=\emptyset$ for every $e\in S$. Then for every $\sigma$ with $\Pr[B\cap F=\sigma]>0$,
+\[
+  \Pr[S\subseteq B\mid B\cap F=\sigma]\ \ge\ \prod_{e\in S}\abs{D_e}^{-1} .
+\]
+For a cocircuit-type piece the same bound holds for $\Pr[S\cap B=\emptyset\mid B\cap F=\sigma]$.
+\end{lemma}
+
+\begin{proof}
+Since $S\ne K$ and $\pi$ is a single cycle, $S$ is a disjoint union of runs $e,\pi(e),\dots,\pi^i(e)$ whose last element has its successor outside $S$. List the runs one after another, each in $\pi$-order, as $s_1,\dots,s_k$. Then $\pi(s_j)$ is outside $S$ or later in the list, so $D_{s_j}\cap\{s_1,\dots,s_{j-1}\}\subseteq D_{s_j}\cap K\setminus\{s_j,\pi(s_j)\}=\emptyset$, and $D_{s_j}$ also avoids $F$.
+
+Put $\tau:=F\setminus\sigma$ and $\sigma_j:=\sigma\cup\{s_1,\dots,s_{j-1}\}$. We show by induction on $j$ that $\Pr[B\cap F=\sigma,\ s_{<j}\subseteq B]>0$ and that, conditionally on this event, $s_j\in B$ with probability at least $\abs{D_{s_j}}^{-1}$. The event is $\{B\cap(F\cup s_{<j})=\sigma_j\}$, so by Lemma~\ref{lem:mat-minor} the conditional law of the rest is $U(\cM/\sigma_j\setminus\tau)$. Since $D_{s_j}\cap\sigma_j=\emptyset$ and $s_j\notin\sigma_j\cup\tau$, Lemma~\ref{lem:mat-survive} bounds the conditional probability of $s_j\in B$ below by $\abs{D_{s_j}}^{-1}>0$, which also gives positivity for $j+1$. Multiplying the factors proves the circuit case.
+
+For the cocircuit case apply the circuit case to $\cM^*$ and the basis $E\setminus B$ of $\cM^*$: the event $B\cap F=\sigma$ is $(E\setminus B)\cap F=F\setminus\sigma$, and $S\cap B=\emptyset$ is $S\subseteq E\setminus B$.
+\end{proof}
+
+For $\cM=M(G)$ and star frames, Lemma~\ref{lem:mat-frame} is Lemma~\ref{lem:framed-cycle}, and Lemmas~\ref{lem:mat-exchange} and~\ref{lem:mat-survive} together are Lemma~\ref{lem:star-frame}.
+
+\begin{theorem}[local bound for one split]\label{thm:mat-local}
+Let $E=X\sqcup Y$ be a split and let $K_1,\dots,K_r$ be pairwise compatible framed pieces of $\cM$, each mixed for $X|Y$. Then
+\[
+  \beta\bigl(U(\cM);X|Y\bigr)^2\ \le\ \prod_{i=1}^r\frac{1+\sqrt{1-4w(K_i)}}2\ \le\ \prod_{i=1}^r\bigl(1-w(K_i)\bigr) .
+\]
+\end{theorem}
+
+\begin{proof}
+For a circuit-type piece put $u_i:=\one[K_i\cap X\subseteq B]$ and $v_i:=\one[K_i\cap Y\subseteq B]$; for a cocircuit-type piece put $u_i:=\one[K_i\cap X\cap B=\emptyset]$ and $v_i:=\one[K_i\cap Y\cap B=\emptyset]$. The value $u_i=v_i=1$ is impossible, because a basis contains no circuit and meets every cocircuit. Since $u=(u_i)$ is a function of $B\cap X$ and $v=(v_i)$ of $B\cap Y$, Lemma~\ref{lem:dpi} gives $\beta(U(\cM);X|Y)\le\opnorm{\sqrt{\mathrm{law}(u,v)}}$.
+
+Put $F_i:=K_1\cup\dots\cup K_{i-1}$. The past $(u_{<i},v_{<i})$ is a function of $B\cap F_i$, and by compatibility $F_i\cap K_i=\emptyset$ and $D_e\cap F_i=\emptyset$ for every $e\in K_i$. Since $K_i$ is mixed, $K_i\cap X$ and $K_i\cap Y$ are proper subsets of $K_i$. Lemma~\ref{lem:mat-frame} gives $\Pr[u_i=1\mid B\cap F_i=\sigma]\ge p_i:=\prod_{e\in K_i\cap X}\abs{D_e}^{-1}$ for every possible $\sigma$, and averaging over $\sigma$ given a past $\pi$ gives $K_i(1,0\,|\,\pi)=\Pr[u_i=1\mid\pi]\ge p_i$. In the same way $K_i(0,1\,|\,\pi)\ge q_i:=\prod_{e\in K_i\cap Y}\abs{D_e}^{-1}$, and $p_iq_i=w(K_i)$. Lemma~\ref{lem:two-by-two} bounds $\gamma_i^2$, and Lemma~\ref{lem:chain} finishes the proof.
+\end{proof}
+
+\begin{theorem}[circuit lower bound for matroids]\label{thm:mat-pc}
+Let $\mathcal K$ be a family of framed pieces of $\cM$, each of weight at least $w_0$, in which each piece is incompatible with at most $\Gamma$ others. Suppose every balanced split $X|Y$ of $E$ has at least $m$ mixed pieces in $\mathcal K$. Let $C$ be a smooth decomposable PC with nonnegative weights over the $n$ element variables, whose leaves have arity at most $2n/3$. If $1-\TV(U(\cM),Q_C)\ge\delta>0$, then
+\[
+  \abs C\ \ge\ \delta^2(1-w_0)^{-\lceil m/(\Gamma+1)\rceil}\ \ge\ \delta^2\exp\bigl(w_0m/(\Gamma+1)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Fix a balanced split. Choosing mixed pieces greedily and discarding the at most $\Gamma$ pieces incompatible with each choice gives $\lceil m/(\Gamma+1)\rceil$ pairwise compatible mixed pieces. Theorem~\ref{thm:mat-local} bounds $\beta^2$ by $(1-w_0)^{\lceil m/(\Gamma+1)\rceil}$, and Corollary~\ref{cor:reduction} gives the first bound. The second uses $-\ln(1-w_0)\ge w_0$.
+\end{proof}
+
+The hypotheses are self-dual: passing to $\cM^*$ swaps the two piece types and keeps weights, territories, compatibility and mixed counts, and Proposition~\ref{prop:mat-dual} transfers the conclusion. A convenient sufficient condition: if every piece of $\mathcal K$ has at most $\ell$ elements and frames of size at most $d$, and every element lies in at most $\Delta$ pieces and at most $\Delta$ territories, then $w_0\ge d^{-\ell}$ and $\Gamma\le\ell(d+1)\Delta$, since $\abs{\Theta(K)}\le\ell d$. So Theorem~\ref{thm:mat-pc} gives $2^{\Omega(n)}$ whenever $\ell,d,\Delta$ are bounded and every balanced split has $\Omega(n)$ mixed pieces. Section~\ref{sec:limits} shows that some locality hypothesis of this kind is needed.
+
+\subsection{Graphic and cographic matroids}
+
+For $\cM=M(G)$ with $G$ simple, the star-framed cycles above are framed pieces, and compatibility is vertex-disjointness. With the vertex-disjoint mixed cycles of Lemma~\ref{lem:mixed}, Theorem~\ref{thm:mat-local} gives the $w_k$ part of Theorem~\ref{thm:cut} and the bound $\beta^2\le(1-D^{-\ell})^{r_0}$ of Theorem~\ref{thm:general}. Theorem~\ref{thm:cut} also has the alternative weight $p_k^2$ from Lemma~\ref{lem:local}, which is better for very irregular cycles; it is specific to graphs.
+
+The cographic matroid $M(G)^*$ has $U(M(G)^*)$ equal to the law of the complement of a uniform spanning tree. By Proposition~\ref{prop:mat-dual}, every lower bound in this paper holds unchanged for it. When $G$ is nonplanar, $M(G)^*$ is not graphic, but this transfer is a relabeling, not a new result. In $M(G)^*$ the cycles of $G$ are cocircuit-type pieces and the stars are their frames.
+
+\subsection{A binary non-regular family}
+
+Here is a family to which neither the graph results nor duality applies. Let $F_7$ be the Fano plane, the rank-3 binary matroid whose seven points are the nonzero vectors of $\mathbb F_2^3$ and whose circuits of size three are its seven lines. Its cocircuits are the complements of lines~\cite{Oxley11}. Every two lines meet in exactly one point, and every point lies on three lines.
+
+For matroids $\cM_1,\cM_2$ with $E(\cM_1)\cap E(\cM_2)=\{p\}$, where $p$ is neither a loop nor a coloop of either, the \emph{2-sum} $\cM_1\oplus_2\cM_2$ on $(E(\cM_1)\cup E(\cM_2))\setminus\{p\}$ has as circuits the circuits of $\cM_1$ or $\cM_2$ that avoid $p$, together with the sets $(C_1\cup C_2)\setminus\{p\}$ with $p\in C_1\cap C_2$ and $C_i$ a circuit of $\cM_i$. Moreover $(\cM_1\oplus_2\cM_2)^*=\cM_1^*\oplus_2\cM_2^*$, both parts are minors of the 2-sum, and 2-sums of binary matroids are binary~\cite[Section~7.1]{Oxley11}.
+
+Let $G$ be a simple graph with no bridge. For each edge $e$ take a copy $F^{(e)}$ of $F_7$ whose point $p_e$ is identified with $e$, and let $\cM_G$ be obtained from $M(G)$ by 2-summing $F^{(e)}$ along $e$ for every edge $e$. By induction on the number of 2-sums:
+\begin{enumerate}[label=(F\arabic*)]
+\item\label{F:local} each circuit or cocircuit of $F^{(e)}$ that avoids $p_e$ is a circuit or cocircuit of $\cM_G$;
+\item\label{F:circ} if $C$ is a cycle of $G$ and $L_e\ni p_e$ is a line of $F^{(e)}$ for each $e\in C$, then $\bigcup_{e\in C}(L_e\setminus\{p_e\})$ is a circuit of $\cM_G$;
+\item\label{F:cocirc} if $D$ is a bond of $G$ and $D_f\ni p_f$ is a cocircuit of $F^{(f)}$ for each $f\in D$, then $\bigcup_{f\in D}(D_f\setminus\{p_f\})$ is a cocircuit of $\cM_G$.
+\end{enumerate}
+\ref{F:cocirc} is~\ref{F:circ} for the duals, using $(\cM_1\oplus_2\cM_2)^*=\cM_1^*\oplus_2\cM_2^*$ and that the circuits of $M(G)^*$ are the bonds of $G$. The induction applies because each edge lies on a cycle of $G$ and so is never a loop or coloop of the intermediate matroids. The matroid $\cM_G$ has $n=6M$ elements and is binary. It has $F_7$ as a minor, and $F_7$ is representable only over fields of characteristic two, while regular matroids are representable over every field and form a minor-closed class~\cite{Oxley11}. So $\cM_G$ is not regular, and in particular neither graphic nor cographic.
+
+\begin{proposition}[Fano-decorated linked expanders]\label{prop:fano}
+Let $G$ satisfy the hypotheses of Theorem~\ref{thm:general}, and put
+\[
+  \eps:=\frac12\min\Bigl\{\frac{hN}{4D\ell^2\kappa M},\ \frac1{2\ell^2\kappa D(1+D/h)},\ \frac1{12}\Bigr\}.
+\]
+Then $\beta(U(\cM_G);X|Y)^2\le(1-(12D)^{-\ell})^{\lceil\eps M\rceil}$ for every balanced split $X|Y$ of $E(\cM_G)$. Consequently, every smooth decomposable PC with nonnegative weights over the $6M$ element variables, with leaves of arity at most $4M$ and $1-\TV(U(\cM_G),Q_C)\ge\delta>0$, has $\abs C\ge\delta^2\exp(\eps M(12D)^{-\ell})$.
+\end{proposition}
+
+Since $M\le DN/2$, $\eps\ge\frac12\min\{h/(2D^2\ell^2\kappa),1/(2\ell^2\kappa D(1+D/h)),1/12\}$, so the bound is $2^{\Omega(n)}$ for fixed $D,h,\ell,\kappa$.
+
+\begin{proof}
+By Lemma~\ref{lem:linked-basic}, $G$ has no bridge, so $\cM_G$ is defined. We use two kinds of pieces, all of weight at least $(12D)^{-\ell}$; note $\ell\ge3$.
+
+\emph{Local pieces.} Let $L=\{x,y,z\}$ be a line of $F^{(e)}$ with $p_e\notin L$, ordered cyclically $x\to y\to z\to x$. By~\ref{F:local} it is a circuit of $\cM_G$. Let $D_x:=F^{(e)}\setminus L_z$, where $L_z$ is the line through $p_e$ and $z$, and define $D_y,D_z$ in the same way. Each is a cocircuit of $F^{(e)}$ avoiding $p_e$, hence a cut of $\cM_G$, and $D_x\cap L=L\setminus L_z=\{x,y\}$ because two lines meet in one point. The weight is $4^{-3}\ge(12D)^{-\ell}$ and the territory lies in $F^{(e)}\setminus\{p_e\}$. If the six points of $F^{(e)}\setminus\{p_e\}$ are not all on one side of the split, some such line is mixed: the four lines avoiding $p_e$ cover these six points, and any two of them meet in a point other than $p_e$, so if all four were monochromatic they would all have the same colour.
+
+\emph{Lifted cycles.} Let $C=v_1e_1v_2\cdots v_ke_kv_1$ be a cycle of $G$, and for each $j$ let $\{p_{e_j},a_j,b_j\}$ be a line of $F^{(e_j)}$. By~\ref{F:circ}, $K:=\{a_1,b_1,\dots,a_k,b_k\}$ is a circuit; order it cyclically as $a_1,b_1,a_2,b_2,\dots,b_k$. Let $D(a_j):=F^{(e_j)}\setminus L'$ for a line $L'\ni p_{e_j}$ other than $\{p_{e_j},a_j,b_j\}$; it is a cocircuit by~\ref{F:local}, has four elements, and meets $K$ in $\{a_j,b_j\}$. For $D(b_j)$, take the vertex $v:=v_{j+1}$ shared by $e_j$ and $e_{j+1}$. For every $f\in\delta(v)$ choose a cocircuit $D_f\ni p_f$ of $F^{(f)}$, with $b_j\in D_{e_j}\not\ni a_j$ and $a_{j+1}\in D_{e_{j+1}}\not\ni b_{j+1}$; for example $D_{e_j}$ is the complement of a line through $a_j$ that avoids $p_{e_j}$. The star $\delta(v)$ is the disjoint union of the bonds $E(v,Q)$ over the components $Q$ of $G-v$, so by~\ref{F:cocirc} the set $D(b_j):=\bigcup_{f\in\delta(v)}(D_f\setminus\{p_f\})$ is a union of cocircuits, hence a cut. It has $3\deg(v)\le3D$ elements and meets $K$ in $\{b_j,a_{j+1}\}$, because $e_j$ and $e_{j+1}$ are the only edges of $C$ at $v$. So $K$ is a framed piece of weight at least $(4\cdot3D)^{-k}\ge(12D)^{-\ell}$ when $k\le\ell$. Its territory lies in the gadgets of edges with an endpoint in $V(C)$, so lifts of vertex-disjoint cycles are compatible.
+
+\emph{Counting.} Fix a balanced split $X|Y$ of $E(\cM_G)$, so $\abs X,\abs Y\ge2M$, and call a gadget \emph{cut} if it has points on both sides. Let $c$ be the number of cut gadgets. Local pieces in different gadgets are compatible. If $c\ge\eps M$, we get $c\ge\lceil\eps M\rceil$ compatible mixed local pieces. Otherwise colour each edge $e$ of $G$ by the side containing $F^{(e)}\setminus\{p_e\}$, and colour edges of cut gadgets arbitrarily. Each gadget has six points, and a cut gadget has at most five points in $X$, so at least $(2M-5c)/6\ge M/3-c>M/4$ gadgets lie entirely in $X$, using $c<\eps M\le M/12$; the same holds for $Y$. Lemma~\ref{lem:mixed} with $m_0=M/4$ gives at least
+\[
+  \frac t{\ell\kappa}\ \ge\ \min\Bigl\{\frac{hN}{4D\ell^2\kappa},\ \frac M{2\ell^2\kappa D(1+D/h)}\Bigr\}\ \ge\ 2\eps M
+\]
+vertex-disjoint mixed cycles of length at most $\ell$. Vertex-disjoint cycles are edge-disjoint, so at most $c<\eps M$ of them use an edge with a cut gadget. Each remaining cycle has an edge whose gadget lies in $X$ and one whose gadget lies in $Y$, so its lift is mixed. This gives more than $\eps M$, hence at least $\lceil\eps M\rceil$, compatible mixed lifted pieces. In both cases Theorem~\ref{thm:mat-local} gives the bound on $\beta^2$, and Corollary~\ref{cor:reduction} the bound on $\abs C$.
+\end{proof}
+
+We checked the structure facts~\ref{F:local}--\ref{F:cocirc} that the proof uses, all local pieces, the lifted triangle with its frames, and Theorem~\ref{thm:mat-local} on random splits, for $G=K_3$ by exact enumeration (Appendix~\ref{app:checks}). The counting step was not checked numerically.
+
+\subsection{The global version for balanced matroids}
+
+Frames give certificates of size $\abs{D_e}$. For graphs, Section~\ref{sec:vertex} uses effective resistance instead, which can be much better. The matroid analogue of the resistance step needs negative correlation. Following Feder and Mihail~\cite{FederMihail92}, call $\cM$ \emph{balanced} if for every minor $N$ of $\cM$ and all distinct $e,f$, $\Pr_{U(N)}[e,f\in B]\le\lambda(e;N)\lambda(f;N)$. Regular matroids are balanced~\cite{FederMihail92}. A binary matroid is balanced if and only if it has no minor isomorphic to the eight-element matroid $S_8$~\cite{ChoeWagner03}. The class is closed under duality, since negative correlation of $\one[e\in B]$ and $\one[f\in B]$ is the same as negative correlation of their complements.
+
+\begin{lemma}[worst-case minors]\label{lem:mat-global}
+Let $\cM$ be balanced, let $F\subseteq E$ and $\sigma\subseteq F$ with $\Pr[B\cap F=\sigma]>0$, and let $s_1,\dots,s_k\in E\setminus F$ be distinct. Then
+\[
+  \Pr\bigl[\{s_1,\dots,s_k\}\subseteq B\bigm|B\cap F=\sigma\bigr]\ \ge\ \prod_{j=1}^k\lambda\bigl(s_j;\cM/F/s_{<j}\bigr),
+\]
+\[
+  \Pr\bigl[\{s_1,\dots,s_k\}\cap B=\emptyset\bigm|B\cap F=\sigma\bigr]\ \ge\ \prod_{j=1}^k\bigl(1-\lambda(s_j;\cM\setminus F\setminus s_{<j})\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+If the right side of the first inequality is $0$ there is nothing to prove, so assume every factor is positive. Put $\tau:=F\setminus\sigma$ and $N_j:=\cM/\sigma/s_{<j}\setminus\tau$. We claim $\lambda(s_j;N_j)\ge\lambda(s_j;\cM/F/s_{<j})$. Turn the elements of $\tau$ from deleted into contracted one at a time. Each step compares $N'\setminus f$ with $N'/f$ for a minor $N'$ of $\cM$. If $f$ is a loop or coloop of $N'$, the two minors are equal. Otherwise $0<\lambda(f;N')<1$ and, by Lemma~\ref{lem:mat-minor}, $\lambda(s_j;N'/f)=\Pr_{U(N')}[s_j\in B\mid f\in B]$ and $\lambda(s_j;N'\setminus f)=\Pr_{U(N')}[s_j\in B\mid f\notin B]$. Negative correlation in $N'$ says the first is at most $\lambda(s_j;N')$, hence at most the second. This proves the claim. Now by induction on $j$, using Lemma~\ref{lem:mat-minor}, the event $\{B\cap F=\sigma,\ s_{<j}\subseteq B\}$ has positive probability and, given it, $s_j\in B$ with probability $\lambda(s_j;N_j)>0$. Multiplying gives the first inequality. The second is the first for $\cM^*$, which is balanced, with $E\setminus B$ in place of $B$ and $\lambda(e;N^*)=1-\lambda(e;N)$.
+\end{proof}
+
+Only negative correlation of pairs in minors is used, not negative association, in the same way that Section~\ref{sec:vertex} uses only Rayleigh monotonicity.
+
+\begin{theorem}[global bound for one split]\label{thm:mat-global}
+Let $\cM$ be balanced, let $X|Y$ be a split, and let $K_1,\dots,K_r$ be pairwise disjoint mixed circuits or cocircuits in a fixed order. Put $F_i:=K_1\cup\dots\cup K_{i-1}$ and order each of $K_i\cap X$ and $K_i\cap Y$ arbitrarily. For $e$ in such a half $H$, with $H_{<e}$ the elements of $H$ before $e$, put $\phi(e):=\lambda(e;\cM/(F_i\cup H_{<e}))$ if $K_i$ is a circuit and $\phi(e):=1-\lambda(e;\cM\setminus(F_i\cup H_{<e}))$ if $K_i$ is a cocircuit. Then
+\[
+  \beta\bigl(U(\cM);X|Y\bigr)^2\ \le\ \prod_{i=1}^r\frac{1+\sqrt{1-4\phi(K_i)}}2\ \le\ \prod_{i=1}^r\bigl(1-\phi(K_i)\bigr),\qquad\phi(K_i):=\prod_{e\in K_i}\phi(e).
+\]
+\end{theorem}
+
+\begin{proof}
+The proof of Theorem~\ref{thm:mat-local}, with Lemma~\ref{lem:mat-global} in place of Lemma~\ref{lem:mat-frame}. Disjointness is all that is needed: the past is a function of $B\cap F_i$ and $F_i\cap K_i=\emptyset$.
+\end{proof}
+
+The proof uses only that a basis contains no piece of circuit type and meets every piece of cocircuit type. So Theorem~\ref{thm:mat-global} also holds with nonempty cycles and cuts in place of circuits and cocircuits.
+
+For regular matroids the factors are resistances. Let $A$ be a totally unimodular real matrix representing $\cM$, with columns $a_e$. For $Z\subseteq E\setminus\{e\}$ put
+\[
+  R_Z(e):=\min\Bigl\{\norm x_2^2:\ x\in\R^{E\setminus(Z\cup\{e\})},\ \sum_fx_fa_f=a_e\Bigr\}\qquad(\min\emptyset=\infty).
+\]
+
+\begin{lemma}[leverage is resistance]\label{lem:mat-resist}
+For a regular matroid $\cM$ represented by a totally unimodular $A$, and $Z\subseteq E\setminus\{e\}$, $1-\lambda(e;\cM\setminus Z)=1/(1+R_Z(e))$.
+\end{lemma}
+
+\begin{proof}
+If $e$ is a coloop of $\cM\setminus Z$, then $a_e$ is not in the span of the other columns of $E\setminus Z$, so both sides are $0$. Otherwise keep the columns $E\setminus Z$ and a set of rows that is a basis of their row space. This gives a totally unimodular matrix $A'$ of full row rank $r'$ representing $\cM\setminus Z$, and the linear constraint in $R_Z(e)$ is unchanged, because the dropped rows are combinations of the kept ones on these columns. By the Cauchy--Binet formula and total unimodularity, $\det(A'A'^{\mathsf T})=\sum_S\det(A'_S)^2$ over $r'$-sets of columns $S$ is the number of bases of $\cM\setminus Z$. Let $Q$ be the same Gram matrix without column $e$. Then $\det Q$ is the number of bases avoiding $e$, and $Q$ is invertible because $e$ is not a coloop. By the matrix determinant lemma, $1-\lambda(e;\cM\setminus Z)=\det Q/\det(Q+a'_ea_e'^{\mathsf T})=1/(1+a_e'^{\mathsf T}Q^{-1}a'_e)$, and $a_e'^{\mathsf T}Q^{-1}a'_e$ is the least squared norm of a solution of $\sum_{f\ne e}x_fa'_f=a'_e$, which is $R_Z(e)$.
+\end{proof}
+
+For a loop, $R_Z(e)=0$ and both sides equal $1$. For $\cM=M(G)$ with a signed incidence matrix, the constraint says that $x$ is a unit flow between the endpoints of $e$ in $G-Z-e$, so $R_Z(e)=R_{G-Z-e}(e^+,e^-)$ by Thomson's principle~\cite{LyonsPeres16}. Any explicit $x$ bounds $R_Z(e)$ from above; for example, $m$ circuits through $e$ that avoid $Z$, pairwise share only $e$, and have at most $\ell$ elements each give $R_Z(e)\le(\ell-1)/m$, by averaging their signed incidence vectors (kernel vectors of $A$ with entries in $\{0,\pm1\}$, which exist for every circuit when $A$ is totally unimodular). Dually, $\lambda(e;\cM/Z)=1/(1+R^*_Z(e))$, with $R^*$ computed in a totally unimodular representation of $\cM^*$.
+
+\paragraph{The vertex-touch bits are the cocircuit case.} Let $G$ be connected, $X|Y=A|B$ an edge split, and $W=(w_1,\dots,w_r)$ an independent set of mixed vertices. The stars $S(w_k)$ are disjoint mixed cuts. For $s_j=u_jw\in S_A(w)$, Lemma~\ref{lem:mat-resist} turns the factor $\phi(s_j)$ of Theorem~\ref{thm:mat-global} into $1/(1+R_{G-F_k-s_{\le j}}(u_j,w))$. The graph $G-F_k-s_{\le j}$ contains $G_w^A=G-(W\setminus\{w\})-S_A(w)$, so by~\ref{E:rayleigh} this factor is at least $1/(1+R_{u_j})$, and the product over the $A$-half is at least the quantity $p_A(w)$ of Lemma~\ref{lem:touch}; the same holds for $B$. So Theorem~\ref{thm:mat-global}, applied to the stars, recovers the bound of Theorem~\ref{thm:touch-cut}. The graph-specific input of Section~\ref{sec:vertex} is Lemmas~\ref{lem:touch-flow}, \ref{lem:cheeger} and~\ref{lem:delete}, which bound the resistances using expansion; we have no analogue of them for regular matroids.
+
+\subsection{The duality behind both arguments}
+
+\begin{enumerate}
+\item \emph{The forbidden cell.} A basis contains no circuit and meets every cocircuit. Its complement, a basis of $\cM^*$, contains no cocircuit and meets every circuit. These are the same fact read in $\cM$ and in $\cM^*$.
+\item \emph{The certificate.} Lemma~\ref{lem:mat-exchange} uses orthogonality once: the fundamental circuit meets the cocircuit a second time. Frames use it again: $\abs{D_e\cap K}=2$ is the smallest intersection orthogonality allows. A circuit is certified by cuts, and a cocircuit by cycles.
+\item \emph{The two graph arguments.} The cycle bits of Section~\ref{sec:trees} are circuits of $M(G)$ certified by vertex stars. The vertex-touch bits of Section~\ref{sec:vertex} are vertex stars, which are cuts of $M(G)$, certified by resistances, that is, by flows built from circuits. Each argument's pieces are the other argument's certificates, and the local theorem is invariant under $\cM\leftrightarrow\cM^*$.
+\end{enumerate}

@@ -1,0 +1,43 @@
+P1 20000 random kernels: norm formula error 4.0e-15; largest excess of ||sqrt K||^2 - (1 - Delta^2) and Delta - 1/2: 1.1e-15; of the rare-cell bound over Delta: -9.0e-20; covariance identity error 2.8e-16; largest excess of |Cov|/min(sigma) over Delta and of 2|Cov| over it (relative): 0.0e+00
+P2 172 pairs of edges at a common vertex: |Cov + Y^2| <= 1.5e-16, Kirchhoff error 2.2e-16, smallest Y 0.000; largest excess of 2Y^2 over Delta 0.0e+00, of Y^2/(2 sqrt(q_e q_f)) over Delta -2.8e-03, of the bound of lem:edge-pair-res over Y 1.7e-16
+P3 Petersen           split 0: 4 pairs, beta = 0.4394 <= 0.9274 <= 0.995785  OK
+P3 Petersen           split 1: 4 pairs, beta = 0.4100 <= 0.9009 <= 0.996304  OK
+P3 Petersen           split 2: 4 pairs, beta = 0.5294 <= 0.9158 <= 0.995877  OK
+P3 prism C6           split 0: 4 pairs, beta = 0.3901 <= 0.9363 <= 0.995623  OK
+P3 prism C6           split 1: 4 pairs, beta = 0.3801 <= 0.9342 <= 0.993098  OK
+P3 prism C6           split 2: 4 pairs, beta = 0.3455 <= 0.9515 <= 0.991563  OK
+P3 cube               split 0: 4 pairs, beta = 0.4940 <= 0.9170 <= 0.994787  OK
+P3 cube               split 1: 4 pairs, beta = 0.5198 <= 0.8510 <= 0.993536  OK
+P3 cube               split 2: 4 pairs, beta = 0.4711 <= 0.7909 <= 0.993032  OK
+P3 K33                split 0: 3 pairs, beta = 0.6529 <= 0.9351 <= 0.993574  OK
+P3 K33                split 1: 4 pairs, beta = 0.6529 <= 0.7269 <= 0.993574  OK
+P3 K33                split 2: 4 pairs, beta = 0.5509 <= 0.6657 <= 0.992488  OK
+P3 Moebius ladder 10  split 0: 4 pairs, beta = 0.4652 <= 0.9133 <= 0.997249  OK
+P3 Moebius ladder 10  split 1: 4 pairs, beta = 0.4939 <= 0.8959 <= 0.992866  OK
+P3 Moebius ladder 10  split 2: 4 pairs, beta = 0.4719 <= 0.9425 <= 0.995504  OK
+P3 1069 pasts checked against K_sigma
+P4 Lemma lem:subdivide on 40 random subdivisions: smallest h(G)/bound = 1.000
+P4 G_(L=2,n=2)(2,2): N = 18 (formula 18), max degree 4, 2-connected True, h = 0.4444 in [0.0800, 2.0000]
+P4 G_(L=2,n=2)(2,3): N = 22 (formula 22), max degree 5, 2-connected True, h = 0.4545 in [0.0667, 2.0000]
+P4 prop:hub, L=2: Pr[all A-edges at a hub are out] = 0.04938 <= L^-2 = 0.25000
+P4 prop:hub, L=2: Pr[all B-edges at a hub are out] = 0.04938 <= L^-2 = 0.25000
+P4 prop:hub, L=3: Pr[all A-edges at a hub are out] = 0.02367 <= L^-2 = 0.11111
+P4 prop:hub, L=3: Pr[all B-edges at a hub are out] = 0.02367 <= L^-2 = 0.11111
+P4 prop:hub, L=5: Pr[all A-edges at a hub are out] = 0.00907 <= L^-2 = 0.04000
+P4 prop:hub, L=5: Pr[all B-edges at a hub are out] = 0.00907 <= L^-2 = 0.04000
+P4 prop:hub, L=8: Pr[all A-edges at a hub are out] = 0.00367 <= L^-2 = 0.01562
+P4 prop:hub, L=8: Pr[all B-edges at a hub are out] = 0.00367 <= L^-2 = 0.01562
+P4 prop:hub-pairs on G_(L,13)(2,2): lambda_A = 0.3535, lambda_B = 0.3945, L = 65, N = 3393; over 36 pasts, min Y = 3.263e-03 >= 1/(3(a+b)L) = 1.282e-03 and >= the bound before simplification 1.658e-03; max q = 1.117e-02 < 1/L = 1.538e-02; n B_min^2 / N = 9.120e-10 >= 1/(405 (a+b)^5 L^3) = 8.780e-12
+P4 the sufficient condition L >= 48k/h0^2 for a = b = 2, h0 = 0.1: L >= 14400
+P5 triangles attached to K4: N = 12, M = 18, |A| = 6, 1296 trees, beta = 1.000000000000, max |Cov| over adjacent A-B pairs = 0.0e+00, h(G) = 0.6667 >= min(h(H)/3, 1) = 0.6667, max degree 5
+P5 triangles attached to K33: N = 18, M = 27, |A| = 9, 59049 trees, beta = 1.000000000000, max |Cov| over adjacent A-B pairs = 0.0e+00, h(G) = 0.5556 >= min(h(H)/3, 1) = 0.5556, max degree 5
+P6 D=3 N=200 random split: 18 spread-out mixed vertices, min Y_sigma = 0.1541, ratio to (D-2)/(D(D-1)) = 0.924
+P6 D=3 N=200 bfs    split: 15 spread-out mixed vertices, min Y_sigma = 0.1518, ratio to (D-2)/(D(D-1)) = 0.911
+P6 D=3 N=1000 random split: 30 spread-out mixed vertices, min Y_sigma = 0.1626, ratio to (D-2)/(D(D-1)) = 0.976
+P6 D=3 N=1000 bfs    split: 30 spread-out mixed vertices, min Y_sigma = 0.1622, ratio to (D-2)/(D(D-1)) = 0.973
+P6 D=4 N=200 random split: 10 spread-out mixed vertices, min Y_sigma = 0.1631, ratio to (D-2)/(D(D-1)) = 0.979
+P6 D=4 N=200 bfs    split: 10 spread-out mixed vertices, min Y_sigma = 0.1660, ratio to (D-2)/(D(D-1)) = 0.996
+P6 D=4 N=1000 random split: 30 spread-out mixed vertices, min Y_sigma = 0.1653, ratio to (D-2)/(D(D-1)) = 0.992
+P6 D=4 N=1000 bfs    split: 30 spread-out mixed vertices, min Y_sigma = 0.1658, ratio to (D-2)/(D(D-1)) = 0.995
+P6 smallest ratio 0.911 (numerical evidence only)
+check_edge_pairs: all checks passed

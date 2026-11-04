@@ -1,18 +1,20 @@
 # /// script
 # dependencies = ["numpy", "scipy"]
 # ///
-"""Exact small-graph checks of Lemma 4.2 and Theorem 4.4 of the paper .
+"""Exact small-graph checks of the local lemma and Theorem "affinity bound for a split" (thm:cut) of the paper.
 
 For a graph G, its uniform spanning tree P, and a balanced edge cut A|B, check the chain
 
-  ||sqrt P||_op  <=  ||sqrt mu||_op  <=  prod_k gamma_k  <=  prod_k sqrt(1 - p_k^2)
+  ||sqrt P||_op  <=  ||sqrt mu||_op  <=  prod_k gamma_k  <=  prod_k sqrt((1+sqrt(1-4 q_k))/2)  <=  prod_k sqrt(1 - q_k)
 
 where mu is the law of the cycle statistics (1[A∩C_i ⊆ T], 1[B∩C_i ⊆ T])_i for a family of
 vertex-disjoint mixed short cycles C_i, gamma_k is the largest operator norm of the conditional
-2x2 matrices sqrt(kappa_k(.|past)), and p_k = 1/min_{x0} prod_{y in V(C_k), y != x0} deg(y)
-is the proved lower bound on Pr[T ∩ C = C - e | T outside I(C)].
+2x2 matrices sqrt(kappa_k(.|past)), q_k = max(p_k^2, w_k), p_k = 1/min_{x0} prod_{y in V(C_k), y != x0} deg(y)
+is the bound of the local lemma, and w_k = 1/prod_{y in V(C_k)} deg(y) is the star-framed weight.
+For every past it also checks kappa(1,0) >= max(p_k, w_k^A) and kappa(0,1) >= max(p_k, w_k^B), where
+w_k^A is the product of 1/deg(head(e)) over the A-edges of C_k in a fixed cyclic orientation (Lemma "framed cycles").
 
-Also checks that local lower bound directly (min over outside configurations F).
+Also checks the local lower bound directly (min over outside configurations F).
 Usage: uv run check_chain.py [--graph NAME] [--cuts K] [--search S] [--seed s]
 """
 import argparse, itertools, os, subprocess, sys, tempfile
@@ -124,38 +126,64 @@ def stats_bits(T, cyc, maskA):
     return u, v
 
 
+def cycle_heads(cyc, E):
+    """Cyclic orientation of a cycle given by edge indices: list of (edge index, head vertex)."""
+    cyc = sorted(cyc)
+    edges = {i: E[i] for i in cyc}
+    first = cyc[0]
+    a, b = edges[first]
+    out = [(first, b)]
+    cur, used = b, {first}
+    while len(used) < len(cyc):
+        nxt = next(i for i in cyc if i not in used and cur in edges[i])
+        x, y = edges[nxt]
+        cur = y if x == cur else x
+        out.append((nxt, cur)); used.add(nxt)
+    assert cur == a, "not a cycle"
+    return out
+
+
 def chain_check(n, E, T, maskA, cycles_sel, deg):
     tau = len(T)
     r = len(cycles_sel)
     U = np.zeros(len(T), dtype=np.int64); Vv = np.zeros(len(T), dtype=np.int64)
-    gammas, pemp, ptheo = [], [], []
+    gammas, frame_ok, qtheo, pq_emp = [], True, [], []
     for k, cyc in enumerate(cycles_sel):
         u, v = stats_bits(T, cyc, maskA)
         assert not np.any(u & v), "forbidden (1,1) pattern occurred"
         # conditional 2x2 laws given past (U,Vv)
         key = U * (1 << r) + Vv
         loc = u.astype(np.int64) * 2 + v.astype(np.int64)
-        cnt = {}
         keys, inv = np.unique(key, return_inverse=True)
         C = np.zeros((len(keys), 4))
         np.add.at(C, (inv, loc), 1.0)
         C /= C.sum(axis=1, keepdims=True)
-        g = 0.0; pm = 1.0
+        vs = verts_of(cyc, E)
+        ds = sorted(deg[x] for x in vs)
+        pk = 1.0 / float(np.prod(ds[:-1]))
+        wA = wB = 1.0
+        for i, head in cycle_heads(cyc, E):
+            if (maskA >> i) & 1:
+                wA /= deg[head]
+            else:
+                wB /= deg[head]
+        q = max(pk * pk, wA * wB)
+        g = 0.0; pq = 1.0
         for row in C:
             Mx = np.sqrt(np.array([[row[0], row[1]], [row[2], row[3]]]))
             g = max(g, np.linalg.norm(Mx, 2))
-            pm = min(pm, row[1], row[2])
-        gammas.append(g); pemp.append(pm)
-        vs = verts_of(cyc, E)
-        ds = sorted(deg[x] for x in vs)
-        ptheo.append(1.0 / float(np.prod(ds[:-1])))
+            pq = min(pq, row[1] * row[2])
+            # row[2] = Pr[(u,v)=(1,0) | past], row[1] = Pr[(0,1) | past]
+            if row[2] < max(pk, wA) - 1e-12 or row[1] < max(pk, wB) - 1e-12:
+                frame_ok = False
+        gammas.append(g); qtheo.append(q); pq_emp.append(pq)
         U = U | (u.astype(np.int64) << k); Vv = Vv | (v.astype(np.int64) << k)
     # full statistic matrix
     Mu = np.zeros((1 << r, 1 << r))
     np.add.at(Mu, (U, Vv), 1.0)
     Mu /= tau
     op_mu = np.linalg.norm(np.sqrt(Mu), 2)
-    return op_mu, gammas, pemp, ptheo
+    return op_mu, gammas, qtheo, pq_emp, frame_ok
 
 
 def local_lemma_check(n, E, T, cyc, deg):
@@ -249,13 +277,17 @@ def main():
         sel = greedy_disjoint_mixed(cycles, E, mk, rng)
         if not sel:
             print(f"[{tag}] |A|={bin(mk).count('1')} opP={opP:.4f} no mixed short cycle"); continue
-        op_mu, gam, pemp, pth = chain_check(n, E, T, mk, sel, deg)
-        prodg = float(np.prod(gam)); theo = float(np.prod([np.sqrt(1 - p * p) for p in pth]))
-        ok = opP <= op_mu + 1e-9 and op_mu <= prodg + 1e-9 and prodg <= theo + 1e-9 and min(np.array(pemp) - np.array(pth)) >= -1e-12
+        op_mu, gam, qth, pq_emp, frame_ok = chain_check(n, E, T, mk, sel, deg)
+        prodg = float(np.prod(gam))
+        sharp = float(np.prod([np.sqrt((1 + np.sqrt(1 - 4 * q)) / 2) for q in qth]))
+        theo = float(np.prod([np.sqrt(1 - q) for q in qth]))
+        ok = (opP <= op_mu + 1e-9 and op_mu <= prodg + 1e-9 and prodg <= sharp + 1e-9 and sharp <= theo + 1e-12
+              and frame_ok and min(np.array(pq_emp) - np.array(qth)) >= -1e-12)
         if not ok:
             failures += 1
         print(f"[{tag}] |A|={bin(mk).count('1')} r={len(sel)} opP={opP:.4f} <= opMu={op_mu:.4f} <= prod gamma={prodg:.4f} "
-              f"<= theory={theo:.6f}  min p_emp={min(pemp):.3f} (p_theory={min(pth):.4f})  {'OK' if ok else 'VIOLATION'}")
+              f"<= theory={sharp:.6f} <= {theo:.6f}  min K(1,0)K(0,1)={min(pq_emp):.4f} (q_theory={min(qth):.5f})  "
+              f"{'OK' if ok else 'VIOLATION'}")
 
     if failures:
         print(f"FAILED: {failures} check(s) violated the proved bounds.", file=sys.stderr)

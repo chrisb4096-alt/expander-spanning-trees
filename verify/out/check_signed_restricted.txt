@@ -1,0 +1,29 @@
+S1 RY placement t=5 m=2: their constants give 0; Lemma lem:digon gives prod XOR, rank 2^2
+S1 RY placement t=7 m=3: their constants give 0; Lemma lem:digon gives prod XOR, rank 2^3
+S1 RY placement t=9 m=4: their constants give 0; Lemma lem:digon gives prod XOR, rank 2^4
+S1 RY placement t=12 m=5: their constants give 0; Lemma lem:digon gives prod XOR, rank 2^5
+S1 Raz placement t=9 m=3 (2m <= t - m): spare rows and columns suffice, prod XOR, rank 2^3
+S1 Raz placement t=12 m=3 (2m <= t - m): spare rows and columns suffice, prod XOR, rank 2^3
+S1 Raz placement t=15 m=4 (2m <= t - m): spare rows and columns suffice, prod XOR, rank 2^4
+S2 random cubic N=20: m=4 disjoint cycles of lengths [4, 4, 6, 3]: indicator = prod XOR (rank 16), signed support-exact values rank 16, ST_G = prod (x_e + x_f + (|C|-2) x_e x_f): True
+S2 random cubic N=30: m=4 disjoint cycles of lengths [6, 5, 6, 5]: indicator = prod XOR (rank 16), signed support-exact values rank 16, ST_G = prod (x_e + x_f + (|C|-2) x_e x_f): True
+S2 random cubic N=40: m=4 disjoint cycles of lengths [6, 8, 6, 8]: indicator = prod XOR (rank 16), signed support-exact values rank 16, ST_G = prod (x_e + x_f + (|C|-2) x_e x_f): True
+S2 random cubic N=60: m=5 disjoint cycles of lengths [7, 6, 10, 6, 8]: indicator = prod XOR (rank 32), signed support-exact values rank 32, ST_G = prod (x_e + x_f + (|C|-2) x_e x_f): True
+S3 Lemma lem:minor-restrict: Petersen -> K_3,3 (ok) and 8 random minors
+S4 Lemma lem:frontier: 840 (circuit, vtree node) pairs, rank <= |I| + 1 <= number of nodes; largest rank 4
+S5 t=10 r=1: min |P| = 34 (bound 33.3), min m = 3 (bound -0.17)
+S5 t=10 r=2: min |P| = 17 (bound 11.1), min m = 3 (bound -0.72)
+S5 t=10 r=3: min |P| = 6 (bound 3.7), min m = 2 (bound -0.91)
+S5 t=10 r=4: min |P| = 3 (bound 1.2), min m = 1 (bound -0.97)
+S5 t=16 r=1: min |P| = 86 (bound 85.3), min m = 5 (bound 0.33)
+S5 t=16 r=2: min |P| = 32 (bound 28.4), min m = 2 (bound -0.56)
+S5 t=16 r=3: min |P| = 17 (bound 9.5), min m = 3 (bound -0.85)
+S5 t=16 r=4: min |P| = 7 (bound 3.2), min m = 2 (bound -0.95)
+S5 t=24 r=1: min |P| = 197 (bound 192.0), min m = 6 (bound 1.00)
+S5 t=24 r=2: min |P| = 88 (bound 64.0), min m = 6 (bound -0.33)
+S5 t=24 r=3: min |P| = 31 (bound 21.3), min m = 3 (bound -0.78)
+S5 t=24 r=4: min |P| = 14 (bound 7.1), min m = 3 (bound -0.93)
+S6 40 random signed smooth decomposable circuits: f = g - h, g + h = f_{C^+}, g, h >= 0, scopes unchanged, size <= 6|C|
+S6 overlap step of Theorem thm:signed-cancel: min(BC - (1 - eps) sqrt(lambda/Z)) = 2.60e-08 (>= 0)
+S6 triangle: ST(1,1,1) = 3, indicator of spanning trees at (1,1,1) = 0
+check_signed_restricted: all checks passed

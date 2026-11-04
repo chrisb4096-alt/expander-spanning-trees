@@ -13,7 +13,7 @@ Checks, for every chain:
 Singular values are floating point; the tolerance is 1e-12.
 Exits nonzero (AssertionError) on any violation.
 
-Extended with the boundary kernels
+Copied from toy/r1/proof/check_tensorization.py and extended with the boundary kernels
 (zero (0,0) mass, p in {0.45, 0.5}) requested in the referee review.
 """
 import sys

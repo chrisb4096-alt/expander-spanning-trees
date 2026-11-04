@@ -1,0 +1,42 @@
+PASS  K4+leaf: M=7, blocks [1, 6]: beta=1 iff every block on one side (all 126 splits)
+PASS  K4+leaf: max balanced beta = 0.750000; balanced beta=1 exists iff M1 <= 2M/3 (M1=6)
+PASS  K4+leaf: max balanced beta^2 = 0.562500 >= 2^-(M1-2M/3)-1 = 0.198425
+PASS  K4+leaf: max balanced beta = 0.75
+PASS  K4+leaf: A = a triangle of K4 attains it (40 of the balanced splits attain 0.75)
+PASS  bowtie: M=6, blocks [3, 3]: beta=1 iff every block on one side (all 62 splits)
+PASS  bowtie: max balanced beta = 1.000000; balanced beta=1 exists iff M1 <= 2M/3 (M1=3)
+PASS  K4+path2: M=8, blocks [1, 1, 6]: beta=1 iff every block on one side (all 254 splits)
+PASS  K4+path2: max balanced beta = 0.750000; balanced beta=1 exists iff M1 <= 2M/3 (M1=6)
+PASS  K4+path2: max balanced beta^2 = 0.562500 >= 2^-(M1-2M/3)-1 = 0.314980
+PASS  C4+triangle: M=7, blocks [3, 4]: beta=1 iff every block on one side (all 126 splits)
+PASS  C4+triangle: max balanced beta = 1.000000; balanced beta=1 exists iff M1 <= 2M/3 (M1=4)
+PASS  prism_K3: M=9, blocks [9]: beta=1 iff every block on one side (all 510 splits)
+PASS  prism_K3: max balanced beta = 0.800000; balanced beta=1 exists iff M1 <= 2M/3 (M1=9)
+PASS  prism_K3: max balanced beta^2 = 0.640000 >= 2^-(M1-2M/3)-1 = 0.062500
+PASS  two_K4: M=12, blocks [6, 6]: beta=1 iff every block on one side (all 4094 splits)
+PASS  two_K4: max balanced beta = 1.000000; balanced beta=1 exists iff M1 <= 2M/3 (M1=6)
+PASS  K4+leaf: h(G) = 1.0000 <= h(block) for every block with >= 2 edges
+PASS  bowtie: h(G) = 1.0000 <= h(block) for every block with >= 2 edges
+PASS  K4+path2: h(G) = 0.5000 <= h(block) for every block with >= 2 edges
+PASS  C4+triangle: h(G) = 0.6667 <= h(block) for every block with >= 2 edges
+PASS  prism_K3: h(G) = 1.0000 <= h(block) for every block with >= 2 edges
+PASS  two_K4: h(G) = 1.0000 <= h(block) for every block with >= 2 edges
+PASS  petersen+pendants: h(G) = 0.5000 <= h(block) for every block with >= 2 edges
+PASS  petersen+K4: h(G) = 0.7500 <= h(block) for every block with >= 2 edges
+PASS  K33: N=6 D=3 h=1.6667: min_w h(G-w)/(h/2D) = 5.40 >= 1, max R_(G-w) = 1.000 <= 16D^3/h^2 = 156, Mohar holds
+PASS  cube: N=8 D=3 h=1.0000: min_w h(G-w)/(h/2D) = 6.00 >= 1, max R_(G-w) = 1.200 <= 16D^3/h^2 = 432, Mohar holds
+PASS  petersen: N=10 D=3 h=1.0000: min_w h(G-w)/(h/2D) = 6.00 >= 1, max R_(G-w) = 1.333 <= 16D^3/h^2 = 432, Mohar holds
+PASS  heawood: N=14 D=3 h=1.0000: min_w h(G-w)/(h/2D) = 5.00 >= 1, max R_(G-w) = 1.500 <= 16D^3/h^2 = 432, Mohar holds
+PASS  mobius_kantor: N=16 D=3 h=0.7500: min_w h(G-w)/(h/2D) = 5.71 >= 1, max R_(G-w) = 1.556 <= 16D^3/h^2 = 768, Mohar holds
+PASS  pappus: N=18 D=3 h=0.7778: min_w h(G-w)/(h/2D) = 5.79 >= 1, max R_(G-w) = 1.600 <= 16D^3/h^2 = 714, Mohar holds
+PASS  K5: N=5 D=4 h=3.0000: min_w h(G-w)/(h/2D) = 5.33 >= 1, max R_(G-w) = 0.500 <= 16D^3/h^2 = 114, Mohar holds
+PASS  prism_K4: N=8 D=4 h=1.0000: min_w h(G-w)/(h/2D) = 8.00 >= 1, max R_(G-w) = 0.842 <= 16D^3/h^2 = 1024, Mohar holds
+PASS  C10_square: N=10 D=4 h=1.2000: min_w h(G-w)/(h/2D) = 6.67 >= 1, max R_(G-w) = 1.022 <= 16D^3/h^2 = 711, Mohar holds
+PASS  rr3_14: N=14 D=3 h=0.6667: min_w h(G-w)/(h/2D) = 4.50 >= 1, max R_(G-w) = 1.868 <= 16D^3/h^2 = 972, Mohar holds
+PASS  rr3_16: N=16 D=3 h=0.4286: min_w h(G-w)/(h/2D) = 4.00 >= 1, max R_(G-w) = 2.956 <= 16D^3/h^2 = 2352, Mohar holds
+PASS  rr4_12: N=12 D=4 h=1.0000: min_w h(G-w)/(h/2D) = 6.40 >= 1, max R_(G-w) = 1.044 <= 16D^3/h^2 = 1024, Mohar holds
+PASS  K4+leaf: Pr[e not in T] = 1/(1+R_(G-e)) for every edge (max error 0.0e+00)
+PASS  bowtie: Pr[e not in T] = 1/(1+R_(G-e)) for every edge (max error 5.6e-17)
+PASS  prism_K3: Pr[e not in T] = 1/(1+R_(G-e)) for every edge (max error 1.1e-16)
+PASS  two_K4: Pr[e not in T] = 1/(1+R_(G-e)) for every edge (max error 1.1e-16)
+ALL PASS

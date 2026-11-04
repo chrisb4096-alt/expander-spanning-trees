@@ -1,80 +1,116 @@
 \section{Main results}\label{sec:main}
 
-\subsection{The general lower bound}
+\subsection{Proof of Theorem~\ref{thm:main} and the families it covers}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By Theorem~\ref{thm:touch}, $\beta(P;A|B)^2\le e^{-cN}$ for every balanced split. Apply Corollary~\ref{cor:reduction} with $\delta=1-\eps>0$.
+\end{proof}
+
+Exactly as for Theorem~\ref{thm:general} below, the bound stays exponential when the overlap $\delta=1-\TV$ is itself exponentially small, as long as $\delta^2\ge e^{-(c-c')N}$ for some $c'>0$.
+
+Below, \emph{the easy Cheeger direction} is Lemma~\ref{lem:easy-cheeger}: $h(G)\ge\lambda_2(L_G)/2$.
+
+\begin{corollary}[families]\label{cor:families}
+Each of the following families satisfies the hypotheses of Theorem~\ref{thm:main} with $D$ and $h$ independent of $N$.
+\begin{enumerate}[label=(\alph*)]
+\item For fixed $d\ge3$, a uniformly random $d$-regular graph on $n$ vertices, with probability tending to one as $n\to\infty$ ($nd$ even).
+\item The Ramanujan graphs $X^{p,q}$ of Lubotzky, Phillips and Sarnak~\cite{LPS88}, with $D=p+1$ and $h=(\sqrt p-1)^2/2$, for $q$ large enough that they are simple graphs (their girth tends to infinity with $q$~\cite{LPS88}).
+\item The prisms $H\square K_2$ and squares $H^2$ of connected graphs $H$ with at least three vertices, maximum degree at most $\Delta$ and $h(H)\ge h_0>0$, with $D$ and $h$ as in Lemmas~\ref{lem:prism} and~\ref{lem:square}.
+\item Every 2-connected graph $H$ with maximum degree at most $\Delta$ and $h(H)\ge h_0>0$, itself.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(a) For fixed $d\ge3$, a random $d$-regular graph is $d$-connected with probability tending to one~\cite{Wormald81}, and there is $h_d>0$ such that its edge expansion is at least $h_d$ with probability tending to one~\cite{Bollobas88}.
+
+(b) The graphs $X^{p,q}$ are connected $(p+1)$-regular Cayley graphs, and every adjacency eigenvalue other than $\pm(p+1)$ has absolute value at most $2\sqrt p$~\cite{LPS88}. So $\lambda_2(L)\ge p+1-2\sqrt p=(\sqrt p-1)^2$, and $h\ge(\sqrt p-1)^2/2$ by the easy Cheeger direction. A Cayley graph is vertex-transitive. Every connected graph with at least two vertices has a vertex that is not a cut vertex, for instance a leaf of a spanning tree, and in a vertex-transitive graph every vertex is then a non-cut vertex. So a connected vertex-transitive graph with at least three vertices is 2-connected.
+
+(c) The expansion and degree bounds are Lemmas~\ref{lem:prism} and~\ref{lem:square}. For 2-connectivity, delete a vertex $(x,0)$ from $H\square K_2$: the copy $H\times\{1\}$ is still connected, and every remaining $(y,0)$ is joined to $(y,1)$; the case $(x,1)$ is symmetric. Delete a vertex $v$ from $H^2$: every component of $H-\{v\}$ contains an $H$-neighbour of $v$, since $H$ is connected, and the $H$-neighbours of $v$ are pairwise adjacent in $H^2$, so $H^2-\{v\}$ is connected.
+
+(d) There is nothing to prove.
+\end{proof}
+
+For the graphs of (b) with $p\ge5$, $\lambda_2(L)\ge(\sqrt p-1)^2>1$, so Theorem~\ref{thm:main} holds with the spectral constant $c_\lambda(p+1)$, $\lambda=(\sqrt p-1)^2$; for $p=5$ this is $8.0\cdot10^{-8}$. The same applies to random $d$-regular graphs with $d\ge6$, with $c_\lambda(d)$ for any fixed $\lambda\in(1,d-2\sqrt{d-1})$, by Friedman's theorem~\cite{Friedman08} that all adjacency eigenvalues other than $d$ have absolute value at most $2\sqrt{d-1}+o(1)$ with probability tending to one.
+
+The Ramanujan graphs of~\cite{LPS88} have girth of order $\log N$, and random regular graphs have few short cycles: for fixed $d$ and $k$, the number of cycles of length $k$ converges in distribution to a Poisson variable with mean $(d-1)^k/(2k)$~\cite{Wormald81cycles}. The local argument of Sections~\ref{sec:trees} and~\ref{sec:geometry} gives nothing there (Section~\ref{sec:limits}), and an earlier version of this paper left this case open.
+
+\subsection{Linked expanders}
 
 \begin{theorem}[linked expanders]\label{thm:general}
-Let $G$ be a connected simple graph with $N\ge3$ vertices, $M$ edges, maximum degree $D$ and edge expansion $h>0$, linked by a family of cycles with parameters $\ell$ and $\kappa$. Put $p:=D^{-(\ell-1)}$ and
+Let $G$ be a connected simple graph with $N\ge3$ vertices, $M$ edges, maximum degree $D$ and edge expansion $h>0$, linked by a family of cycles with parameters $\ell$ and $\kappa$. Put
 \[
   r_0:=\frac1{\ell\kappa}\min\Bigl\{\frac{hN}{4D\ell},\ \frac{2M}{3\ell D(1+D/h)}\Bigr\}.
 \]
-Then $\beta(\UST(G);A|B)^2\le(1-p^2)^{r_0}$ for every balanced split $A|B$. Consequently, if $C$ is a smooth decomposable PC with nonnegative weights over the $M$ edge variables, with leaves of arity at most $2M/3$, and $1-\TV(\UST(G),Q_C)\ge\delta>0$, then
+Then $\beta(\UST(G);A|B)^2\le(1-D^{-\ell})^{r_0}$ for every balanced split $A|B$. Consequently, if $C$ is a smooth decomposable PC with nonnegative weights over the $M$ edge variables, with leaves of arity at most $2M/3$, and $1-\TV(\UST(G),Q_C)\ge\delta>0$, then
 \[
-  \abs C\ \ge\ \delta^2(1-p^2)^{-r_0}\ \ge\ \delta^2\exp\bigl(r_0\,D^{-2(\ell-1)}\bigr).
+  \abs C\ \ge\ \delta^2(1-D^{-\ell})^{-r_0}\ \ge\ \delta^2\exp\bigl(r_0\,D^{-\ell}\bigr).
 \]
 \end{theorem}
 
 \begin{proof}
-Let $A|B$ be balanced and colour $A$ and $B$ with two colours. Each class has at least $M/3$ edges, so Lemma~\ref{lem:mixed} with $m_0=M/3$ gives at least $r_0$ pairwise vertex-disjoint mixed cycles of length at most $\ell$. Theorem~\ref{thm:cut} gives $\beta^2\le(1-p^2)^{r_0}$. Corollary~\ref{cor:reduction} gives the circuit bound, and $-\log(1-p^2)\ge p^2$ gives the last inequality.
+Let $A|B$ be balanced and colour $A$ and $B$ with two colours. Each class has at least $M/3$ edges, so Lemma~\ref{lem:mixed} with $m_0=M/3$ gives at least $r_0$ pairwise vertex-disjoint mixed cycles of length at most $\ell$. Theorem~\ref{thm:cut} gives $\beta^2\le(1-D^{-\ell})^{r_0}$. Corollary~\ref{cor:reduction} gives the circuit bound, and $-\log(1-x)\ge x$ gives the last inequality.
 \end{proof}
 
-With $\delta=1-\eps$ and $c:=r_0p^2/N$ this is the bound $\abs C\ge(1-\eps)^2e^{cN}$. The bound stays exponential even when the overlap $\delta$ is itself exponentially small, as long as $\delta^2\ge e^{-(c-c')N}$ for some $c'>0$.
+With $\delta=1-\eps$ and $c:=r_0D^{-\ell}/N$ this is the bound $\abs C\ge(1-\eps)^2e^{cN}$. The bound stays exponential even when the overlap $\delta$ is itself exponentially small, as long as $\delta^2\ge e^{-(c-c')N}$ for some $c'>0$.
 
-\subsection{Prisms and squares: proof of Theorem~\ref{thm:main}}
+\subsection{Prisms and squares: proof of Corollary~\ref{cor:prism-square}}
 
 \begin{corollary}[closed-form constants]\label{cor:constants}
-Let $H$ satisfy the hypotheses of Theorem~\ref{thm:main} and put $h'=\min(1,h_0)$. For $G=H\square K_2$,
+Let $H$ satisfy the hypotheses of Corollary~\ref{cor:prism-square} and put $h'=\min(1,h_0)$. For $G=H\square K_2$,
 \[
-  r_0\,p^2\ \ge\ \frac{h'}{24\,\Delta(\Delta+1)^7(3\Delta+4)}\,N ,
+  r_0\,D^{-\ell}\ \ge\ \frac{h'}{24\,\Delta(\Delta+1)^5(3\Delta+4)}\,N ,
 \]
 and for $G=H^2$,
 \[
-  r_0\,p^2\ \ge\ \frac{8h_0}{243\,\Delta^{11}(\Delta-1)(h_0+\Delta^2)}\,N .
+  r_0\,D^{-\ell}\ \ge\ \frac{8h_0}{243\,\Delta^{9}(\Delta-1)(h_0+\Delta^2)}\,N .
 \]
 \end{corollary}
 
 \begin{proof}
-The quantity $r_0p^2$ increases with $h$ and $M$ and decreases with $D$ and $\kappa$, so we may insert the bounds of Lemmas~\ref{lem:prism} and~\ref{lem:square}.
+The quantity $r_0D^{-\ell}$ increases with $h$ and $M$ and decreases with $D$ and $\kappa$, so we may insert the bounds of Lemmas~\ref{lem:prism} and~\ref{lem:square}.
 
-\emph{Prism.} Here $D\le\Delta+1$, $\ell=4$, $\kappa\le\Delta$, $h\ge h'/3$, $M\ge N$ and $p^2\ge(\Delta+1)^{-6}$. The first term of the minimum is at least $h'N/(48(\Delta+1))$. The second is at least
+\emph{Prism.} Here $D\le\Delta+1$, $\ell=4$, $\kappa\le\Delta$, $h\ge h'/3$, $M\ge N$ and $D^{-\ell}\ge(\Delta+1)^{-4}$. The first term of the minimum is at least $h'N/(48(\Delta+1))$. The second is at least
 \[
   \frac{2N}{12(\Delta+1)(1+3(\Delta+1)/h')}=\frac{h'N}{6(\Delta+1)(h'+3\Delta+3)}\ge\frac{h'N}{6(\Delta+1)(3\Delta+4)},
 \]
-using $h'\le1$. Since $6(3\Delta+4)\ge48$ for $\Delta\ge2$, the minimum is at least the last expression. Dividing by $\ell\kappa\le4\Delta$ and multiplying by $p^2$ gives the claim.
+using $h'\le1$. Since $6(3\Delta+4)\ge48$ for $\Delta\ge2$, the minimum is at least the last expression. Dividing by $\ell\kappa\le4\Delta$ and multiplying by $D^{-\ell}$ gives the claim.
 
-\emph{Square.} Here $D\le\Delta^2$, $\ell=3$, $\kappa\le3\Delta(\Delta-1)/2$, $h\ge h_0$, $M\ge2N/3$ and $p^2\ge\Delta^{-8}$. The first term is at least $h_0N/(12\Delta^2)$, and the second is at least
+\emph{Square.} Here $D\le\Delta^2$, $\ell=3$, $\kappa\le3\Delta(\Delta-1)/2$, $h\ge h_0$, $M\ge2N/3$ and $D^{-\ell}\ge\Delta^{-6}$. The first term is at least $h_0N/(12\Delta^2)$, and the second is at least
 \[
   \frac{4N}{27\Delta^2(1+\Delta^2/h_0)}=\frac{4h_0N}{27\Delta^2(h_0+\Delta^2)} .
 \]
-The second is the smaller, since $27(h_0+\Delta^2)\ge48$. Dividing by $\ell\kappa\le9\Delta(\Delta-1)/2$ and multiplying by $p^2$ gives the claim.
+The second is the smaller, since $27(h_0+\Delta^2)\ge48$. Dividing by $\ell\kappa\le9\Delta(\Delta-1)/2$ and multiplying by $D^{-\ell}$ gives the claim.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:main}]
-Lemmas~\ref{lem:prism} and~\ref{lem:square} show that $G$ satisfies the hypotheses of Theorem~\ref{thm:general}. Apply it with $\delta=1-\eps$ and use Corollary~\ref{cor:constants}.
+\begin{proof}[Proof of Corollary~\ref{cor:prism-square}]
+$G$ is 2-connected by Corollary~\ref{cor:families}(c). Lemmas~\ref{lem:prism} and~\ref{lem:square} show that $G$ satisfies the hypotheses of Theorem~\ref{thm:general}. Apply it with $\delta=1-\eps$ and use Corollary~\ref{cor:constants}.
 \end{proof}
 
 The closed forms are lossy. A direct evaluation of $r_0$ is better, as the next example shows.
 
 \begin{example}[cubic prisms]\label{ex:cubic}
-Let $H$ be $3$-regular with $h(H)\ge1/5$, and $G=H\square K_2$. Then $D=4$, $M=2N$, $\ell=4$, $\kappa=3$, $h\ge1/15$ and $p=1/64$. The two terms in $r_0$ are $hN/(4D\ell)\ge N/960$ and $2M/(3\ell D(1+D/h))\ge N/732$, so $r_0\ge N/11520$. The per-cycle factor in Theorem~\ref{thm:cut} is at most $(1-4^{-6})^{1/2}=0.99987792\ldots$; the sharper form $((1+\sqrt{1-4^{-5}})/2)^{1/2}=0.99987789\ldots$ changes only the eighth digit. So
+Let $H$ be $3$-regular with $h(H)\ge1/5$, and $G=H\square K_2$. Then $D=4$, $M=2N$, $\ell=4$, $\kappa=3$, $h\ge1/15$ and $D^{-\ell}=1/256$. The two terms in $r_0$ are $hN/(4D\ell)\ge N/960$ and $2M/(3\ell D(1+D/h))\ge N/732$, so $r_0\ge N/11520$. The per-cycle factor in Theorem~\ref{thm:cut} is at most $(1-4^{-4})^{1/2}=0.9980449\ldots$; the sharper form $((1+\sqrt{1-4^{-3}})/2)^{1/2}=0.9980372\ldots$ changes the fifth decimal. So
 \[
-  \abs C\ \ge\ (1-\eps)^2\,(1-4^{-6})^{-N/11520}\ \ge\ (1-\eps)^2\,e^{2.1195\cdot10^{-8}N}\ \ge\ (1-\eps)^2\,e^{2\cdot10^{-8}N}.
+  \abs C\ \ge\ (1-\eps)^2\,(1-4^{-4})^{-N/11520}\ \ge\ (1-\eps)^2\,e^{3.3974\cdot10^{-7}N}\ \ge\ (1-\eps)^2\,e^{3\cdot10^{-7}N}.
 \]
-Here $-\log(1-4^{-6})/11520=2.11953\ldots\cdot10^{-8}$. The closed form of Corollary~\ref{cor:constants} gives only $c\ge1/76677120\approx1.30\cdot10^{-8}$ for these parameters. Either way the bound exceeds $10$ only when $N$ exceeds about $10^8$.
+Here $-\log(1-4^{-4})/11520=3.39748\ldots\cdot10^{-7}$. The closed form of Corollary~\ref{cor:constants} gives only $c\ge1/4792320\approx2.09\cdot10^{-7}$ for these parameters. Either way the bound exceeds $10$ only when $N$ exceeds about $7\cdot10^6$. The bound of the first version of this paper, with $D^{-2(\ell-1)}=4^{-6}$ in place of $4^{-4}$, was $16$ times weaker.
 \end{example}
 
-The constants are poor for three reasons: the local bound $p=D^{-(\ell-1)}$ is crude, the forbidden-cell factor uses two bits per cycle, and the geometric counting and packing lose factors of $\ell$, $D$ and $\kappa$. In exact computations on five small graphs, the geometric mean of the conditional factors $\gamma_k$ of Lemma~\ref{lem:chain} was between $0.94$ and $0.99$ per cycle, while the proved per-cycle bounds on the same instances were between $0.998$ and $0.99988$ (Appendix~\ref{app:checks}). These graphs are far too small to say anything about rates. We made no attempt to optimize.
+The constants are poor for three reasons: the per-cycle weight $D^{-\ell}$ is crude, the forbidden-cell factor uses two bits per cycle, and the geometric counting and packing lose factors of $\ell$, $D$ and $\kappa$. In exact computations on five small graphs, the geometric mean of the conditional factors $\gamma_k$ of Lemma~\ref{lem:chain} was between $0.94$ and $0.99$ per cycle, while the proved per-cycle bounds on the same instances were between $0.992$ and $0.998$ (Appendix~\ref{app:checks}). These graphs are far too small to say anything about rates. We made no attempt to optimize.
 
 \subsection{The square grid}
 
 \begin{corollary}[grid]\label{cor:grid}
-Let $L\ge2$ and let $P$ be the uniform spanning tree of the $L\times L$ grid, with $M=2L(L-1)$ edges. Every smooth decomposable PC with nonnegative weights and leaves of arity at most $2M/3$ that satisfies $1-\TV(P,Q_C)\ge\delta>0$ has size at least $\delta^2(1-4^{-6})^{-L/512}\ge\delta^2e^{L/2^{21}}$.
+Let $L\ge2$ and let $P$ be the uniform spanning tree of the $L\times L$ grid, with $M=2L(L-1)$ edges. Every smooth decomposable PC with nonnegative weights and leaves of arity at most $2M/3$ that satisfies $1-\TV(P,Q_C)\ge\delta>0$ has size at least $\delta^2(1-4^{-4})^{-L/512}\ge\delta^2e^{L/2^{17}}$.
 \end{corollary}
 
 \begin{proof}
-Lemma~\ref{lem:grid-mixed} gives at least $L/512$ vertex-disjoint mixed unit squares for every balanced split. All degrees are at most $4$, so $p\ge4^{-3}$ in Theorem~\ref{thm:cut}. Corollary~\ref{cor:reduction} finishes the proof.
+Lemma~\ref{lem:grid-mixed} gives at least $L/512$ vertex-disjoint mixed unit squares for every balanced split. All degrees are at most $4$, so $q_k\ge4^{-4}$ in Theorem~\ref{thm:cut}. Corollary~\ref{cor:reduction} finishes the proof.
 \end{proof}
 
 The bound is tight up to the constant in the exponent. Process the edges in a fixed order, sweeping the grid with a staircase frontier of $O(L)$ active vertices. A state records the partition of the active vertices induced by the processed edges chosen so far, provided they form a forest in which every component still meets the frontier (a completed spanning component is allowed only at the end). Choosing an edge inside a block is rejected, choosing one across blocks merges them, and a component that would leave the frontier unconnected is rejected. Because the processed region is planar and lies on one side of the frontier, the realizable partitions are noncrossing, so there are at most a Catalan number $2^{O(L)}$ of them; recording arbitrary partitions would give only the weaker bound $2^{O(L\log L)}$. The resulting layered decision diagram has $O(L^2)\,2^{O(L)}$ nodes. Writing each node at layer $i$ as $[x_i=0]f_0+[x_i=1]f_1$, with all branches kept layered so both children have the same scope, gives a smooth, deterministic, decomposable circuit with univariate leaves of size $2^{O(L)}$ that computes the spanning-tree indicator; dividing by $\tau$ gives the uniform spanning tree. For the uniform domino tiling of the same grid, a bound $e^{\Theta(L)}$ was proved in~\cite{Blaschke26Dimers} by a much longer argument; Section~\ref{sec:limits} says why the short argument here does not apply to matchings.
+
+Theorem~\ref{thm:main} does not cover the grid as stated: $h(G_L)$ is of order $1/L$, so $c(D,h)N$ tends to zero. Theorem~\ref{thm:touch-cut} itself needs no expansion, and we expect a local version to work. If $W$ has pairwise distances at least $3$, any two neighbours of $w\in W$ are joined in $G_L-W$ by a path of length at most $4$ around $w$, so $\rho_w\le4$ and $p_A(w)p_B(w)\ge6^{-4}$ by Lemma~\ref{lem:touch}. What remains is to show that every balanced split has $\Omega(L)$ mixed vertices, using Lemma~\ref{lem:grid-iso} in place of expansion. We have not written this out, so we state the vertex-touch bound for the grid only as a conjecture. It would not improve on Corollary~\ref{cor:grid} beyond constants.
 
 \subsection{Upper bounds}
 
@@ -95,31 +131,33 @@ Let $G$ be any connected graph with $N$ vertices and $M$ edges, and $P=\UST(G)$.
 (c) Take a sum node with weight $1/\tau(G)$ on each spanning tree $T$, whose child is the product of the indicator leaves $[x_e=\one[e\in T]]$ over all $e\in E$.
 \end{proof}
 
-Since $N-1\le M\le DN/2$, parts (c) and Theorem~\ref{thm:main} together say that, for fixed $\Delta$, $h_0$ and $\eps<1$, the optimal size of a nonnegative smooth decomposable PC that $\eps$-approximates $P$ is $2^{\Theta(M)}$. Part~(a) is not a nonnegative PC: the determinant circuit uses subtraction, and that is the point of the separation.
+Since $N-1\le M\le DN/2$, parts (c) and Theorem~\ref{thm:main} together say that, for fixed $D$, $h$ and $\eps<1$, the optimal size of a nonnegative smooth decomposable PC that $\eps$-approximates $P$ is $2^{\Theta(M)}$. Part~(a) is not a nonnegative PC: the determinant circuit uses subtraction, and that is the point of the separation.
 
 \subsection{Exact support}\label{sec:support}
 
 Exact representation of a distribution with the same support as $P$ but different probabilities is not the case $\eps=0$ of Theorem~\ref{thm:main}, since such a distribution can be far from $P$ in total variation. Lower bounds for exact support follow instead from Corollary~\ref{cor:rectangle} and a rectangle cover.
 
 \begin{corollary}[exact support]\label{cor:support}
-Let $G$ satisfy the hypotheses of Theorem~\ref{thm:general}, and let $c_0:=r_0p^2/N$ with $r_0,p$ as there.
+Let $G$ satisfy the hypotheses of Theorem~\ref{thm:main}, and let $c$ and $\kappa=3c$ be as in Theorem~\ref{thm:touch}.
 \begin{enumerate}[label=(\alph*)]
-\item Let $C$ be a smooth decomposable PC with nonnegative weights and leaves of arity at most $2M/3$ such that $f_C(x)>0$ exactly when $x$ is a spanning tree. Then $\abs C\ge e^{c_0N}$.
-\item Let $\Gamma$ be a monotone arithmetic circuit with fan-in at most two and $s$ nodes computing a polynomial whose monomials are exactly $\prod_{e\in T}z_e$, $T\in\cT(G)$, each with a positive coefficient. Then $s\ge e^{c_1N}$, where $c_1$ is defined like $c_0$ with $M$ replaced by $N-1$ in the definition of $r_0$.
+\item Let $C$ be a smooth decomposable PC with nonnegative weights and leaves of arity at most $2M/3$ such that $f_C(x)>0$ exactly when $x$ is a spanning tree. Then $\abs C\ge e^{cN}$.
+\item Let $\Gamma$ be a monotone arithmetic circuit with fan-in at most two and $s$ nodes computing a polynomial whose monomials are exactly $\prod_{e\in T}z_e$, $T\in\cT(G)$, each with a positive coefficient. Then $s\ge e^{2cN/3}$.
 \end{enumerate}
+The same holds if $G$ satisfies the hypotheses of Theorem~\ref{thm:general} instead, with $c_0:=r_0D^{-\ell}/N$ in place of $c$ in (a), and in (b) with $c_1$ in place of $2c/3$, where $c_1$ is defined like $c_0$ with $M$ replaced by $N-1$ in the definition of $r_0$.
 \end{corollary}
 
 \begin{proof}
-(a) Lemma~\ref{lem:decomp} writes $f_C=\sum_{u}f_uh_u$ with $k\le\abs C$ terms across balanced splits $A_u|B_u$. All terms are nonnegative, so the support of each term lies in $\cT(G)$, and the supports cover $\cT(G)$. The support of $f_uh_u$ is the rectangle $R_u=\{a\cup b:\ f_u(a)>0,\ h_u(b)>0\}$. By Corollary~\ref{cor:rectangle} and Theorem~\ref{thm:general},
+(a) Lemma~\ref{lem:decomp} writes $f_C=\sum_{u}f_uh_u$ with $k\le\abs C$ terms across balanced splits $A_u|B_u$. All terms are nonnegative, so the support of each term lies in $\cT(G)$, and the supports cover $\cT(G)$. The support of $f_uh_u$ is the rectangle $R_u=\{a\cup b:\ f_u(a)>0,\ h_u(b)>0\}$. By Corollary~\ref{cor:rectangle} and Theorem~\ref{thm:touch},
 \[
-  1\le\sum_u\UST(G)(R_u)\le k\max_u\beta(\UST(G);A_u|B_u)^2\le\abs C\,e^{-c_0N}.
+  1\le\sum_u\UST(G)(R_u)\le k\max_u\beta(\UST(G);A_u|B_u)^2\le\abs C\,e^{-cN}.
 \]
+Under the hypotheses of Theorem~\ref{thm:general}, use that theorem instead, with $c_0$.
 
 (b) Let $F$ be the computed polynomial; it is homogeneous of degree $d=N-1\ge2$ with squarefree monomials. Remove gates that compute zero and gates that no longer reach the output. Every remaining gate then computes a nonzero homogeneous multilinear polynomial with nonnegative coefficients, and
 \[
   F=\sum_{j=1}^{r}g_jh_j,\qquad r\le s,
 \]
-where $g_j,h_j$ are nonzero homogeneous polynomials with nonnegative coefficients and $d/3<\deg g_j\le2d/3$. These are the cleaning and degree-balanced decomposition lemmas of~\cite[Lemmas~7.3 and~7.4]{Blaschke26Dimers}, whose proofs use only that every monomial of $F$ is squarefree of degree $d$; the method goes back to~\cite{Valiant80,JerrumSnir82}. There is no cancellation, so every monomial of $g_jh_j$ is the monomial of a spanning tree. If a variable $z_e$ occurred both in a monomial of $g_j$ and in a monomial of $h_j$, their product would be a monomial of $F$ containing $z_e^2$. So the variables of $g_j$ and of $h_j$ are disjoint. Let $A_j$ contain the variables of $g_j$ and none of $h_j$, and $B_j:=E\setminus A_j$. The trees whose monomials occur in $g_jh_j$ form a rectangle $R_j$ across $A_j|B_j$, and both $A_j$ and $B_j$ contain at least $d/3=(N-1)/3$ edges, since a monomial of $g_j$ has more than $d/3$ edges in $A_j$ and a monomial of $h_j$ has at least $d/3$ edges in $B_j$. Every monomial of $F$ occurs in some $g_jh_j$, so the $R_j$ cover $\cT(G)$. Lemma~\ref{lem:mixed} with $m_0=(N-1)/3$ and Theorem~\ref{thm:cut} bound each $\beta(\UST(G);A_j|B_j)^2$ by $e^{-c_1N}$, and Corollary~\ref{cor:rectangle} gives $1\le\sum_j\UST(G)(R_j)\le s\,e^{-c_1N}$.
+where $g_j,h_j$ are nonzero homogeneous polynomials with nonnegative coefficients and $d/3<\deg g_j\le2d/3$. These are the cleaning and degree-balanced decomposition lemmas of~\cite[Lemmas~7.3 and~7.4]{Blaschke26Dimers}, whose proofs use only that every monomial of $F$ is squarefree of degree $d$; the method goes back to~\cite{Valiant80,JerrumSnir82}. There is no cancellation, so every monomial of $g_jh_j$ is the monomial of a spanning tree. If a variable $z_e$ occurred both in a monomial of $g_j$ and in a monomial of $h_j$, their product would be a monomial of $F$ containing $z_e^2$. So the variables of $g_j$ and of $h_j$ are disjoint. Let $A_j$ contain the variables of $g_j$ and none of $h_j$, and $B_j:=E\setminus A_j$. The trees whose monomials occur in $g_jh_j$ form a rectangle $R_j$ across $A_j|B_j$, and both $A_j$ and $B_j$ contain at least $d/3=(N-1)/3$ edges, since a monomial of $g_j$ has more than $d/3$ edges in $A_j$ and a monomial of $h_j$ has at least $d/3$ edges in $B_j$. Theorem~\ref{thm:touch} with $m_0=(N-1)/3\ge2N/9$ bounds each $\beta(\UST(G);A_j|B_j)^2$ by $e^{-2\kappa N/9}=e^{-2cN/3}$. Every monomial of $F$ occurs in some $g_jh_j$, so the $R_j$ cover $\cT(G)$, and Corollary~\ref{cor:rectangle} gives $1\le\sum_j\UST(G)(R_j)\le s\,e^{-2cN/3}$. Under the hypotheses of Theorem~\ref{thm:general}, Lemma~\ref{lem:mixed} with $m_0=(N-1)/3$ and Theorem~\ref{thm:cut} give the bound $e^{-c_1N}$ instead.
 \end{proof}
 
-The coefficients play no role beyond being positive. The fan-in restriction in (b) can be dropped by the grouping of Remark~\ref{rem:nodes} with degrees in place of scopes: at a high product gate whose children are all low, multiply children until the degree first exceeds $d/3$, and label the group by that gate, so again $r\le s$. For prisms and squares of expanders, $c_0$ and $c_1$ are positive constants depending only on $\Delta$ and $h_0$. Statement (b) is an exact monotone lower bound of the same kind as those of~\cite{CDGM22}, but for the undirected polynomial and for our families; see Section~\ref{sec:related}.
+The coefficients play no role beyond being positive. The fan-in restriction in (b) can be dropped by the grouping of Remark~\ref{rem:nodes} with degrees in place of scopes: at a high product gate whose children are all low, multiply children until the degree first exceeds $d/3$, and label the group by that gate, so again $r\le s$. For prisms and squares of expanders, $c_0$ and $c_1$ are positive constants depending only on $\Delta$ and $h_0$, and much larger than $c(D,h)$. Statement (b) is an exact monotone lower bound of the same kind as those of~\cite{CDM20Negations,CDGM22}, but for the undirected polynomial and for every 2-connected bounded-degree expander; see Section~\ref{sec:related}.

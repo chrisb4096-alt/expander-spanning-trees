@@ -1,0 +1,45 @@
+PASS  K2 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  K3 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  K4 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  K5 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  P5 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  C7 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  K4-e and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  K33 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  cube and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  petersen and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  heawood and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  mobius_kantor and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  pappus and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  rr3_14 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  rr3_16 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+PASS  rr4_12 and its one-vertex deletions: lambda_2 >= Delta - sqrt(Delta^2 - h^2) >= h^2/(2 Delta)
+      (152 graphs, min lambda_2/mu = 1.5000)
+PASS  K3: lambda_2 = 3 > Delta = 2 and h = 2 > sqrt(lambda_2 (2 Delta - lambda_2)) = sqrt(3): the upper form needs lambda_2 <= Delta
+PASS  K33: N=6, 29 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  cube: N=8, 91 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  petersen: N=10, 317 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  heawood: N=14, 3348 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  rr4_12: N=12, 1486 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  mobius_kantor: N=16, 10649 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  rr3_16: N=16, 6583 connected sets containing vertex 0, max count/binom(k-1+j, j) = 1.0000
+PASS  K33: h=1.667, lambda_2=3.000; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.833, min lambda_2(G-W)-(lambda_2-1) = -0.000
+PASS  cube: h=1.000, lambda_2=2.000; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.667, min lambda_2(G-W)-(lambda_2-1) = -0.000
+PASS  petersen: h=1.000, lambda_2=2.000; 6 greedy 3-separated W: min h(G-W)-(h-1) = 1.000, min lambda_2(G-W)-(lambda_2-1) = 0.268
+PASS  heawood: h=1.000, lambda_2=1.586; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.667, min lambda_2(G-W)-(lambda_2-1) = 0.111
+PASS  mobius_kantor: h=0.750, lambda_2=1.268; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.583, min lambda_2(G-W)-(lambda_2-1) = 0.000
+PASS  pappus: h=0.778, lambda_2=1.268; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.794, min lambda_2(G-W)-(lambda_2-1) = 0.114
+PASS  rr3_14: h=0.667, lambda_2=0.861; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.733, min lambda_2(G-W)-(lambda_2-1) = 0.481
+PASS  rr3_16: h=0.429, lambda_2=0.431; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.738, min lambda_2(G-W)-(lambda_2-1) = 0.662
+PASS  rr4_12: h=1.000, lambda_2=1.546; 6 greedy 3-separated W: min h(G-W)-(h-1) = 0.800, min lambda_2(G-W)-(lambda_2-1) = 0.587
+PASS  random 6-regular N=60: lambda_2 = 1.999, 10 greedy 3-separated W: largest drop of lambda_2 = 0.252 <= 1
+PASS  random 8-regular N=60: lambda_2 = 3.281, 10 greedy 3-separated W: largest drop of lambda_2 = 0.018 <= 1
+PASS  K33: N=6, h=1.667, h'=0.417, 33 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  cube: N=8, h=1.000, h'=0.250, 82 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  petersen: N=10, h=1.000, h'=0.250, 257 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  heawood: N=14, h=1.000, h'=0.250, 1974 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  rr4_12: N=12, h=1.000, h'=0.200, 1174 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  rr3_14: N=14, h=0.667, h'=0.167, 1426 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  mobius_kantor: N=16, h=0.750, h'=0.188, 5150 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+PASS  rr3_16: N=16, h=0.429, h'=0.107, 2364 connected sets with |S|<=N/2; 30 random R: h(G-R*) >= h' (|R*| from 0 to 1)
+ALL PASS

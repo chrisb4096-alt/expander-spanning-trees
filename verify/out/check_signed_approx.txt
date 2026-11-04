@@ -1,0 +1,39 @@
+[1] Ky Fan-Hoffman and the one-block lemma
+  2879 matrices; max KFH/rank 1.000000, max lemma ratio 0.773579, max parameter-free ratio 1.000000; 5 equality cases exact
+[2] normalized approximations have small mass and large overlap
+  3000 random signed Q with sum 1: identity and both inequalities hold (max ||Q||_1 - 1 - 2eps = 8.88e-16)
+[3] pendant blocks with one-vertex gadgets, exact enumeration
+  K33/s0: N=6 M=9 tau=81 |W|=2 pairs=1 lambda2(G-W)=1.000 blocks=80 max g=1 pendant ratio=1.00 pair ratio=1.78  SVD tests=8 min slack (a)=0.25 (b)=0.846
+  K33/s1: N=6 M=9 tau=81 |W|=2 pairs=1 lambda2(G-W)=1.000 blocks=80 max g=1 pendant ratio=1.00 pair ratio=1.78  SVD tests=8 min slack (a)=0.25 (b)=0.762
+  K33/s2: N=6 M=9 tau=81 |W|=2 pairs=1 lambda2(G-W)=1.000 blocks=80 max g=1 pendant ratio=1.00 pair ratio=1.78  SVD tests=8 min slack (a)=0.25 (b)=0.669
+  cube/s0: N=8 M=12 tau=384 |W|=2 pairs=1 lambda2(G-W)=0.586 blocks=380 max g=1 pendant ratio=1.76 pair ratio=5.03  SVD tests=8 min slack (a)=0.25 (b)=0.903
+  cube/s1: N=8 M=12 tau=384 |W|=2 pairs=1 lambda2(G-W)=0.586 blocks=380 max g=1 pendant ratio=1.76 pair ratio=5.03  SVD tests=8 min slack (a)=0.25 (b)=0.725
+  cube/s2: N=8 M=12 tau=384 |W|=2 pairs=1 lambda2(G-W)=0.586 blocks=380 max g=1 pendant ratio=1.76 pair ratio=5.03  SVD tests=8 min slack (a)=0.25 (b)=0.878
+  petersen/s0: N=10 M=15 tau=2000 |W|=3 pairs=1 lambda2(G-W)=0.382 blocks=1979 max g=1 pendant ratio=1.87 pair ratio=6.43  SVD tests=8 min slack (a)=0.25 (b)=0.969
+  petersen/s1: N=10 M=15 tau=2000 |W|=3 pairs=1 lambda2(G-W)=0.382 blocks=1979 max g=1 pendant ratio=1.87 pair ratio=6.43  SVD tests=8 min slack (a)=0.25 (b)=0.859
+  petersen/s2: N=10 M=15 tau=2000 |W|=3 pairs=1 lambda2(G-W)=0.382 blocks=1979 max g=1 pendant ratio=1.87 pair ratio=6.43  SVD tests=8 min slack (a)=0.25 (b)=0.999
+  heawood/s0: N=14 M=21 tau=50421 |W|=4 pairs=2 lambda2(G-W)=0.198 blocks=49449 max g=2 pendant ratio=3.43 pair ratio=22.95  SVD tests=16 min slack (a)=0.125 (b)=1.08
+  heawood/s1: N=14 M=21 tau=50421 |W|=4 pairs=2 lambda2(G-W)=0.268 blocks=49526 max g=2 pendant ratio=2.49 pair ratio=10.07  SVD tests=16 min slack (a)=0.125 (b)=1.11
+  heawood/s2: N=14 M=21 tau=50421 |W|=4 pairs=2 lambda2(G-W)=0.198 blocks=49449 max g=2 pendant ratio=3.43 pair ratio=22.95  SVD tests=16 min slack (a)=0.125 (b)=1.04
+  mobius_kantor/s0: N=16 M=24 tau=248832 |W|=4 pairs=2 lambda2(G-W)=0.225 blocks=244710 max g=2 pendant ratio=3.47 pair ratio=23.03  (no SVD: split too large)
+  mobius_kantor/s1: N=16 M=24 tau=248832 |W|=4 pairs=2 lambda2(G-W)=0.183 blocks=244224 max g=2 pendant ratio=4.10 pair ratio=37.23  (no SVD: split too large)
+  mobius_kantor/s2: N=16 M=24 tau=248832 |W|=4 pairs=2 lambda2(G-W)=0.225 blocks=244710 max g=2 pendant ratio=3.47 pair ratio=23.03  (no SVD: split too large)
+  rr3_14/s0: N=14 M=21 tau=31460 |W|=4 pairs=2 lambda2(G-W)=0.117 blocks=30800 max g=2 pendant ratio=8.79 pair ratio=159.58  SVD tests=16 min slack (a)=0.125 (b)=1.1
+  rr3_14/s1: N=14 M=21 tau=31460 |W|=4 pairs=2 lambda2(G-W)=0.148 blocks=30805 max g=2 pendant ratio=6.69 pair ratio=85.06  SVD tests=16 min slack (a)=0.125 (b)=1.08
+  rr3_14/s2: N=14 M=21 tau=31460 |W|=3 pairs=1 lambda2(G-W)=0.133 blocks=31188 max g=1 pendant ratio=12.00 pair ratio=256.08  SVD tests=8 min slack (a)=0.25 (b)=0.993
+  rr3_16/s0: N=16 M=24 tau=118624 |W|=4 pairs=2 lambda2(G-W)=0.092 blocks=116300 max g=2 pendant ratio=11.85 pair ratio=321.31  (no SVD: split too large)
+  rr3_16/s1: N=16 M=24 tau=118624 |W|=4 pairs=2 lambda2(G-W)=0.166 blocks=116181 max g=2 pendant ratio=9.40 pair ratio=128.85  (no SVD: split too large)
+  rr3_16/s2: N=16 M=24 tau=118624 |W|=4 pairs=2 lambda2(G-W)=0.108 blocks=116847 max g=2 pendant ratio=8.78 pair ratio=289.25  (no SVD: split too large)
+[4] the positive part is needed: four triangles joined by three bridges
+  tau=81, delta(2)=0.9506, eps=0.99753: unsquared-margin bounds 3.596 and 1.201 (with 1+2eps) > rank 1; stated bound 0.000 <= 1
+[5] one product-depth-2 circuit fills every cycle-pair block
+  prism6-squares-tb: tau=8100 blocks=7980 cells=8340 (zero cells 240): Psi = tau P on all
+  prism6-squares-rb: tau=8100 blocks=7980 cells=8340 (zero cells 240): Psi = tau P on all
+  prism8-squares-tb: tau=150528 blocks=145160 cells=161456 (zero cells 10928): Psi = tau P on all
+  prism8-squares-rb: tau=150528 blocks=145544 cells=160688 (zero cells 10160): Psi = tau P on all
+  prism6-hexagons-01: tau=8100 blocks=8094 cells=8112 (zero cells 12): Psi = tau P on all
+  prism6-hexagons-03: tau=8100 blocks=8094 cells=8112 (zero cells 12): Psi = tau P on all
+[6] padding makes every slice highly cancelling (K4)
+  523 positive-mass slices, 206 zero-mass slices skipped; min ratio 513.0 >= 1 + 2^(N+1) = 33
+
+ALL CHECKS PASSED

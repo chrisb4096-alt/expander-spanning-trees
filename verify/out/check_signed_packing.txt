@@ -1,0 +1,123 @@
+[A] Lemma lem:bond: every two edges of a 2-connected graph lie on a common bond (constructive)
+  170 random 2-connected graphs (n <= 11), 29943 edge pairs: construction valid; brute force agrees for n <= 9  (4.1s)
+
+[B,C] Theorem thm:packing construction: robust connectors -> bond gadgets (Lemma lem:bond), gadgets pairwise at distance >= d
+  per row: cand/N at d=2; abs = fraction of connectors U with B(U) != U (absorption needed); |U|, |Y| max; then for each d: gadgets/N, G-W connected?, lambda2(G-W)/lambda2(G), min Lemma lem:pendant-prob bound (kappa' = 2 kappa)
+  cubic  N=  200 far 1/3    abs=0.00 |U|max= 3 |Y|max= 3 mean= 1.81 | d=2: 0.0800 conn 0.44 1e-06 | d=4: 0.0350 conn 0.78 2e-04 | d=6: 0.0150 conn 0.95 4e-04
+  cubic  N=  200 far 1/9    abs=0.00 |U|max= 8 |Y|max= 8 mean= 5.00 | d=2: 0.0400 conn 0.51 3e-14 | d=4: 0.0150 conn 0.87 2e-08 | d=6: 0.0050 conn 0.99 9e-07
+  cubic  N=  200 vtree r=2  abs=0.00 |U|max= 7 |Y|max= 7 mean= 2.13 | d=2: 0.0750 conn 0.40 2e-13 | d=4: 0.0350 conn 0.76 2e-11 | d=6: 0.0150 conn 0.96 9e-03
+  cubic  N=  200 vtree r=3  abs=0.00 |U|max= 9 |Y|max= 9 mean= 3.45 | d=2: 0.0550 conn 0.40 1e-16 | d=4: 0.0200 conn 0.92 1e-06 | d=6: 0.0100 conn 0.93 4e-04
+  4-reg  N=  200 far 1/3    abs=0.00 |U|max= 2 |Y|max= 2 mean= 1.18 | d=2: 0.0850 conn 0.72 1e-05 | d=4: 0.0200 conn 0.95 1e-02 | d=6: 0.0050 conn 0.99 1e-02
+  4-reg  N=  200 far 1/9    abs=0.00 |U|max= 4 |Y|max= 4 mean= 3.29 | d=2: 0.0350 conn 0.72 5e-08 | d=4: 0.0100 conn 0.90 2e-07 | d=6: 0.0050 conn 0.95 8e-06
+  4-reg  N=  200 vtree r=2  abs=0.00 |U|max= 2 |Y|max= 2 mean= 1.24 | d=2: 0.0850 conn 0.66 1e-04 | d=4: 0.0150 conn 0.97 1e-02 | d=6: 0.0050 conn 1.00 1e-02
+  4-reg  N=  200 vtree r=3  abs=0.00 |U|max= 4 |Y|max= 4 mean= 1.91 | d=2: 0.0550 conn 0.71 4e-08 | d=4: 0.0150 conn 0.89 6e-06 | d=6: 0.0050 conn 0.95 1e-02
+  pocket N=  198 far 1/3    abs=1.00 |U|max= 6 |Y|max= 7 mean= 6.67 | d=2: 0.0303 DISC 0.00 nan | d=4: 0.0253 conn 0.07 2e-20 | d=6: 0.0101 conn 0.60 2e-11
+  pocket N=  198 far 1/9    abs=1.00 |U|max=13 |Y|max=17 mean=16.00 | d=2: 0.0152 DISC 0.00 nan | d=4: 0.0101 conn 0.50 5e-22 | d=6: 0.0101 conn 0.50 5e-22
+  pocket N=  198 vtree r=2  abs=0.78 |U|max= 9 |Y|max=12 mean= 5.67 | d=2: 0.0455 DISC 0.00 nan | d=4: 0.0303 DISC 0.00 nan | d=6: 0.0152 conn 0.71 1e-08
+  pocket N=  198 vtree r=3  abs=0.86 |U|max=12 |Y|max=15 mean= 8.71 | d=2: 0.0354 DISC 0.00 nan | d=4: 0.0202 conn 0.28 8e-17 | d=6: 0.0152 conn 0.52 2e-15
+  pocket N=  198 pocket-adv abs=0.78 |U|max= 5 |Y|max= 5 mean= 3.89 | d=2: 0.0455 DISC 0.00 nan | d=4: 0.0303 DISC 0.00 nan | d=6: 0.0202 conn 0.60 5e-12
+  trunc  N=  198 far 1/3    abs=0.00 |U|max= 7 |Y|max= 7 mean= 3.64 | d=2: 0.0556 DISC 0.00 nan | d=4: 0.0404 conn 0.43 5e-13 | d=6: 0.0253 conn 0.59 3e-12
+  trunc  N=  198 far 1/9    abs=0.00 |U|max= 9 |Y|max= 9 mean= 8.33 | d=2: 0.0303 DISC 0.00 nan | d=4: 0.0202 conn 0.44 1e-25 | d=6: 0.0152 conn 0.72 4e-21
+  trunc  N=  198 vtree r=2  abs=0.00 |U|max= 6 |Y|max= 6 mean= 2.85 | d=2: 0.0657 DISC 0.00 nan | d=4: 0.0404 conn 0.43 4e-18 | d=6: 0.0202 conn 0.82 4e-04
+  trunc  N=  198 vtree r=3  abs=0.00 |U|max=11 |Y|max=11 mean= 6.89 | d=2: 0.0455 DISC 0.00 nan | d=4: 0.0253 conn 0.39 1e-23 | d=6: 0.0152 conn 0.63 1e-21
+  prism  N=  200 far 1/3    abs=0.00 |U|max= 2 |Y|max= 2 mean= 2.00 | d=2: 0.0600 conn 0.73 2e-06 | d=4: 0.0200 conn 0.89 4e-06 | d=6: 0.0100 conn 0.92 2e-08
+  prism  N=  200 far 1/9    abs=0.00 |U|max= 6 |Y|max= 6 mean= 4.83 | d=2: 0.0300 conn 0.72 6e-20 | d=4: 0.0150 conn 0.95 1e-15 | d=6: 0.0050 conn 0.94 1e-10
+  prism  N=  200 vtree r=2  abs=0.00 |U|max= 6 |Y|max= 6 mean= 2.17 | d=2: 0.0600 conn 0.68 1e-16 | d=4: 0.0250 conn 0.85 2e-10 | d=6: 0.0100 conn 0.93 1e-03
+  prism  N=  200 vtree r=3  abs=0.00 |U|max= 4 |Y|max= 4 mean= 2.33 | d=2: 0.0450 conn 0.76 3e-11 | d=4: 0.0200 conn 0.82 3e-06 | d=6: 0.0100 conn 0.96 5e-06
+  cubic  N=  800 far 1/3    abs=0.00 |U|max= 3 |Y|max= 3 mean= 2.00 | d=2: 0.0762 conn 0.44 7e-07 | d=4: 0.0275 conn 0.82 7e-06 | d=6: 0.0125 conn 0.95 3e-04
+  cubic  N=  800 far 1/9    abs=0.00 |U|max= 8 |Y|max= 8 mean= 4.81 | d=2: 0.0400 conn 0.50 9e-15 | d=4: 0.0150 conn 0.86 1e-08 | d=6: 0.0063 conn 0.95 5e-07
+  cubic  N=  800 vtree r=2  abs=0.00 |U|max= 8 |Y|max= 8 mean= 2.17 | d=2: 0.0800 conn 0.34 4e-16 | d=4: 0.0288 conn 0.83 9e-09 | d=6: 0.0125 conn 0.96 3e-04
+  cubic  N=  800 vtree r=3  abs=0.00 |U|max= 9 |Y|max= 9 mean= 3.39 | d=2: 0.0475 conn 0.51 3e-16 | d=4: 0.0213 conn 0.80 3e-22 | d=6: 0.0088 conn 0.94 3e-04
+  4-reg  N=  800 far 1/3    abs=0.00 |U|max= 2 |Y|max= 2 mean= 1.17 | d=2: 0.0862 conn 0.71 7e-05 | d=4: 0.0175 conn 0.97 1e-02 | d=6: 0.0037 conn 0.99 1e-02
+  4-reg  N=  800 far 1/9    abs=0.00 |U|max= 4 |Y|max= 4 mean= 2.93 | d=2: 0.0375 conn 0.71 2e-08 | d=4: 0.0088 conn 0.97 1e-07 | d=6: 0.0025 conn 0.98 5e-06
+  4-reg  N=  800 vtree r=2  abs=0.00 |U|max= 2 |Y|max= 2 mean= 1.24 | d=2: 0.0788 conn 0.69 6e-05 | d=4: 0.0175 conn 0.95 1e-02 | d=6: 0.0025 conn 0.99 1e-02
+  4-reg  N=  800 vtree r=3  abs=0.00 |U|max= 8 |Y|max= 8 mean= 2.02 | d=2: 0.0600 conn 0.70 1e-15 | d=4: 0.0125 conn 0.96 1e-02 | d=6: 0.0025 conn 0.98 1e-02
+  pocket N=  803 far 1/3    abs=0.96 |U|max= 6 |Y|max= 7 mean= 5.50 | d=2: 0.0299 DISC 0.00 nan | d=4: 0.0212 conn 0.35 2e-13 | d=6: 0.0149 conn 0.50 2e-14
+  pocket N=  803 far 1/9    abs=1.00 |U|max=37 |Y|max=49 mean=21.42 | d=2: 0.0149 DISC 0.00 nan | d=4: 0.0100 conn 0.33 1e-32 | d=6: 0.0087 conn 0.50 5e-34
+  pocket N=  803 vtree r=2  abs=0.68 |U|max=16 |Y|max=21 mean= 7.58 | d=2: 0.0237 DISC 0.00 nan | d=4: 0.0174 DISC 0.00 nan | d=6: 0.0149 conn 0.51 3e-21
+  pocket N=  803 vtree r=3  abs=0.94 |U|max=16 |Y|max=21 mean= 8.75 | d=2: 0.0199 DISC 0.00 nan | d=4: 0.0174 conn 0.29 1e-28 | d=6: 0.0149 conn 0.36 6e-28
+  pocket N=  803 pocket-adv abs=0.84 |U|max= 4 |Y|max= 4 mean= 3.84 | d=2: 0.0386 DISC 0.00 nan | d=4: 0.0274 conn 0.23 7e-15 | d=6: 0.0212 conn 0.38 1e-13
+  trunc  N=  798 far 1/3    abs=0.00 |U|max= 6 |Y|max= 6 mean= 3.56 | d=2: 0.0539 DISC 0.00 nan | d=4: 0.0326 conn 0.40 6e-16 | d=6: 0.0238 conn 0.51 3e-15
+  trunc  N=  798 far 1/9    abs=0.00 |U|max=14 |Y|max=14 mean= 8.58 | d=2: 0.0301 DISC 0.00 nan | d=4: 0.0188 conn 0.39 2e-26 | d=6: 0.0113 conn 0.63 2e-24
+  trunc  N=  798 vtree r=2  abs=0.00 |U|max=10 |Y|max=10 mean= 3.95 | d=2: 0.0501 DISC 0.00 nan | d=4: 0.0338 DISC 0.00 nan | d=6: 0.0188 conn 0.73 2e-14
+  trunc  N=  798 vtree r=3  abs=0.00 |U|max=13 |Y|max=13 mean= 5.75 | d=2: 0.0451 DISC 0.00 nan | d=4: 0.0263 conn 0.28 6e-47 | d=6: 0.0175 conn 0.56 3e-32
+  prism  N=  800 far 1/3    abs=0.00 |U|max= 3 |Y|max= 3 mean= 2.07 | d=2: 0.0575 conn 0.82 4e-09 | d=4: 0.0200 conn 0.95 3e-06 | d=6: 0.0075 conn 0.98 3e-06
+  prism  N=  800 far 1/9    abs=0.00 |U|max= 7 |Y|max= 7 mean= 4.77 | d=2: 0.0275 conn 0.80 4e-19 | d=4: 0.0112 conn 0.96 1e-15 | d=6: 0.0050 conn 0.96 2e-16
+  prism  N=  800 vtree r=2  abs=0.00 |U|max= 7 |Y|max= 7 mean= 1.70 | d=2: 0.0700 conn 0.71 6e-24 | d=4: 0.0238 conn 0.89 2e-06 | d=6: 0.0088 conn 0.95 8e-04
+  prism  N=  800 vtree r=3  abs=0.00 |U|max= 8 |Y|max= 8 mean= 3.13 | d=2: 0.0387 conn 0.78 9e-22 | d=4: 0.0175 conn 0.89 2e-11 | d=6: 0.0063 conn 0.95 3e-06
+  cubic  N= 2400 far 1/3    abs=0.00 |U|max= 4 |Y|max= 4 mean= 2.09 | d=2: 0.0742 conn 0.43 1e-08 | d=4: 0.0279 conn 0.80 5e-06 | d=6: 0.0108 conn 0.93 8e-06
+  cubic  N= 2400 far 1/9    abs=0.00 |U|max=16 |Y|max=16 mean= 5.06 | d=2: 0.0371 conn 0.47 4e-28 | d=4: 0.0133 conn 0.85 5e-13 | d=6: 0.0054 conn 0.95 5e-14
+  cubic  N= 2400 vtree r=2  abs=0.00 |U|max= 8 |Y|max= 8 mean= 2.06 | d=2: 0.0717 conn 0.42 1e-15 | d=4: 0.0312 conn 0.81 6e-09 | d=6: 0.0125 conn 0.93 3e-07
+  cubic  N= 2400 vtree r=3  abs=0.00 |U|max=11 |Y|max=11 mean= 3.35 | d=2: 0.0529 conn 0.45 3e-20 | d=4: 0.0225 conn 0.79 1e-17 | d=6: 0.0104 conn 0.92 2e-11
+  4-reg  N= 2400 far 1/3    abs=0.00 |U|max= 2 |Y|max= 2 mean= 1.21 | d=2: 0.0792 conn 0.69 7e-05 | d=4: 0.0171 conn 0.93 2e-04 | d=6: 0.0037 conn 0.99 2e-04
+  4-reg  N= 2400 far 1/9    abs=0.00 |U|max= 5 |Y|max= 5 mean= 2.92 | d=2: 0.0400 conn 0.71 3e-10 | d=4: 0.0079 conn 0.94 1e-07 | d=6: 0.0017 conn 0.99 4e-09
+  4-reg  N= 2400 vtree r=2  abs=0.00 |U|max= 5 |Y|max= 5 mean= 1.26 | d=2: 0.0750 conn 0.69 2e-10 | d=4: 0.0163 conn 0.95 2e-04 | d=6: 0.0033 conn 0.98 1e-02
+  4-reg  N= 2400 vtree r=3  abs=0.00 |U|max=10 |Y|max=10 mean= 2.14 | d=2: 0.0517 conn 0.68 3e-19 | d=4: 0.0117 conn 0.95 1e-07 | d=6: 0.0025 conn 0.99 1e-02
+  pocket N= 2398 far 1/3    abs=1.00 |U|max= 6 |Y|max= 8 mean= 6.28 | d=2: 0.0279 DISC 0.00 nan | d=4: 0.0221 DISC 0.00 nan | d=6: 0.0142 conn 0.54 3e-15
+  pocket N= 2398 far 1/9    abs=1.00 |U|max=29 |Y|max=38 mean=18.15 | d=2: 0.0138 DISC 0.00 nan | d=4: 0.0108 DISC 0.00 nan | d=6: 0.0079 conn 0.49 2e-26
+  pocket N= 2398 vtree r=2  abs=0.76 |U|max=15 |Y|max=19 mean= 6.62 | d=2: 0.0329 DISC 0.00 nan | d=4: 0.0254 DISC 0.00 nan | d=6: 0.0150 conn 0.44 6e-27
+  pocket N= 2398 vtree r=3  abs=0.98 |U|max=42 |Y|max=56 mean=14.19 | d=2: 0.0238 DISC 0.00 nan | d=4: 0.0167 DISC 0.00 nan | d=6: 0.0108 conn 0.44 1e-31
+  pocket N= 2398 pocket-adv abs=0.84 |U|max= 5 |Y|max= 5 mean= 3.95 | d=2: 0.0359 DISC 0.00 nan | d=4: 0.0254 DISC 0.00 nan | d=6: 0.0213 conn 0.31 4e-14
+  trunc  N= 2400 far 1/3    abs=0.00 |U|max= 5 |Y|max= 5 mean= 3.20 | d=2: 0.0558 DISC 0.00 nan | d=4: 0.0362 conn 0.28 3e-17 | d=6: 0.0208 conn 0.63 5e-20
+  trunc  N= 2400 far 1/9    abs=0.00 |U|max=15 |Y|max=15 mean= 9.31 | d=2: 0.0254 DISC 0.00 nan | d=4: 0.0179 DISC 0.00 nan | d=6: 0.0112 conn 0.54 8e-51
+  trunc  N= 2400 vtree r=2  abs=0.00 |U|max=14 |Y|max=14 mean= 3.78 | d=2: 0.0546 DISC 0.00 nan | d=4: 0.0338 conn 0.42 8e-40 | d=6: 0.0213 conn 0.67 7e-37
+  trunc  N= 2400 vtree r=3  abs=0.00 |U|max=33 |Y|max=33 mean= 7.58 | d=2: 0.0413 DISC 0.00 nan | d=4: 0.0258 DISC 0.00 nan | d=6: 0.0150 conn 0.53 7e-51
+  prism  N= 2400 far 1/3    abs=0.00 |U|max= 3 |Y|max= 3 mean= 1.61 | d=2: 0.0579 conn 0.79 4e-11 | d=4: 0.0246 conn 0.91 7e-09 | d=6: 0.0083 conn 0.96 3e-06
+  prism  N= 2400 far 1/9    abs=0.00 |U|max=12 |Y|max=12 mean= 4.74 | d=2: 0.0304 conn 0.59 2e-41 | d=4: 0.0121 conn 0.90 2e-25 | d=6: 0.0046 conn 0.95 2e-16
+  prism  N= 2400 vtree r=2  abs=0.00 |U|max= 8 |Y|max= 8 mean= 1.97 | d=2: 0.0533 conn 0.74 8e-27 | d=4: 0.0208 conn 0.91 1e-16 | d=6: 0.0088 conn 0.96 3e-06
+  prism  N= 2400 vtree r=3  abs=0.00 |U|max=13 |Y|max=13 mean= 3.39 | d=2: 0.0421 conn 0.69 7e-43 | d=4: 0.0183 conn 0.89 8e-33 | d=6: 0.0063 conn 0.98 2e-10
+  summary (all sizes and P,Q sources): fraction of instances with G-W connected, median lambda2 ratio
+    cubic  d=2: conn 1.00, l2 ratio 0.44, gad/N 0.0633 | d=4: conn 1.00, l2 ratio 0.82, gad/N 0.0250 | d=6: conn 1.00, l2 ratio 0.95, gad/N 0.0106
+    4-reg  d=2: conn 1.00, l2 ratio 0.71, gad/N 0.0675 | d=4: conn 1.00, l2 ratio 0.95, gad/N 0.0150 | d=6: conn 1.00, l2 ratio 0.99, gad/N 0.0035
+    pocket d=2: conn 0.00, l2 ratio 0.00, gad/N 0.0299 | d=4: conn 0.47, l2 ratio 0.00, gad/N 0.0212 | d=6: conn 1.00, l2 ratio 0.50, gad/N 0.0149
+    trunc  d=2: conn 0.00, l2 ratio 0.00, gad/N 0.0478 | d=4: conn 0.75, l2 ratio 0.39, gad/N 0.0294 | d=6: conn 1.00, l2 ratio 0.63, gad/N 0.0182
+    prism  d=2: conn 1.00, l2 ratio 0.73, gad/N 0.0492 | d=4: conn 1.00, l2 ratio 0.89, gad/N 0.0200 | d=6: conn 1.00, l2 ratio 0.96, gad/N 0.0079
+
+[D] exact checks on small graphs: restriction rank, blocks, Lemma lem:pendant-prob with absorbed blobs
+  pocket(4,6) trial 4 [absorbed/blob]: N=22 M=30 tau=221184 m=2 sizes=[2, 2] simple=[False, False] lambda2(G-W)=0.094 blocks=220536 LP ratio (2k)=208.69 (k, simple)=inf
+  pocket(4,6) trial 8 [absorbed/blob]: N=22 M=30 tau=221184 m=2 sizes=[2, 4] simple=[False, True] lambda2(G-W)=0.060 blocks=220941 LP ratio (2k)=438.56 (k, simple)=440.99
+  pocket(4,6) trial 15 [absorbed/blob]: N=22 M=30 tau=221184 m=2 sizes=[2, 4] simple=[False, True] lambda2(G-W)=0.060 blocks=220941 LP ratio (2k)=438.56 (k, simple)=440.99
+  pocket(4,6) trial 16 [absorbed/blob]: N=22 M=30 tau=221184 m=2 sizes=[2, 2] simple=[False, True] lambda2(G-W)=0.060 blocks=221103 LP ratio (2k)=439.32 (k, simple)=384.23
+  pocket(5,6) trial 0 [absorbed/blob]: N=23 M=30 tau=62208 m=2 sizes=[1, 3] simple=[True, True] lambda2(G-W)=0.053 blocks=61965 LP ratio (2k)=64.96 (k, simple)=33.32
+  pocket(5,6) trial 1: N=23 M=30 tau=62208 m=2 sizes=[3, 3] simple=[True, True] lambda2(G-W)=0.057 blocks=62199 LP ratio (2k)=17288.18 (k, simple)=2346.92
+  pocket(5,6) trial 4 [absorbed/blob]: N=23 M=30 tau=62208 m=2 sizes=[3, 4] simple=[True, True] lambda2(G-W)=0.077 blocks=61479 LP ratio (2k)=45.45 (k, simple)=23.57
+  pocket(5,6) trial 5 [absorbed/blob]: N=23 M=30 tau=62208 m=2 sizes=[1, 2] simple=[True, False] lambda2(G-W)=0.088 blocks=61317 LP ratio (2k)=16.25 (k, simple)=8.47
+  pocket(4,4) trial 3 [absorbed/blob]: N=16 M=20 tau=864 m=2 sizes=[1, 2] simple=[True, False] lambda2(G-W)=0.070 blocks=855 LP ratio (2k)=19.70 (k, simple)=10.19
+  pocket(4,4) trial 51 [absorbed/blob]: N=16 M=20 tau=864 m=2 sizes=[1, 3] simple=[True, True] lambda2(G-W)=0.080 blocks=837 LP ratio (2k)=17.24 (k, simple)=8.95
+  petersen trial 0: N=10 M=15 tau=2000 m=2 sizes=[1, 2] simple=[True, True] lambda2(G-W)=0.623 blocks=1995 LP ratio (2k)=3.69 (k, simple)=1.41
+  petersen trial 1: N=10 M=15 tau=2000 m=2 sizes=[2, 2] simple=[True, True] lambda2(G-W)=0.438 blocks=1999 LP ratio (2k)=28.67 (k, simple)=5.89
+  trunc(K4) trial 0: N=12 M=18 tau=6000 m=2 sizes=[1, 1] simple=[True, True] lambda2(G-W)=0.279 blocks=5952 LP ratio (2k)=14.94 (k, simple)=4.70
+  trunc(K4) trial 3: N=12 M=18 tau=6000 m=2 sizes=[1, 1] simple=[True, True] lambda2(G-W)=0.237 blocks=5949 LP ratio (2k)=21.06 (k, simple)=6.44
+  rr3_14 trial 2: N=14 M=21 tau=35231 m=2 sizes=[3, 3] simple=[True, True] lambda2(G-W)=0.186 blocks=35230 LP ratio (2k)=2629.41 (k, simple)=227.96
+  rr3_14 trial 3: N=14 M=21 tau=35231 m=2 sizes=[1, 3] simple=[True, False] lambda2(G-W)=0.411 blocks=35202 LP ratio (2k)=10.80 (k, simple)=3.70
+  rr3_16 trial 0: N=16 M=24 tau=118624 m=2 sizes=[2, 3] simple=[True, False] lambda2(G-W)=0.168 blocks=118615 LP ratio (2k)=251.47 (k, simple)=39.33
+  rr3_16 trial 1: N=16 M=24 tau=118624 m=2 sizes=[2, 3] simple=[True, False] lambda2(G-W)=0.141 blocks=118606 LP ratio (2k)=914.70 (k, simple)=138.42
+  exact instances: 18, with absorbed or non-path gadgets: 9
+
+[E] explicit constants (log10): gadgets >= c N; per-gadget pendant bound p; approximate exponent g ~ p^2 c N / 2; exact exponent = c N
+  D=3 h=0.1  r=1: connector <= 183 vertices, gadget <= 5673, sigma=340400, blocked radius 345890, log10 lambda0=-11.2, log10 c=-1.65e+05, log10 p=-1.991e+05, log10(g/N)=-5.633e+05
+  D=3 h=0.1  r=2: connector <= 317 vertices, gadget <= 9827, sigma=589640, blocked radius 599150, log10 lambda0=-11.7, log10 c=-2.859e+05, log10 p=-3.59e+05, log10(g/N)=-1.004e+06
+  D=3 h=0.1  r=3: connector <= 449 vertices, gadget <= 13919, sigma=835160, blocked radius 848630, log10 lambda0=-12, log10 c=-4.049e+05, log10 p=-5.211e+05, log10(g/N)=-1.447e+06
+  D=3 h=0.1  r=5: connector <= 715 vertices, gadget <= 22165, sigma=1329920, blocked radius 1351370, log10 lambda0=-12.4, log10 c=-6.448e+05, log10 p=-8.567e+05, log10(g/N)=-2.358e+06
+  D=3 h=0.2  r=1: connector <= 93 vertices, gadget <= 1488, sigma=44650, blocked radius 46045, log10 lambda0=-9.48, log10 c=-2.197e+04, log10 p=-4.435e+04, log10(g/N)=-1.107e+05
+  D=3 h=0.2  r=2: connector <= 161 vertices, gadget <= 2576, sigma=77290, blocked radius 79705, log10 lambda0=-9.95, log10 c=-3.804e+04, log10 p=-8.046e+04, log10(g/N)=-1.99e+05
+  D=3 h=0.2  r=3: connector <= 227 vertices, gadget <= 3632, sigma=108970, blocked radius 112375, log10 lambda0=-10.3, log10 c=-5.362e+04, log10 p=-1.167e+05, log10(g/N)=-2.87e+05
+  D=3 h=0.2  r=5: connector <= 361 vertices, gadget <= 5776, sigma=173290, blocked radius 178705, log10 lambda0=-10.7, log10 c=-8.527e+04, log10 p=-1.926e+05, log10(g/N)=-4.704e+05
+  D=4 h=0.4  r=1: connector <= 75 vertices, gadget <= 825, sigma=16506, blocked radius 17256, log10 lambda0=-8.74, log10 c=-1.039e+04, log10 p=-3.031e+04, log10(g/N)=-7.102e+04
+  D=4 h=0.4  r=2: connector <= 121 vertices, gadget <= 1331, sigma=26626, blocked radius 27836, log10 lambda0=-9.15, log10 c=-1.677e+04, log10 p=-5.112e+04, log10(g/N)=-1.19e+05
+  D=4 h=0.4  r=3: connector <= 165 vertices, gadget <= 1815, sigma=36306, blocked radius 37956, log10 lambda0=-9.42, log10 c=-2.286e+04, log10 p=-7.167e+04, log10(g/N)=-1.662e+05
+  D=4 h=0.4  r=5: connector <= 255 vertices, gadget <= 2805, sigma=56106, blocked radius 58656, log10 lambda0=-9.8, log10 c=-3.532e+04, log10 p=-1.15e+05, log10(g/N)=-2.653e+05
+  D=6 h=0.76 r=1: connector <= 73 vertices, gadget <= 649, sigma=10250, blocked radius 10826, log10 lambda0=-8.5, log10 c=-8430, log10 p=-3.476e+04, log10(g/N)=-7.796e+04
+  D=6 h=0.76 r=2: connector <= 109 vertices, gadget <= 969, sigma=15304, blocked radius 16164, log10 lambda0=-8.85, log10 c=-1.258e+04, log10 p=-5.393e+04, log10(g/N)=-1.204e+05
+  D=6 h=0.76 r=3: connector <= 145 vertices, gadget <= 1289, sigma=20356, blocked radius 21500, log10 lambda0=-9.09, log10 c=-1.674e+04, log10 p=-7.366e+04, log10(g/N)=-1.641e+05
+  D=6 h=0.76 r=5: connector <= 217 vertices, gadget <= 1930, sigma=30478, blocked radius 32191, log10 lambda0=-9.45, log10 c=-2.506e+04, log10 p=-1.144e+05, log10(g/N)=-2.538e+05
+  D=3 h=0.2: -log10_c for r=1..8: 2.197e+04, 3.804e+04, 5.362e+04, 6.968e+04, 8.527e+04, 1.013e+05, 1.169e+05, 1.33e+05; increments 1.606e+04, 1.559e+04, 1.606e+04, 1.559e+04, 1.606e+04, 1.559e+04, 1.606e+04
+  D=3 h=0.2: -log10_g for r=1..8: 1.107e+05, 1.99e+05, 2.87e+05, 3.794e+05, 4.704e+05, 5.652e+05, 6.581e+05, 7.545e+05; increments 8.829e+04, 8.806e+04, 9.243e+04, 9.097e+04, 9.478e+04, 9.286e+04, 9.644e+04
+
+[F] Lemmas lem:connector, lem:blob, lem:sep-delete (one gadget) against exact h, N <= 18
+  lem:connector: 1200 instances, max (vertices / bound) = 0.15;  lem:blob: 718 instances, max |B|/bound = 0.25
+  lem:sep-delete (one gadget): 360 instances, min h(G-Y) / (h(G)/(|dY|+1)) = 1.71; Cheeger-Mohar lambda2 >= mu(D,h) held
+
+total 52s
+
+ALL CHECKS PASSED

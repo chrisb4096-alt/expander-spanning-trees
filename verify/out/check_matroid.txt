@@ -1,0 +1,42 @@
+library: M(K4) (n=6, 16 bases), M(K33) (n=9, 81 bases), M(K5) (n=10, 125 bases), M*(K33) (n=9, 81 bases), R10 (n=10, 162 bases), F7 (n=7, 28 bases), F7* (n=7, 28 bases), AG(3,2) (n=8, 56 bases), S8 (n=8, 48 bases), U2,4 (n=4, 6 bases)
+M1 duality: max |beta(M)-beta(M*)| over 60 splits = 4.4e-16
+M2 exchange bound: min lambda(e)*|D| over 4879 (cut, element) pairs = 1.5000  (need >= 1)
+M3 frame bound: 0 violations in 1273 (piece, S, F, sigma) cases; min Pr/bound = 1.0667
+M4 Theorem thm:mat-local: 80/80 (matroid, split) pairs satisfy beta <= bits <= prod gamma <= bound, with no (1,1) cell
+M5 Lemma lem:mat-global, |F|,|S|<=2, M(K4)   : 0 violations / 480 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, M(K33)  : 0 violations / 2664 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, M(K5)   : 0 violations / 4140 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, R10     : 0 violations / 4140 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, F7      : 0 violations / 924 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, F7*     : 0 violations / 924 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, AG(3,2) : 0 violations / 1624 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, U2,4    : 0 violations / 84 cases, worst ratio 1
+M5 Lemma lem:mat-global, |F|,|S|<=2, S8      : 4 violations / 1624 cases, worst ratio 14/15
+M6 S8 (0111/1011/1101/1111 after I_4): 48 bases; positively correlated pairs (e,f,N_e,N_f,N_ef): [(3, 7, 28, 20, 12)]
+   N_ef * N = 576 > N_e * N_f = 560
+M7 Lemma lem:mat-resist on R10: max |1/(1+R_Z(e)) - (1-lambda(e;M\Z))| = 6.7e-16 over 530 (Z,e), 111 coloop cases
+M7 Lemma lem:mat-resist on M(K4): max |1/(1+R_Z(e)) - (1-lambda(e;M\Z))| = 2.4e-15 over 317 (Z,e), 81 coloop cases
+M8 Theorem thm:mat-global: 30/30 (regular matroid, split) pairs satisfy beta <= bits <= prod gamma <= bound
+M9 U_3,6 |X|=3: beta^2 = 0.45000, max_j Pr[|B cap X|=j] = 0.45000, 1/(k+1) = 0.25000
+M9 U_3,6 |X|=2: beta^2 = 0.60000, max_j Pr[|B cap X|=j] = 0.60000, 1/(k+1) = 0.25000
+M9 U_4,8 |X|=4: beta^2 = 0.51429, max_j Pr[|B cap X|=j] = 0.51429, 1/(k+1) = 0.20000
+M9 U_4,8 |X|=3: beta^2 = 0.42857, max_j Pr[|B cap X|=j] = 0.42857, 1/(k+1) = 0.20000
+M9 U_5,10 |X|=5: beta^2 = 0.39683, max_j Pr[|B cap X|=j] = 0.39683, 1/(k+1) = 0.16667
+M9 U_5,10 |X|=4: beta^2 = 0.47619, max_j Pr[|B cap X|=j] = 0.47619, 1/(k+1) = 0.16667
+M9 U_6,12 |X|=6: beta^2 = 0.43290, max_j Pr[|B cap X|=j] = 0.43290, 1/(k+1) = 0.14286
+M9 U_6,12 |X|=5: beta^2 = 0.37879, max_j Pr[|B cap X|=j] = 0.37879, 1/(k+1) = 0.14286
+M9 U_7,14 |X|=7: beta^2 = 0.35693, max_j Pr[|B cap X|=j] = 0.35693, 1/(k+1) = 0.12500
+M9 U_7,14 |X|=6: beta^2 = 0.40793, max_j Pr[|B cap X|=j] = 0.40793, 1/(k+1) = 0.12500
+M10 Fano-decorated K3: n = 18, rank = 8, bases = 9216
+M10 (F1) True, (F2) True, (F3) True, gadget lemma True; local pieces framed, weight 4^-3; lifted triangle framed: True, weight 7.234e-05 >= (12*2)^-3 = 7.234e-05
+   |X|= 9 local  pieces=3: beta^2=0.1061 chain^2=0.8146 bound^2=0.9531  OK
+   |X|= 9 lifted pieces=1: beta^2=0.1061 chain^2=0.9946 bound^2=0.9999  OK
+   |X|= 7 local  pieces=3: beta^2=0.1401 chain^2=0.8146 bound^2=0.9531  OK
+   |X|= 7 lifted pieces=1: beta^2=0.1401 chain^2=0.9946 bound^2=0.9999  OK
+   |X|=10 local  pieces=3: beta^2=0.1733 chain^2=0.8146 bound^2=0.9531  OK
+   |X|=10 lifted pieces=1: beta^2=0.1733 chain^2=0.9965 bound^2=0.9999  OK
+   |X|= 9 local  pieces=3: beta^2=0.1424 chain^2=0.8146 bound^2=0.9531  OK
+   |X|= 9 lifted pieces=1: beta^2=0.1424 chain^2=0.9946 bound^2=0.9999  OK
+   |X|=12 lifted pieces=1: beta^2=0.6667 chain^2=0.9965 bound^2=0.9999  OK
+   |X|= 6 lifted pieces=1: beta^2=0.6667 chain^2=0.9965 bound^2=0.9999  OK
+check_matroid: all checks passed

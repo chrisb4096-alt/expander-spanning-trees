@@ -1,0 +1,577 @@
+\section{Does subtraction help?}\label{sec:signed}
+
+The uniform spanning tree has a polynomial-size generating circuit with subtraction (Proposition~\ref{prop:upper}(a)), but that circuit is not decomposable. This section asks what subtraction buys when the circuit keeps a decomposable structure. We write $P(x)=\one[x\text{ is a spanning tree}]/\tau$ for $P=\UST(G)$ on $\{0,1\}^E$, where $\tau$ is the number of spanning trees, and $\norm f_1:=\sum_x\abs{f(x)}$. For a split $A|B$ and a real function $f$ on $\{0,1\}^E$, $M_{A,B}(f)$ is the $2^{\abs A}\times2^{\abs B}$ matrix $(f(x_A,x_B))$. Cycles are \emph{mixed} if they have edges in $A$ and in $B$.
+
+For circuits that follow one vtree, subtraction does not help. Exact representation needs size $2^{\Omega(N)}$ (Corollary~\ref{cor:signed-exact}). If the output $Q$ is normalized, $\sum_xQ(x)=1$, but may take negative values, size $e^{\Omega(N)}$ is needed at every fixed error $\frac12\norm{P-Q}_1\le\eps<1$ (Theorem~\ref{thm:signed-o2}). Without normalization the threshold is $\eps<\frac12$, and it is sharp, since $Q=0$ has error $\frac12$ (Theorem~\ref{thm:signed-approx}). Both bounds hold on every 2-connected bounded-degree expander, at every girth and without smoothness (Corollary~\ref{cor:signed-expander}), and both come from one inequality for disjoint permutation blocks of $P$ (Theorem~\ref{thm:block-approx}). Normalized squares of structured circuits obey the nonnegative bound (Theorem~\ref{thm:signed-square}). For unstructured circuits we prove lower bounds only for restricted classes (Section~\ref{sec:signed-restricted}): bounded product-depth and formulas for support-exact representation, and sums of $r$ structured circuits on unrelated vtrees, which need total size $2^{\Omega_r(N)}$ both for support-exact representation and at error $\eps<\frac12$. A general unstructured circuit that approximates $P$ must cancel all but an exponentially small fraction of its mass (Theorem~\ref{thm:signed-cancel}), and Section~\ref{sec:signed-barriers} explains why the block method does not reach it. The general question stays open.
+
+\subsection{Structured circuits with real weights}
+
+A \emph{circuit with real weights} is defined like a PC (Section~\ref{sec:models}), except that leaves are real-valued functions and sum weights are real numbers. Size is the number of nodes plus wires, as before. A \emph{vtree} for $E$ is a rooted tree in which every internal node has exactly two children, and whose leaves are labelled by the blocks of a partition of $E$ into nonempty sets. For a node $v$, $\mathrm{Var}(v)$ is the union of the blocks below $v$.
+
+\begin{definition}[structured circuits]\label{def:structured}
+A circuit $C$ with real weights, possibly with several output nodes, is \emph{structured} with respect to a vtree $V$ if every node $g$ has a label $v(g)\in V$ such that: if $g$ is a leaf, then $v(g)$ is a leaf of $V$ and $g$ is a function of $x_{\mathrm{Var}(v(g))}$; if $g$ is a sum node, all its children have label $v(g)$; if $g$ is a product node, then it has exactly two children, labelled by the two children of $v(g)$; and every output node is labelled by the root.
+\end{definition}
+
+By induction, every node $g$ computes a function of $x_{\mathrm{Var}(v(g))}$; taking $\mathrm{Var}(v(g))$ as the scope of $g$, a structured circuit is smooth and decomposable. Inputs occur only at vtree leaves, and products follow the vtree exactly. This matters. With the vtree $((x_1,x_2),x_3)$, a circuit whose root multiplies a two-variable input $[x_1=x_2]$, placed at the internal node $\{x_1,x_2\}$, by an input on $x_3$ has no node with scope $\{x_1\}$, but $M_{\{x_1\},\{x_2,x_3\}}$ of its function has rank $2$, so Lemma~\ref{lem:struct-rank} below would fail for it. The usual definition of structured decomposability asks only that the children of each product node have scopes inside $\mathrm{Var}(v_1)$ and $\mathrm{Var}(v_2)$ for the two children $v_1,v_2$ of some vtree node. With univariate leaves and singleton blocks, such a circuit can be brought into the form of Definition~\ref{def:structured} at the cost of a factor $O(M)$ in size. Label each node by the lowest vtree node whose set contains its scope. Then lift every child of a sum or product node to the label its parent requires: along the vtree path, multiply it at each step by the constant function $1$ on the sibling subtree, which is computed once for every vtree node by a product tree of the leaves $[x_e=0]+[x_e=1]$. On $\{0,1\}^E$ the computed function does not change.
+
+\begin{lemma}[structured rank; after de Colnet and Mengel]\label{lem:struct-rank}
+Let $C$ be structured with respect to $V$, let $v\in V$, and let $G_v$ be the set of nodes with label $v$. For every output $d$ of $C$ there are functions $h_{g,d}$ of $x_{E\setminus\mathrm{Var}(v)}$ with
+\[
+  f_d=\sum_{g\in G_v}f_g(x_{\mathrm{Var}(v)})\,h_{g,d}(x_{E\setminus\mathrm{Var}(v)}),
+\]
+so $\operatorname{rank}M_{\mathrm{Var}(v),E\setminus\mathrm{Var}(v)}(f_d)\le\abs{G_v}\le\abs C$. If $M\ge2$ and every block has at most $2M/3$ elements, some node $v$ has $M/3<\abs{\mathrm{Var}(v)}\le2M/3$.
+\end{lemma}
+
+\begin{proof}
+Let $g$ be a node whose label $u$ is $v$ or an ancestor of $v$. We show by induction in topological order that $f_g=\sum_{g'\in G_v}f_{g'}h_{g',g}$ with $h_{g',g}$ a function of $x_{\mathrm{Var}(u)\setminus\mathrm{Var}(v)}$. If $u=v$, take $h_{g,g}=1$ and $h_{g',g}=0$ for $g'\ne g$. If $u\ne v$, then $u$ is internal, so $g$ is not a leaf. If $g$ is a sum node, its children have label $u$, and $f_g$ is a linear combination of their expansions. If $g$ is a product node, its children $g_1,g_2$ have labels $u_1,u_2$, the two children of $u$, and $v$ lies below one of them, say $u_1$. The expansion of $f_{g_1}$ exists by induction, and $f_{g_2}$ is a function of $x_{\mathrm{Var}(u_2)}$, with $\mathrm{Var}(u_2)\subseteq\mathrm{Var}(u)\setminus\mathrm{Var}(v)$; multiply. Outputs are labelled by the root, which is an ancestor of $v$ or $v$ itself. Each term $f_gh_{g,d}$ has rank one.
+
+For the last claim, start at the root and move to a child with the larger set while the current set has more than $2M/3$ elements. Such a node is internal, since blocks are smaller. The first node $v$ with $\abs{\mathrm{Var}(v)}\le2M/3$ has a parent $u$ with $\abs{\mathrm{Var}(u)}>2M/3$, and $\abs{\mathrm{Var}(v)}\ge\abs{\mathrm{Var}(u)}/2>M/3$.
+\end{proof}
+
+This is the rank argument of de Colnet and Mengel~\cite[Theorem~2 and Lemma~13]{DeColnetMengel21}, who use it, with induced matchings in expanders, to prove exponential lower bounds for structured-decomposable arithmetic circuits that may use negative constants. We state it at a fixed vtree node and for several outputs. Unlike Lemma~\ref{lem:decomp}, it gives one split for the whole circuit.
+
+\begin{theorem}[exact rank]\label{thm:signed-rank}
+Let $A|B$ be a split of a graph $G$ and let $C_1,\dots,C_m$ be pairwise vertex-disjoint mixed cycles. Then $\operatorname{rank}M_{A,B}(P)\ge2^m$.
+\end{theorem}
+
+\begin{proof}
+Pick $e_i\in E(C_i)\cap A$ and $f_i\in E(C_i)\cap B$. The paths $C_i-e_i$ are vertex-disjoint, so their union is a forest; extend it to a spanning tree $T_0$. No $e_i$ is in $T_0$, since it would close $C_i$, so every $f_i$ is in $T_0$. Let $F:=T_0\setminus\{f_1,\dots,f_m\}$. For $s,t\in\{0,1\}^m$ let $X_s:=(F\cap A)\cup\{e_i:s_i=1\}$ and $Y_t:=(F\cap B)\cup\{f_i:t_i=1\}$. If $t=\one-s$, then $X_s\cup Y_t$ arises from $T_0$ by exchanging $f_i$ for $e_i$ for every $i$ with $s_i=1$. Each exchange gives a tree: the current tree contains $C_i-e_i$, since earlier exchanges touched only other cycles, which are vertex-disjoint from $C_i$; so the fundamental cycle of $e_i$ is $C_i$, which contains $f_i$. If $t\ne\one-s$, then either $s_i=t_i=1$ for some $i$, and $X_s\cup Y_t$ contains $C_i$, or $s_i+t_i\le1$ for every $i$ with strict inequality somewhere, and $X_s\cup Y_t$ has fewer than $N-1$ edges. So the $2^m\times2^m$ submatrix with rows $X_s$ and columns $Y_t$ is $\tau^{-1}$ times a permutation matrix.
+\end{proof}
+
+The permutation submatrix plays the part of the induced-matching gadget of de Colnet and Mengel; it is not literally theirs, since their gadget is a function of vertex variables.
+
+\begin{corollary}[exact representation]\label{cor:signed-exact}
+Let $G$ satisfy the hypotheses of Theorem~\ref{thm:general}, with $r_0$ as there. Every circuit with real weights that is structured with respect to a vtree with blocks of at most $2M/3$ edges and that computes a nonzero multiple of $\UST(G)$ has size at least $2^{\lceil r_0\rceil}$.
+\end{corollary}
+
+\begin{proof}
+Take the node $v$ of Lemma~\ref{lem:struct-rank} and the split $A=\mathrm{Var}(v)$, $B=E\setminus A$, which is balanced. As in the proof of Theorem~\ref{thm:general}, Lemma~\ref{lem:mixed} with $m_0=M/3$ gives at least $r_0$, hence at least $\lceil r_0\rceil$, pairwise vertex-disjoint mixed cycles. Apply Theorem~\ref{thm:signed-rank} and Lemma~\ref{lem:struct-rank}.
+\end{proof}
+
+For exact representation by structured circuits this is stronger than the nonnegative bound $(1-D^{-\ell})^{-r_0}$ of Theorem~\ref{thm:general}.
+
+\subsection{Approximation}\label{sec:signed-approx}
+
+A small perturbation of a full-rank matrix can have small rank, so exact rank alone says nothing about approximation. What survives perturbation is a large family of disjoint \emph{permutation blocks}: sets of cells on which $P$ is a multiple of a permutation matrix. We build them here from pairs of short cycles, and in Section~\ref{sec:signed-expanders} from pendant vertices, and prove one inequality for all such families (Theorem~\ref{thm:block-approx}). For normalized outputs it works at every error below $1$; without normalization it stops at $\frac12$, which is sharp.
+
+Let $C_1,\dots,C_{2n}$ be pairwise vertex-disjoint mixed cycles, grouped into $n$ pairs $(C_i,C_j)$. On each cycle fix $e\in A$ and $f\in B$ as above; the other edges of the cycle are its \emph{arcs}. For a spanning tree $t$, the pair $(i,j)$ is \emph{good} if $t$ contains the arcs of both cycles and either $t\cap E(C_i)=E(C_i)\setminus\{f_i\}$ and $t\cap E(C_j)=E(C_j)\setminus\{e_j\}$ (pattern~1), or $t\cap E(C_i)=E(C_i)\setminus\{e_i\}$ and $t\cap E(C_j)=E(C_j)\setminus\{f_j\}$ (pattern~2). Let $\mathcal G(t)$ be the set of good pairs, $g(t):=\abs{\mathcal G(t)}$, and $F(t)$ the set $t$ minus the four special edges $e_i,f_i,e_j,f_j$ of every good pair. The \emph{block} of $t$ is the set of trees $t'$ with $(\mathcal G(t'),F(t'))=(\mathcal G(t),F(t))$.
+
+\begin{lemma}[blocks]\label{lem:signed-blocks}
+A block with $g$ good pairs contains exactly $2^g$ trees, one for each choice of pattern at each good pair. Let $R$ be the set of cells $(X,Y)$ in which $X$ is $F\cap A$ plus one of $e_i,e_j$ for each good pair, and $Y$ is $F\cap B$ plus one of $f_i,f_j$ for each good pair. Then $M_{A,B}(P)$ restricted to $R$ is $\tau^{-1}$ times a $2^g\times2^g$ permutation matrix, and the sets $R$ of distinct blocks are disjoint.
+\end{lemma}
+
+\begin{proof}
+Let $t$ be in pattern~1 at a good pair. Then $t\supseteq C_i-f_i$, the fundamental cycle of $f_i$ is $C_i$, which contains $e_i$, so $t-e_i+f_i$ is a tree. It still contains $C_j-e_j$, because the cycles are vertex-disjoint, so exchanging $f_j$ for $e_j$ gives a tree, in pattern~2 at this pair. No other edge changes, so the set of good pairs and $F$ are unchanged. Hence every choice of patterns occurs in the block, and a tree in the block is determined by $F$ and its patterns.
+
+In $R$, if the row and column choose $(e_i,f_j)$ or $(e_j,f_i)$ at every good pair, the cell is a tree of the block. If they choose $(e_i,f_i)$ at some pair, the cell contains $C_i$, because $F$ contains its arcs, and likewise for $(e_j,f_j)$. So each row of $R$ has exactly one tree, and so does each column. For disjointness we recover the block from any cell $(X,Y)\in R$. Let $\mathcal G'$ be the set of pairs whose arcs lie in $X\cup Y$ and for which $X$ contains exactly one of $e_i,e_j$ and $Y$ exactly one of $f_i,f_j$. Every good pair is in $\mathcal G'$. For a pair that is not good, the edges of its two cycles in $X\cup Y$ are those of any tree $t$ of the block. If its arcs lie in $t$, then, since $t$ is acyclic, each of its cycles meets $t$ in the arcs plus $e$ only, $f$ only, or neither. One $e$ and one $f$ in total is possible only as pattern~1 or pattern~2, which would make the pair good. So $\mathcal G'=\mathcal G$, and $F$ is $X\cup Y$ minus the special edges of $\mathcal G$.
+\end{proof}
+
+\begin{lemma}[$\ell_1$ distance to low rank]\label{lem:l1-rank}
+Let $\Pi$ be an $n\times n$ permutation matrix and $Q$ a real matrix with $\operatorname{rank}Q\le r\le n$. Then $\sum_{a,b}\abs{\Pi_{ab}-Q_{ab}}\ge n-r$.
+\end{lemma}
+
+\begin{proof}
+Let $\mathcal E:=I-\Pi^{\top}Q$. Then $I-\mathcal E$ has rank at most $r$, so $\mathcal K:=\ker(I-\mathcal E)$ has dimension at least $n-r$. With $P_{\mathcal K}$ the orthogonal projection onto $\mathcal K$, $\mathcal EP_{\mathcal K}=P_{\mathcal K}$, so $n-r\le\operatorname{tr}P_{\mathcal K}=\operatorname{tr}(\mathcal EP_{\mathcal K})\le\norm{\mathcal E}_*$, the nuclear norm. Finally $\norm{\mathcal E}_*=\norm{\Pi-Q}_*$, and the nuclear norm of a matrix is at most the sum of the absolute values of its entries, by the triangle inequality over matrices with one nonzero entry.
+\end{proof}
+
+\paragraph{Block families.} A \emph{permutation block} of $P$ is a set $R\subseteq\{0,1\}^E$ together with a bijection to a product $X\times Y$ of two sets of the same size $n_R$, under which $\tau P$ restricted to $R$ becomes an $n_R\times n_R$ permutation matrix; so $R$ contains exactly $n_R$ spanning trees. For a real function $Q$, $Q|_R$ is the $X\times Y$ matrix obtained in the same way. The sets $R$ of Lemma~\ref{lem:signed-blocks} are permutation blocks whose cells are cells of $M_{A,B}$, so $\operatorname{rank}Q|_R\le\operatorname{rank}M_{A,B}(Q)$. For a family $\mathcal R$ of pairwise disjoint permutation blocks and an integer $g\ge0$, let $\mathcal R_g$ be the set of blocks with $n_R\ge2^g$ and
+\[
+  \delta_{\mathcal R}(g):=1-\frac1\tau\sum_{R\in\mathcal R_g}n_R ,
+\]
+the probability under $P$ of the trees outside the blocks of $\mathcal R_g$. For the blocks of Lemma~\ref{lem:signed-blocks}, every tree lies in exactly one block, and $\delta(g)=\Pr[g(T)<g]$.
+
+\begin{lemma}[normalized approximations]\label{lem:fact-n}
+Let $Q$ be a real function on $\{0,1\}^E$ with $\sum_xQ(x)=1$, write $Q=Q^+-Q^-$ with $Q^\pm:=\max(\pm Q,0)$, and put $t:=\sum_xQ^-(x)$. Then $\norm Q_1=1+2t$, $t\le\frac12\norm{P-Q}_1$, and
+\[
+  \sum_x\min\bigl(P(x),Q^+(x)\bigr)=1-\tfrac12\norm{P-Q}_1+t .
+\]
+In particular, $\frac12\norm{P-Q}_1\le\eps$ implies $\norm Q_1\le1+2\eps$.
+\end{lemma}
+
+\begin{proof}
+$\sum Q^+=1+t$, so $\norm Q_1=1+2t$. Where $Q<0$ we have $\abs{P-Q}=\abs{P-Q^+}+Q^-$, and elsewhere $\abs{P-Q}=\abs{P-Q^+}$, so $\norm{P-Q^+}_1=\norm{P-Q}_1-t$. Since $\min(a,b)=(a+b-\abs{a-b})/2$, the sum of the minima is $\frac12(1+(1+t)-\norm{P-Q}_1+t)$. As $\sum(P-Q)=0$, the positive part of $P-Q$ has mass $\frac12\norm{P-Q}_1$, and it is at least $Q^-$ pointwise.
+\end{proof}
+
+\begin{lemma}[row-scaled trace; Ky Fan and Hoffman]\label{lem:kfh}
+Let $B$ be a real $n\times n$ matrix and $R_i:=\sum_j\abs{B_{ij}}$. Then $\sum_{i:R_i>0}\abs{B_{ii}}/R_i\le\operatorname{rank}B$.
+\end{lemma}
+
+\begin{proof}
+Let $\Delta$ be diagonal with $\Delta_{ii}:=\operatorname{sign}(B_{ii})/R_i$ if $R_i>0$, and $\Delta_{ii}:=0$ otherwise. The matrix $B':=\Delta B$ has rank at most $\operatorname{rank}B$, diagonal entries $\abs{B_{ii}}/R_i$, and absolute row sums at most $1$. Every complex eigenvalue $\lambda$ of $B'$ has $\abs\lambda\le1$: if $B'v=\lambda v$ with $v\ne0$ and $\abs{v_i}$ maximal, then $\abs\lambda\abs{v_i}\le\sum_j\abs{B'_{ij}}\abs{v_j}\le\abs{v_i}$. The eigenvalue $0$ has algebraic multiplicity at least $n-\operatorname{rank}B'$, so at most $\operatorname{rank}B'$ eigenvalues, counted with multiplicity, are nonzero, and $\sum_i\abs{B_{ii}}/R_i=\operatorname{tr}B'\le\operatorname{rank}B'\le\operatorname{rank}B$.
+\end{proof}
+
+This is a bound of Ky Fan and Hoffman~\cite{FanHoffman53}. It says how much of a permutation a matrix of small rank and small mass can cover.
+
+\begin{lemma}[one block]\label{lem:block-one}
+Let $Q$ be a real $n\times n$ matrix of rank at most $r$, $\pi$ a permutation of $[n]$, $s>0$, and $\norm Q_1:=\sum_{i,j}\abs{Q_{ij}}$. Then
+\[
+  \sum_{i=1}^n\min\bigl(s,Q^+_{i\pi(i)}\bigr)\ \le\ \sqrt{s\,r\norm Q_1},\qquad\sum_{i=1}^n\sqrt{Q^+_{i\pi(i)}}\ \le\ \sqrt{r\norm Q_1}.
+\]
+The first bound is attained: if $n=rm$ and $Q$ has $r$ diagonal blocks equal to the all-ones $m\times m$ matrix divided by $rm^2$, then for $\pi=\mathrm{id}$ and $s=1/(rm^2)$ both sides equal $1/m$.
+\end{lemma}
+
+\begin{proof}
+Permuting columns changes neither the rank nor $\norm Q_1$, so let $\pi$ be the identity. Let $I$ be the set of $i$ with $Q_{ii}>0$, and put $c_i:=\min(s,Q_{ii})$ and $R_i:=\sum_j\abs{Q_{ij}}$, so $R_i\ge Q_{ii}\ge c_i$ for $i\in I$. By the Cauchy--Schwarz inequality and Lemma~\ref{lem:kfh},
+\[
+  \sum_{i\in I}c_i=\sum_{i\in I}\sqrt{\frac{c_i}{R_i}}\sqrt{c_iR_i}\le\Bigl(\sum_{i\in I}\frac{Q_{ii}}{R_i}\Bigr)^{1/2}\Bigl(s\sum_iR_i\Bigr)^{1/2}\le\sqrt{r\,s\norm Q_1}.
+\]
+The second bound is the same computation with $\sqrt{Q_{ii}}=\sqrt{Q_{ii}/R_i}\,\sqrt{R_i}$.
+\end{proof}
+
+\begin{theorem}[approximation on permutation blocks]\label{thm:block-approx}
+Let $\mathcal R$ be a family of pairwise disjoint permutation blocks of $P$, let $Q$ be a real function on $\{0,1\}^E$ with $\frac12\norm{P-Q}_1\le\eps$, put $r_R:=\operatorname{rank}Q|_R$, and let $g\ge0$ be an integer. Write $t_+:=\max(t,0)$.
+\begin{enumerate}[label=(\alph*)]
+\item If $\sum_xQ(x)=1$, then
+\[
+  \bigl[1-\eps-\delta_{\mathcal R}(g)\bigr]_+^2\ \le\ \frac1\tau\sum_{R\in\mathcal R_g}r_R .
+\]
+In particular, if $r_R\le r$ for every $R\in\mathcal R_g$, then $r\ge2^g[1-\eps-\delta_{\mathcal R}(g)]_+^2$.
+\item In general $2\eps\ge\tau^{-1}\sum_{R\in\mathcal R}(n_R-r_R)^+$. In particular, if $r_R\le r$ for every $R\in\mathcal R_g$, then $2\eps\ge(1-\delta_{\mathcal R}(g))(1-r/2^g)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) Put $\omega:=\sum_x\min(P(x),Q^+(x))$, $\delta:=\delta_{\mathcal R}(g)$, $S:=\tau^{-1}\sum_{R\in\mathcal R_g}r_R$, and let $t$ be as in Lemma~\ref{lem:fact-n}, so $\omega\ge1-\eps+t$ and $\norm Q_1=1+2t$. The points outside the blocks of $\mathcal R_g$ contribute at most their $P$-mass, which is $\delta$. In a block $R\in\mathcal R_g$, the points where $P>0$ are the $n_R$ cells of a permutation, where $P=1/\tau$, so Lemma~\ref{lem:block-one} with $s=1/\tau$, applied to $Q|_R$, bounds their contribution by $(r_R\norm{Q|_R}_1/\tau)^{1/2}$. By the Cauchy--Schwarz inequality and disjointness,
+\[
+  1-\eps+t\le\omega\le\delta+\sum_{R\in\mathcal R_g}\Bigl(\frac{r_R\norm{Q|_R}_1}\tau\Bigr)^{1/2}\le\delta+\sqrt{S\norm Q_1}=\delta+\sqrt{S(1+2t)} .
+\]
+If $a:=1-\eps-\delta\le0$ there is nothing to prove. Otherwise $(a+t)^2\le S(1+2t)$, and $(a+t)^2-a^2(1+2t)=t^2+2at(1-a)\ge0$ because $0<a\le1$, so $S\ge a^2$. For the second claim, the blocks of $\mathcal R_g$ are disjoint and each contains at least $2^g$ trees, so there are at most $\tau2^{-g}$ of them, and $S\le r2^{-g}$.
+
+(b) Lemma~\ref{lem:l1-rank}, applied to $\tau P|_R$ and $\tau Q|_R$ on each block, and disjointness give $2\eps\tau=\norm{\tau P-\tau Q}_1\ge\sum_R(n_R-r_R)^+$. If $r>2^g$ the second claim is trivial. Otherwise keep the blocks of $\mathcal R_g$; for them $n_R-r\ge n_R(1-r2^{-g})$, and $\tau^{-1}\sum_{R\in\mathcal R_g}n_R=1-\delta$.
+\end{proof}
+
+Normalization moves the threshold from $\frac12$ to $1$. Without it, (b) is sharp at $\eps=\frac12$, since $Q=0$ has rank $0$. With $\sum Q=1$ the zero function is excluded, the mass of $Q$ is at most $1+2\eps$ even though $Q$ may be negative, and Lemma~\ref{lem:block-one} says that a matrix of rank $r$ and bounded mass covers at most a $\sqrt{r/n_R}$ fraction of a permutation of size $n_R$. Negative values do not help $Q$: each unit of negative mass adds a unit to $\omega$ and two units to $\norm Q_1$, and the last step of the proof shows that this trade never pays. The positive part in (a) cannot be dropped. Take four disjoint triangles joined in a path by three bridges, so $N=12$, $M=15$ and $\tau=81$. On each triangle put an edge $e$ and an arc in $A$ and the third edge $f$ in $B$, put the bridges in $B$, and pair the triangles as $(1,2)$ and $(3,4)$. Only the $4$ trees that are good at both pairs lie in blocks with $2^2$ trees, so $\delta(2)=77/81$. The uniform distribution $Q\equiv2^{-15}$ has rank $1$, $\norm Q_1=1$ and $\eps=1-81/2^{15}$, so $1-\eps-\delta(2)<0$, and squaring without the positive part would give the false bound $r\ge4(1-\eps-\delta(2))^2\approx3.6$. Even the weaker form $r\ge2^g(1-\eps-\delta)^2/(1+2\eps)$, which uses only $\norm Q_1\le1+2\eps$ instead of the identity in Lemma~\ref{lem:fact-n}, would give $r\ge1.2$ without the positive part.
+
+\begin{theorem}[approximate rank]\label{thm:signed-approx}
+With the pairs as above, let $Q$ be any real function on $\{0,1\}^E$, not necessarily nonnegative or normalized, with $\operatorname{rank}M_{A,B}(Q)\le r$ and $\frac12\norm{P-Q}_1\le\eps$. For every integer $g\ge0$ with $\alpha_g:=\Pr_{T\sim P}[g(T)\ge g]>0$,
+\[
+  2\eps\ \ge\ \alpha_g\Bigl(1-\frac r{2^g}\Bigr),\qquad\text{equivalently}\qquad r\ \ge\ 2^g\Bigl(1-\frac{2\eps}{\alpha_g}\Bigr).
+\]
+The threshold $\eps<\frac12$ is sharp: $Q=0$ has rank $0$ and $\frac12\norm{P-Q}_1=\frac12$.
+\end{theorem}
+
+\begin{proof}
+The sets $R$ of Lemma~\ref{lem:signed-blocks} form a family of disjoint permutation blocks with $n_R=2^{g_b}$, where $g_b$ is the number of good pairs of block $b$, and $\operatorname{rank}Q|_R\le r$. Every tree lies in exactly one block, so $1-\delta(g)=\alpha_g$. Apply Theorem~\ref{thm:block-approx}(b).
+\end{proof}
+
+\begin{theorem}[approximate rank, normalized]\label{thm:signed-o2}
+With the pairs as above, let $Q$ be a real function on $\{0,1\}^E$ with $\sum_xQ(x)=1$, $\operatorname{rank}M_{A,B}(Q)\le r$ and $\frac12\norm{P-Q}_1\le\eps$. Then for every integer $g\ge0$,
+\[
+  r\ \ge\ 2^g\,\bigl[\alpha_g-\eps\bigr]_+^2 .
+\]
+\end{theorem}
+
+\begin{proof}
+As for Theorem~\ref{thm:signed-approx}, with Theorem~\ref{thm:block-approx}(a) and $1-\eps-\delta(g)=\alpha_g-\eps$.
+\end{proof}
+
+\begin{lemma}[good pairs are frequent]\label{lem:good-pairs}
+Let $p_k:=D^{-(\abs{C_k}-1)}$, where $D$ is the maximum degree. Conditionally on any event of positive probability that is determined by the sets $T\cap E(C_l)$ for the cycles $C_l$ of the other pairs, the pair $(i,j)$ is good with probability at least $2p_ip_j$. Hence $g(T)$ stochastically dominates the binomial law $\mathrm{Bin}(n,2p^2)$, where $p:=\min_kp_k$.
+\end{lemma}
+
+\begin{proof}
+Let $\Pi$ be such an event. No edge of $C_l$, $l\ne i$, is incident to $C_i$, so $\Pi$ and the event $\{T\cap E(C_j)=E(C_j)\setminus\{e_j\}\}$ are functions of $T\setminus I(C_i)$, in the notation of Lemma~\ref{lem:contract}. Lemma~\ref{lem:local}, applied to $C_i$ and the edge $f_i$, and the tower property give
+\[
+  \Pr[\text{pattern 1},\Pi]\ \ge\ p_i\Pr\bigl[T\cap E(C_j)=E(C_j)\setminus\{e_j\},\ \Pi\bigr]\ \ge\ p_ip_j\Pr[\Pi],
+\]
+where the second step is the same argument for $C_j$. Pattern~2 is symmetric, and the two patterns are disjoint. Taking for $\Pi$ the values of the goodness indicators of the earlier pairs gives conditional probability at least $2p^2$ for each pair given the earlier ones, which yields the domination by the standard sequential coupling.
+\end{proof}
+
+\begin{corollary}[approximation on linked expanders]\label{cor:signed-approx}
+Let $G$ satisfy the hypotheses of Theorem~\ref{thm:general}, with $r_0$ as there, put $p:=D^{-(\ell-1)}$ and $n:=\lfloor\lceil r_0\rceil/2\rfloor$, and assume $n\ge1$. Let $C$ be a circuit with real weights, structured with respect to a vtree with blocks of at most $2M/3$ edges, that computes a real function $f$ with $\frac12\norm{\UST(G)-f}_1\le\eps$. Then
+\[
+  \abs C\ \ge\ 2^{\lfloor p^2n\rfloor}\Bigl(1-\frac{2\eps}{1-e^{-p^2n/4}}\Bigr),\qquad\text{and if }\sum_xf(x)=1,\qquad\abs C\ \ge\ 2^{\lfloor p^2n\rfloor}\bigl[1-\eps-e^{-p^2n/4}\bigr]_+^2 .
+\]
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:struct-rank} gives a balanced split $A|B$ with $\abs C\ge\operatorname{rank}M_{A,B}(f)$. As in Corollary~\ref{cor:signed-exact} there are at least $2n$ pairwise vertex-disjoint mixed cycles of length at most $\ell$; pair them up. Lemma~\ref{lem:good-pairs} gives $p_k\ge p$, and with $g:=\lfloor p^2n\rfloor$ the Chernoff bound gives $1-\alpha_g\le\Pr[\mathrm{Bin}(n,2p^2)<p^2n]\le e^{-p^2n/4}$. Apply Theorems~\ref{thm:signed-approx} and~\ref{thm:signed-o2}.
+\end{proof}
+
+So with normalization, $\abs C\ge(1-\eps-o(1))^2\,2^{\lfloor p^2n\rfloor}=e^{\Omega(N)}$ for every fixed $\eps<1$, and without it, $\abs C\ge(2\eta-o(1))\,2^{\lfloor p^2n\rfloor}$ for $\eps\le\frac12-\eta$ with $\eta>0$ fixed. The normalized bound applies to every circuit whose output $f$ has $\lambda:=\sum_xf(x)\ne0$ and $\frac12\norm{P-f/\lambda}_1\le\eps$, since dividing by $\lambda$ does not change the rank; the threshold $\frac12$ is an artefact of comparing unnormalized outputs, where $f=0$ is admissible. The exponent is smaller than the nonnegative one, $r_0D^{-\ell}$, by a factor of about $D^{2-\ell}\ln2/2$. For the cubic prisms of Example~\ref{ex:cubic} ($D=\ell=4$, $r_0\ge N/11520$) it is about $N/(1.4\cdot10^8)$, against $N/(2.9\cdot10^6)$.
+
+Theorem~\ref{thm:signed-o2} needs only the rank of $Q$ at one balanced split, not a circuit, so it also bounds sparse approximations.
+
+\begin{corollary}[sparse approximations]\label{cor:signed-sparse}
+Let $G$, $p$ and $n$ be as in Corollary~\ref{cor:signed-approx}. Let $Q$ be a linear combination of $S$ monomials $\prod_{e\in U}x_e$, or of $S$ characters $(-1)^{\sum_{e\in U}x_e}$, with $\sum_xQ(x)=1$ and $\frac12\norm{P-Q}_1\le\eps$. Then $S\ge2^{\lfloor p^2n\rfloor}[1-\eps-e^{-p^2n/4}]_+^2$. In particular, for fixed $\eps<1$, an approximation of degree at most $k$ needs $\sum_{j\le k}\binom Mj\ge e^{\Omega(N)}$, so $k=\Omega(N/\log N)$.
+\end{corollary}
+
+\begin{proof}
+Each monomial and each character is a product of a function of $x_A$ and a function of $x_B$, so $\operatorname{rank}M_{A,B}(Q)\le S$ at every split. Apply Theorem~\ref{thm:signed-o2} as in the proof of Corollary~\ref{cor:signed-approx}. For the last claim use $\sum_{j\le k}\binom Mj\le(eM/k)^k$ and $M\le DN/2$.
+\end{proof}
+
+The same argument handles a sum of terms that are low-rank across different splits, provided the terms do not cancel each other much.
+
+\begin{proposition}[several splits]\label{prop:signed-splits}
+Let $Q=\sum_{u=1}^kQ_u$ be real functions with $\sum_xQ(x)=1$ and $\frac12\norm{P-Q}_1\le\eps$. For each $u$ let $A_u|B_u$ be a split with $\operatorname{rank}M_{A_u,B_u}(Q_u)\le r_u$, and $\mathcal R_u$ a family of disjoint permutation blocks of $P$ whose cells are cells of $M_{A_u,B_u}$. Put $\Lambda:=\sum_u\norm{Q_u}_1$ and $\delta_*:=\max_u\delta_{\mathcal R_u}(g)$. Then
+\[
+  \bigl[1-\eps-k\delta_*\bigr]_+^2\ \le\ \frac\Lambda{2^g}\sum_{u=1}^kr_u .
+\]
+\end{proposition}
+
+\begin{proof}
+Pointwise $Q^+\le\sum_uQ_u^+$, and $\min(a,b+c)\le\min(a,b)+\min(a,c)$ for $a,b,c\ge0$, so by Lemma~\ref{lem:fact-n}, $1-\eps\le\sum_x\min(P,Q^+)\le\sum_u\sum_x\min(P,Q_u^+)$. As in the proof of Theorem~\ref{thm:block-approx}(a), the $u$-th sum is at most $\delta_*+(r_u\norm{Q_u}_1/2^g)^{1/2}$. Sum over $u$ and apply the Cauchy--Schwarz inequality, $\sum_u(r_u\norm{Q_u}_1)^{1/2}\le(\Lambda\sum_ur_u)^{1/2}$.
+\end{proof}
+
+On linked expanders every balanced split carries blocks with $\delta\le e^{-p^2n/4}$, as in Corollary~\ref{cor:signed-approx}. So a sum $f=\sum_uf_u$ of $k$ structured circuits of sizes $s_u$, on unrelated vtrees, with $\sum f=1$ and $\frac12\norm{P-f}_1\le\eps$, has $\sum_us_u\ge2^{\lfloor p^2n\rfloor}[1-\eps-ke^{-p^2n/4}]_+^2/\Lambda$: a short sum of structured circuits that do not cancel each other much is exponentially large. Theorem~\ref{thm:signed-sums-linear} removes the dependence on $\Lambda$ at errors below $\frac12$.
+
+\subsection{All expanders, and circuits that are not smooth}\label{sec:signed-expanders}
+
+Corollary~\ref{cor:signed-approx} needs short mixed cycles, so it misses expanders of large girth, and it needs smoothness through Lemma~\ref{lem:struct-rank}. Both needs go away if the cycles are replaced by single vertices, which is the idea behind Theorem~\ref{thm:touch}. Theorem~\ref{thm:block-approx} only asks for disjoint permutation blocks, and a pendant vertex supplies them without any cycle.
+
+A \emph{gadget} is a connected set $U\subseteq V$ with two distinct marked edges $e_U\in A\cap\partial U$ and $f_U\in B\cap\partial U$, where $\partial U$ is the set of edges with exactly one end in $U$. A family of gadgets is \emph{admissible} if the sets are pairwise disjoint and no edge joins two of them, so their boundaries are disjoint. A spanning tree $T$ has $U$ \emph{pendant via} $b$ if $T\cap\partial U=\{b\}$; then $T\cap E(U)$ is a spanning tree of $G[U]$, and for every $b'\in\partial U$ the set $T-b+b'$ is again a spanning tree, since $U$ hangs from the rest of $T$ by one edge. Pair the gadgets of an admissible family $U_1,\dots,U_{2n}$ into $n$ pairs $(U_i,U_j)$. A pair is \emph{good} in $T$ if $T$ shows pattern~1, with $U_i$ pendant via $e_{U_i}$ and $U_j$ via $f_{U_j}$, or pattern~2, with $U_i$ pendant via $f_{U_i}$ and $U_j$ via $e_{U_j}$. Let $\mathcal G(T)$ be the set of good pairs, $g(T):=\abs{\mathcal G(T)}$, and $F(T)$ the set $T$ minus the four marked edges of every good pair; a \emph{block} is a set of trees with the same $(\mathcal G,F)$.
+
+\begin{lemma}[pendant blocks]\label{lem:pendant-blocks}
+A block with $g$ good pairs contains exactly $2^g$ trees, one for each choice of pattern at each good pair. Let $R$ be the set of cells $(X,Y)$ of $M_{A,B}$ in which $X$ consists of $F\cap A$ and one of $e_{U_i},e_{U_j}$ for each good pair, and $Y$ of $F\cap B$ and one of $f_{U_i},f_{U_j}$ for each good pair. Then $M_{A,B}(P)$ restricted to $R$ is $\tau^{-1}$ times a $2^g\times2^g$ permutation matrix, and the sets $R$ of distinct blocks are disjoint.
+\end{lemma}
+
+\begin{proof}
+Switching the pattern of a good pair is two swaps $b\to b'$ at pendant gadgets. Their boundaries are disjoint from each other and from those of the other gadgets, so the result is a tree with the same $\mathcal G$ and $F$; and the $2^g$ pattern choices determine the trees of the block.
+
+A cell of $R$ chooses $(e_{U_i},f_{U_j})$, $(e_{U_j},f_{U_i})$, $(e_{U_i},f_{U_i})$ or $(e_{U_j},f_{U_j})$ at each good pair. In the first two cases the pair shows pattern~1 or~2. In the last two, one gadget of the pair has no edge of its boundary in the cell, since $F$ contains no other boundary edge of $U_i$ or $U_j$, so the cell is not a tree. Hence the trees in $R$ are the $2^g$ trees of the block, one in each row and each column.
+
+Say that a pair \emph{shows a cell pattern} in $x$ if $(x\cap\partial U_i,x\cap\partial U_j)$ is $(\{e_{U_i}\},\{f_{U_j}\})$, $(\{f_{U_i}\},\{e_{U_j}\})$, $(\{e_{U_i},f_{U_i}\},\emptyset)$ or $(\emptyset,\{e_{U_j},f_{U_j}\})$. In a cell of $R$, the good pairs of the block show a cell pattern, and every other pair shows its configuration in the trees of the block, which is not a cell pattern, because the pair is not good and a tree meets every $\partial U$. So $\mathcal G$, and then $F$, can be read off the cell.
+\end{proof}
+
+\begin{lemma}[pendant probability]\label{lem:pendant-prob}
+Let $U_1,\dots,U_m$ be an admissible family with union $W$, such that $H:=G-W$ is connected with at least two vertices, and put $\kappa:=1/\lambda_2(L_H)$. Fix a gadget $U$, an edge $b\in\partial U$, and a configuration $\sigma$ of $T$ on the edges inside and on the boundaries of the other gadgets, with positive probability. Let $d_U:=\abs{\partial U}$. Then
+\[
+  \Pr\bigl[U\text{ pendant via }b\bigm|\sigma\bigr]\ \ge\ D^{-(\abs U-1)}\,\frac1{d_U}\,(1+\kappa')^{-(d_U-1)},
+\]
+with $\kappa':=\kappa$ if no vertex outside $U$ has two neighbours in $U$, and $\kappa':=2\kappa$ in general. In particular, for $U=\{w\}$ the bound is $\frac1d(1+\kappa)^{-(d-1)}$ with $d=\deg w$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:markov}, given $\sigma$ the tree is uniform on $K_\sigma$, which is $G$ with the present edges of $\sigma$ contracted and the absent ones deleted. The edges inside and on the boundary of $U$ are untouched, and each other gadget is merged into vertices of $H$ or removed with its edges. The boundary edges of $U$ end in $H$, because the family is admissible.
+
+\emph{$U$ is spanned.} Fix a spanning tree $S_0$ of $G[U]$ and list its edges so that each joins the earlier ones to a new vertex $v$. Given that the earlier edges are present, contract them (Lemma~\ref{lem:markov}); the next edge has an end $v$ of degree at most $D$, and identifying all vertices other than $v$ shows, by~\eqref{E:rayleigh} and~\eqref{E:kirchhoff}, that it is present with probability at least $1/D$. If all edges of $S_0$ are present, then $T\cap E(U)=S_0$. So $\Pr[T\cap E(U)=S_0\mid\sigma]\ge D^{-(\abs U-1)}$.
+
+\emph{Pendant, given $T\cap E(U)=S$.} For any spanning tree $S$ of $G[U]$, condition on $T\cap E(U)=S$ as well. Contracting $S$ turns $U$ into a vertex $u^*$ of degree $d_U$, and we must show that $T\cap\partial U=\{b\}$ with probability at least $\frac1{d_U}(1+\kappa')^{-(d_U-1)}$. Delete the edges $e_1,\dots,e_{d_U-1}$ of $\partial U\setminus\{b\}$ one at a time, and let $u_j\in V(H)$ be the end of $e_j$ outside $U$. By Lemma~\ref{lem:one-edge}, the $j$-th deletion succeeds with probability $1/(1+R_j)$, where $R_j$ is the resistance between $u_j$ and $u^*$ after deleting $e_1,\dots,e_j$. The $m:=d_U-j\ge1$ remaining edges of $\partial U$ end at vertices $y_1,\dots,y_m$ of $H$. As in the proof of Lemma~\ref{lem:touch-flow}, deleting the other gadgets and undoing the identifications only increases resistance~\eqref{E:rayleigh}, and~\eqref{E:flow} applied in $H$ to $\chi:=\one_{u_j}-\frac1m\sum_k\one_{y_k}$, followed by $\frac1m$ along each remaining edge, gives by~\eqref{E:thomson} $R_j\le\kappa\norm\chi^2+\frac1m$. If no vertex outside $U$ has two neighbours in $U$, the $y_k$ are distinct and differ from $u_j$, so $\norm\chi^2=1+\frac1m$ and $1+R_j\le(1+\kappa)(1+\frac1m)$. In general $\norm\chi^2\le\norm\chi_1\norm\chi_\infty\le2$ and $1+R_j\le(1+2\kappa)(1+\frac1m)$. The product of the $d_U-1$ factors $1/(1+R_j)$ is at least $(1+\kappa')^{-(d_U-1)}\prod_{m=1}^{d_U-1}\frac m{m+1}=\frac1{d_U}(1+\kappa')^{-(d_U-1)}$. Average over $S$ and multiply by the first part.
+\end{proof}
+
+\begin{lemma}[good pendant pairs are frequent]\label{lem:pendant-pairs}
+Let $p_U$ be the bound of Lemma~\ref{lem:pendant-prob} for the marked edges of $U$. Conditionally on any event of positive probability that is determined by the configurations of $T$ on the gadgets of the other pairs and their boundaries, the pair $(U_i,U_j)$ is good with probability at least $2p_{U_i}p_{U_j}$. Hence $g(T)$ stochastically dominates $\mathrm{Bin}(n,2p^2)$ with $p:=\min_Up_U$.
+\end{lemma}
+
+\begin{proof}
+Let $\Pi$ be such an event. By Lemma~\ref{lem:pendant-prob} for $U_i$, conditioning on the configuration on all other gadgets, and the tower property, $\Pr[\text{pattern 1},\Pi]\ge p_{U_i}\Pr[U_j\text{ pendant via }f_{U_j},\Pi]\ge p_{U_i}p_{U_j}\Pr[\Pi]$, where the second step is the same argument for $U_j$. Pattern~2 is symmetric and disjoint from pattern~1. The domination follows by sequential coupling, as in Lemma~\ref{lem:good-pairs}.
+\end{proof}
+
+\begin{theorem}[approximate rank on 2-connected expanders]\label{thm:signed-expander}
+Let $G$ be a 2-connected simple graph with maximum degree at most $D$ and $h(G)\ge h>0$, and let $E=A\sqcup B$ with $\abs A,\abs B\ge m_0$. Put $h_1:=\min(h,1)$, $h':=h_1/(D+1)$, $\Lambda:=e(1+1/h_1)$, $q:=(8D\Lambda^3)^{-(D+1)}$,
+\[
+  p:=\frac1D\Bigl(1+\frac1{\mu(D,h')}\Bigr)^{-(D-1)},\qquad a:=\frac{qh_1}{D(D+1)(D+h_1)},
+\]
+with $\mu$ as in Lemma~\ref{lem:cheeger}. There are $n\ge\lfloor am_0/2\rfloor$ pairs of single-vertex gadgets with the following property. Let $Q$ be a real function with $\frac12\norm{P-Q}_1\le\eps$ and $r:=\operatorname{rank}M_{A,B}(Q)$, and put $g:=\lfloor p^2n\rfloor$ and $\delta:=e^{-p^2n/4}$. If $n\ge1$, then
+\[
+  r\ \ge\ 2^g\Bigl(1-\frac{2\eps}{1-\delta}\Bigr),\qquad\text{and if }\sum_xQ(x)=1,\qquad r\ \ge\ 2^g\,[1-\eps-\delta]_+^2 .
+\]
+Moreover $g\ge c_Rm_0-1$ with $c_R:=p^2a/3$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:mixed-vertices} with $h_1$ in place of $h$, the set $Z$ of mixed vertices has $\abs Z\ge2h_1m_0/(D(D+h_1))$. The proof of Theorem~\ref{thm:touch} shows $\mathcal S(q)\le\frac12$ for these $h'$ and $q$, so Lemma~\ref{lem:delete} gives an independent set $W\subseteq Z$ with $\abs W\ge q\abs Z/(2(D+1))\ge am_0$ such that $H=G-W$ has at least two vertices and $h(H)\ge h'$; by Lemma~\ref{lem:cheeger}, $\lambda_2(L_H)\ge\mu(D,h')$. For $w\in W$ take the gadget $\{w\}$ with $e_w\in S_A(w)$ and $f_w\in S_B(w)$. The family is admissible because $W$ is independent. Pair up $2n:=2\lfloor\abs W/2\rfloor$ of them. Lemma~\ref{lem:pendant-prob} gives $p_{\{w\}}\ge p$, since $\frac1d(1+\kappa)^{-(d-1)}$ decreases in $d\le D$. By Lemma~\ref{lem:pendant-blocks} the blocks are disjoint permutation blocks with $n_R=2^{g_b}$ and rank at most $r$, and every tree lies in one block; by Lemma~\ref{lem:pendant-pairs} and the Chernoff bound, $\delta(g)\le\Pr[\mathrm{Bin}(n,2p^2)<p^2n]\le\delta$. Apply Theorem~\ref{thm:block-approx}. For the last claim, $n\ge\abs W/3$ if $\abs W\ge2$, so $g\ge p^2am_0/3-1$; if $\abs W\le1$, then $am_0\le1$ and $c_Rm_0<1$.
+\end{proof}
+
+\begin{corollary}[structured circuits on 2-connected expanders]\label{cor:signed-expander}
+Let $G$ be as in Theorem~\ref{thm:signed-expander} and $C$ a circuit with real weights computing $f$ with $\frac12\norm{P-f}_1\le\eps$. Suppose that $C$ is structured with respect to a vtree with blocks of at most $2M/3$ edges, or aligned with a vtree whose leaves are single edges, as defined before Lemma~\ref{lem:frontier}, in which case $C$ need not be smooth. Then, with $p,a,c_R$ as there, $m_0:=\lceil M/3\rceil\ge N/3$, $n:=\lfloor am_0/2\rfloor$ and $g:=\lfloor p^2n\rfloor$, if $n\ge1$,
+\[
+  \abs C\ \ge\ 2^g\Bigl(1-\frac{2\eps}{1-e^{-p^2n/4}}\Bigr),\qquad\text{and if }\sum_xf(x)=1,\qquad\abs C\ \ge\ 2^g\,\bigl[1-\eps-e^{-p^2n/4}\bigr]_+^2 .
+\]
+So $\abs C\ge2^{\Omega(N)}$ for every fixed $\eps<\frac12$, and for every fixed $\eps<1$ if $\sum f=1$, with constants depending only on $D$ and $h$.
+\end{corollary}
+
+\begin{proof}
+In the first case Lemma~\ref{lem:struct-rank} gives a split with $M/3<\abs A\le2M/3$ and $\operatorname{rank}M_{A,B}(f)\le\abs C$. In the second, descend from the root of the vtree to the child with the larger scope until the scope has at most $2M/3$ edges; the scope $S$ of the node reached has $\abs S\ge M/3$, and Lemma~\ref{lem:frontier} gives $\operatorname{rank}M_{S,E\setminus S}(f)\le\abs C$. In both cases both sides have at least $m_0$ edges, and $M\ge N$ because $G$ has minimum degree at least $2$. The bound is monotone in $n$, so Theorem~\ref{thm:signed-expander} applies with $n=\lfloor am_0/2\rfloor$ pairs.
+\end{proof}
+
+Compared with Corollary~\ref{cor:signed-approx}, the graph class grows from linked expanders to every 2-connected bounded-degree expander, the class of Theorem~\ref{thm:touch}; this includes the Ramanujan graphs of Lubotzky, Phillips and Sarnak~\cite{LPS88}, whose girth grows logarithmically. Smoothness is no longer needed. The exponent changes from $p^2=D^{-2(\ell-1)}$ to $p^2\approx D^{-2}(1+\kappa)^{-2(D-1)}$, and is again tiny. The same argument applies to every model whose functions have small rank across some balanced split, for instance sums $\sum_jf_{C_j}^2$ of squares of circuits structured with respect to one vtree, as in Theorem~\ref{thm:signed-square}, whose rank at the split of Lemma~\ref{lem:struct-rank} is at most $\sum_j\abs{C_j}^2$.
+
+\subsection{Squares and positive semidefinite forms}
+
+Squaring a circuit with real weights is another way to use subtraction while keeping a nonnegative model~\cite{LoconteEtAl24}, and sums of squares extend it~\cite{LoconteMengelVergari25}. Squared circuits with subtraction can be exponentially more succinct than structured nonnegative circuits for some distributions~\cite{LoconteEtAl24}. For the uniform spanning tree, the structured squared models considered here satisfy the same exponential lower-bound expression as nonnegative circuits; this does not compare the optimal sizes of the two models.
+
+\begin{theorem}[normalized squares of structured amplitudes]\label{thm:signed-square}
+Let $d=(d_1,\dots,d_K)$ be the outputs of a circuit with real weights of size $s$, structured with respect to a vtree $V$ with blocks of at most $2M/3$ edges, and let $Q:=\norm{d(x)}^2/Z$ with $Z:=\sum_x\norm{d(x)}^2>0$. Let $A|B$ be the balanced split of Lemma~\ref{lem:struct-rank}, and $\beta_*$ the largest $\beta(P;A'|B')$ over balanced splits. Then
+\[
+  1-\TV(P,Q)\ \le\ \BC(P,Q)\ \le\ \beta(P;A|B)\sqrt s\ \le\ \beta_*\sqrt s .
+\]
+The same holds for $Q=d(x)^{\top}Kd(x)/Z$ with $K$ positive semidefinite. If $Q=\sum_kc_k^2/Z$, where $c_k$ is computed by a structured circuit of size $s_k$ with respect to its own vtree $V_k$, then $1-\TV(P,Q)\le\beta_*\sqrt{\sum_ks_k}$.
+\end{theorem}
+
+\begin{proof}
+Let $D_m:=M_{A,B}(d_m)$, and stack them as $\tilde D:=[D_1|\cdots|D_K]$. By Lemma~\ref{lem:struct-rank} all columns of $\tilde D$ lie in the span of the vectors $(f_g(x_A))_{x_A}$, $g\in G_v$, so $\operatorname{rank}\tilde D\le s$. Let $S_m(x):=d_m(x)/\norm{d(x)}$, with $S_m(x):=0$ if $d(x)=0$, let $W:=\sqrtm{M_{A,B}(P)}$ be the entrywise square root, and let $\tilde W:=[W\circ S_1|\cdots|W\circ S_K]$ with $\circ$ the entrywise product. Since $W\ge0$ and $\sum_mS_m^2\le1$ entrywise, for vectors $y$ and $z=(z_m)$,
+\[
+  \abs{y^{\top}\tilde Wz}\le\sum_{a,b}W_{ab}\abs{y_a}\Bigl(\sum_mz_{m,b}^2\Bigr)^{1/2}\le\opnorm W\norm y\norm z,
+\]
+so $\opnorm{\tilde W}\le\opnorm W=\beta(P;A|B)$ by Lemma~\ref{lem:LP}. Hence
+\[
+  \sum_x\sqrt{P(x)}\,\norm{d(x)}=\langle\tilde W,\tilde D\rangle\le\opnorm{\tilde W}\norm{\tilde D}_*\le\beta(P;A|B)\sqrt{\operatorname{rank}\tilde D}\,\norm{\tilde D}_F\le\beta(P;A|B)\sqrt s\sqrt Z,
+\]
+and dividing by $\sqrt Z$ gives the bound on $\BC(P,Q)$. For $K=LL^{\top}$, replace $d$ by $L^{\top}d$: the new stacked matrix is $\tilde D$ times a matrix, so its rank is still at most $\abs{G_v}\le s$. For several vtrees, $\norm{(c_k(x))_k}\le\sum_k\abs{c_k(x)}$, the case $K=1$ applied to each $c_k$ at its own balanced split gives $\sum_x\sqrt{P(x)}\abs{c_k(x)}\le\beta_*\sqrt{s_k}\norm{c_k}_2$, and the Cauchy--Schwarz inequality gives $\sum_k\sqrt{s_k}\norm{c_k}_2\le(\sum_ks_k)^{1/2}Z^{1/2}$. The first inequality of the theorem is $\min(a,b)\le\sqrt{ab}$.
+\end{proof}
+
+On the graphs of Theorems~\ref{thm:main} and~\ref{thm:general} this is the nonnegative bound: $s\ge(1-\eps)^2e^{cN}$ and $s\ge(1-\eps)^2(1-D^{-\ell})^{-r_0}$ respectively, where $\eps=\TV(P,Q)<1$. It is a statement about the lower-bound expression, not a claim that optimal sizes agree. The theorem covers a single squared structured circuit, as in~\cite{LoconteEtAl24}, explicit sums of squares of structured circuits charged by their total size, and positive semidefinite forms of the outputs of one structured circuit. It does not cover models with nested positive semidefinite units or with exponentially many implicit squares; we have not checked every class of~\cite{LoconteMengelVergari25} against it.
+
+Inner decomposability is essential. Let $L_r(x)$ be the Laplacian of the subgraph $\{e:x_e=1\}$ with the row and column of a fixed vertex deleted, and let $H(x):=\one[\abs x=N-1]$. Both have arithmetic circuits with subtraction of polynomial size, $\det L_r$ by the division-free algorithm of Berkowitz~\cite{Berkowitz84} and $H$ by the dynamic program $c_{j,k}=c_{j-1,k}(1-x_j)+c_{j-1,k-1}x_j$ over the edges. By the matrix-tree theorem, $\det L_r(x)$ counts the spanning trees contained in $x$, which for $\abs x=N-1$ is $\one[x\text{ is a tree}]$. So $d(x):=\det L_r(x)\,H(x)/\sqrt\tau$ satisfies $d(x)^2=P(x)$ exactly. The amplitude $d$ is small but not decomposable.
+
+\subsection{Unstructured circuits}
+
+Without a common vtree there is no single split at which to measure rank, and the overlap argument of Lemma~\ref{lem:overlap} needs every product term to be nonnegative. We do not know whether small unstructured decomposable circuits with real weights can approximate $\UST(G)$ on expanders. For exact representation the question is a known kind of open problem. A circuit is \emph{syntactically multilinear} if the two children of every product node depend on disjoint sets of variables~\cite{RazYehudayoff08}. Let $\mathrm{ST}_G(z):=\sum_{T}\prod_{e\in T}z_e$ be the spanning-tree polynomial.
+
+\begin{proposition}[unstructured exact representation]\label{prop:signed-multilinear}
+Let $G$ be a connected graph with $M$ edges and no loops.
+\begin{enumerate}[label=(\alph*)]
+\item If a smooth decomposable circuit with real weights, indicator leaves and size $s$ computes $\UST(G)$ on $\{0,1\}^E$, then $\mathrm{ST}_G$ has a syntactically multilinear arithmetic circuit with binary gates and real constants of size $O(s)$.
+\item If $\mathrm{ST}_G$ has a syntactically multilinear arithmetic circuit of size $s$, with binary gates and real constants, then some smooth decomposable circuit with real weights and indicator leaves of size $O(sM)$ computes $\UST(G)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Write $y^0_e$ and $y^1_e$ for the leaves $[x_e=0]$ and $[x_e=1]$, and read the circuit as a formal polynomial in these symbols. Call a polynomial in the symbols of a set $X\subseteq E$ \emph{$X$-homogeneous} if each of its monomials contains exactly one of $y^0_e,y^1_e$ for every $e\in X$. Such a polynomial is $\sum_{S\subseteq X}c_S\prod_{e\in S}y^1_e\prod_{e\in X\setminus S}y^0_e$, and it is determined both by its values at the indicator points, where it equals $c_x$, and by its dehomogenization $y^0=1$, $y^1=z$, which is $\sum_Sc_Sz^S$.
+
+(a) By induction, a node of a smooth decomposable circuit with indicator leaves computes an $X$-homogeneous polynomial, with $X$ its scope: sums combine polynomials with the same scope, and products multiply polynomials in disjoint sets of symbols. $\UST(G)$ depends on every edge, since $G$ has no loops, so the root has scope $E$, and its polynomial is $\sum_S\UST(G)(S)\prod_{e\in S}y^1_e\prod_{e\notin S}y^0_e$. Setting $y^0_e=1$ and $y^1_e=z_e$, and writing each weighted sum with binary gates, gives a syntactically multilinear circuit for $\mathrm{ST}_G/\tau$ of size $O(s)$; multiply by $\tau$.
+
+(b) Replace each input $z_e$ by $y^1_e$. For each node $g$ let $X_g$ be the set of variables it depends on. At every sum node $g$, multiply each child $c$ by $\prod_{e\in X_g\setminus X_c}y^0_e$, and multiply the output by $\prod_{e\in E\setminus X_{\mathrm{root}}}y^0_e$; this costs $O(M)$ nodes per wire. Constant inputs become leaves with empty scope. Products already have disjoint scopes, so the result is smooth and decomposable, every node computes an $X_g$-homogeneous polynomial, and its dehomogenization is unchanged, because we multiplied only by symbols $y^0$. At the root, the polynomial is therefore $\sum_S\one[S\text{ is a tree}]\prod_{e\in S}y^1_e\prod_{e\notin S}y^0_e$, which is $\tau\,\UST(G)$ at the indicator points; divide by $\tau$.
+\end{proof}
+
+So a superpolynomial lower bound for exact unstructured representation on some expander family would be a superpolynomial lower bound for syntactically multilinear circuits computing an explicit polynomial. We know of none for general circuits; the strongest bound we know of for an explicit polynomial in $n$ variables is $\Omega(n^2/\log^2n)$, due to Alon, Kumar and Volk~\cite{AlonKumarVolk18}. For restricted unstructured classes, the lower-bound methods for the determinant and the permanent do transfer.
+
+\subsection{Restricted unstructured classes}\label{sec:signed-restricted}
+
+In this subsection a \emph{signed decomposable circuit} is a circuit with real weights whose leaves are constants or functions of one variable, whose product nodes have children with pairwise disjoint scopes, and which need not be smooth. Its \emph{product-depth} is the largest number of product nodes on a path from a leaf to the output, and it is a \emph{formula} if every node has at most one parent. A function $f$ on $\{0,1\}^E$ is \emph{support-exact} for $G$ if $f(x)\ne0$ exactly when $x$ is a spanning tree. Every nonzero multiple of $\UST(G)$ is support-exact, and so is every edge-weighted spanning-tree measure, but a total-variation approximation usually is not. A signed decomposable circuit computes a multilinear polynomial, which agrees with its function on $\{0,1\}^E$, and for disjoint sets $Y,Z$ of variables the value matrix and the coefficient matrix of a function of $x_{Y\cup Z}$ differ by invertible transforms on each side, so they have the same rank. Fixing some variables to $0$ or $1$ keeps a circuit in each of the classes below, without increasing size or product-depth.
+
+\begin{lemma}[cycle restrictions]\label{lem:digon}
+Let $C_1,\dots,C_m$ be pairwise vertex-disjoint cycles of a connected graph $G$, and let $e_i\ne f_i$ be edges of $C_i$. There is an assignment $\rho$ of values in $\{0,1\}$ to the edges other than $e_1,f_1,\dots,e_m,f_m$ such that an edge set agreeing with $\rho$ is a spanning tree exactly when it contains exactly one of $e_i,f_i$ for every $i$. So if $f$ is support-exact for $G$ and $f|_\rho$ is the function of $(x_Y,x_Z)$ with $Y=\{e_i\}$ and $Z=\{f_i\}$, then $M_{Y,Z}(f|_\rho)$ has exactly one nonzero entry in each row and each column, and rank $2^m$.
+\end{lemma}
+
+\begin{proof}
+The paths $C_i-f_i$ are vertex-disjoint, so their union is a forest; extend it to a spanning tree $T$. Then $f_i\notin T$, since it would close $C_i$. Let $K:=T\setminus\{e_1,\dots,e_m\}$, and let $\rho$ be $1$ on $K$ and $0$ on the other edges outside $\{e_i,f_i\}$. The graph $H:=K\cup\{e_i,f_i\}=T\cup\{f_i\}$ has $N-1+m$ edges, and its cycle space is spanned by the fundamental cycles $C_i$ of the $f_i$. Since the $C_i$ are vertex-disjoint, every cycle of $H$ is one of them, so the spanning trees of $H$ are obtained by deleting exactly one edge from each $C_i$. Those that contain $K\supseteq C_i\setminus\{e_i,f_i\}$ delete $e_i$ or $f_i$.
+\end{proof}
+
+\begin{lemma}[minors]\label{lem:minor-restrict}
+Let $H$ be a connected minor of a connected graph $G$. There are an injection $\iota:E(H)\to E(G)$ and an assignment $\rho$ of values in $\{0,1\}$ to $E(G)\setminus\iota(E(H))$ such that, for $x\subseteq E(H)$, the set $\iota(x)\cup\rho^{-1}(1)$ is a spanning tree of $G$ exactly when $x$ is a spanning tree of $H$. So if $f$ is support-exact for $G$, then $f|_\rho$, read through $\iota$, is support-exact for $H$.
+\end{lemma}
+
+\begin{proof}
+Take a minor model with disjoint connected branch sets $B_u$, $u\in V(H)$, and enlarge them to a partition of $V(G)$ into connected sets, adding vertices adjacent to a branch set one at a time. Let $\rho$ be $1$ on a spanning tree $T_u$ of each $G[B_u]$, choose for each edge $uv$ of $H$ one edge $\iota(uv)$ of $G$ between $B_u$ and $B_v$, and let $\rho$ be $0$ on all other edges. Contracting the trees $T_u$ turns the graph with edge set $\bigcup_uT_u\cup\iota(E(H))$ into $H$, so, as in the proof of Lemma~\ref{lem:markov}, $\bigcup_uT_u\cup\iota(x)$ is a spanning tree exactly when $x$ is a spanning tree of $H$.
+\end{proof}
+
+Lemma~\ref{lem:minor-restrict} is about the indicator. For the polynomial $\mathrm{ST}_G$, setting a variable to $1$ does not contract the edge: on a triangle, $\mathrm{ST}=ab+ac+bc$ becomes $b+c+bc$ at $a=1$. We use the complete bipartite graph $K_{t,t}$ as the minor, with rows $r$ and columns $c$ as its two sides and $x_{rc}$ for its edge variables. Two edges $r_1c_1$ and $r_2c_2$ with $r_1\ne r_2$ and $c_1\ne c_2$ lie on the $4$-cycle $r_1c_1r_2c_2$, and two edges $rc$ and $rc'$ lie on the $4$-cycle $rcr'c'$ for every other row $r'$. Raz~\cite{Raz09}, and Raz and Yehudayoff~\cite{RazYehudayoff09}, prove their lower bounds for the permanent and the determinant of a $t\times t$ matrix by random restrictions that send $m$ disjoint pairs of variables, each pair in a common row or column and different pairs in different rows and columns, to variables $y_i,z_i$, and every other variable to $0$ or $1$, so that the restricted polynomial is $\prod_i(y_i\pm z_i)$ and has full rank $2^m$ across $Y|Z$. They then show that a small formula of the relevant kind, after a suitable restriction, has rank less than $2^m$. Their constants kill the indicator of spanning trees, since they leave $K_{t,t}$ disconnected. The point of the next proofs is that the part of their argument that bounds the rank depends only on which variables become $y_i$ and $z_i$, not on the constants, so the constants can be replaced by those of Lemma~\ref{lem:digon}.
+
+\begin{theorem}[bounded product-depth]\label{thm:signed-depth}
+Let $G$ be a connected graph with a $K_{t,t}$ minor, and let $C$ be a signed decomposable circuit of product-depth $d$ that computes a function support-exact for $G$. If $d=o(\log t/\log\log t)$, then $\abs C\ge2^{t^{\Omega(1/d)}}$, with an absolute constant in the $\Omega$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:minor-restrict}, fixing variables gives a circuit $C_0$ of size at most $\abs C$ and product-depth at most $d$ on the $t^2$ variables of $K_{t,t}$ whose function $f_0$ is support-exact for $K_{t,t}$. Each variable occurs in $C_0$, since flipping an edge of a spanning tree changes $f_0$ from nonzero to zero. Writing each leaf $a+bx_e$ with one sum node does not change the product-depth, so $C_0$ is a multilinear arithmetic circuit of product-depth $d$ and size $O(\abs C)$, and by~\cite[Lemma~2.1]{RazYehudayoff09} there is a syntactically multilinear formula $\Psi$ in $d$-normal form of size at most $(d+1)^2O(\abs C)^{2d+1}$ computing $f_0$.
+
+Raz and Yehudayoff draw a restriction from a distribution that first chooses the set $W$ of surviving variables with its pairs, each pair in a $2\times2$ block of its own and different blocks in different rows and columns, then the orientation of each pair (which variable becomes $y_i$ and which $z_i$), and then the constants. Their Proposition~4.3~\cite{RazYehudayoff09} shows that $W$ is good, a condition on $W$ and the syntactic scopes of $\Psi$ only, with high probability. Their Proposition~4.4 shows that, for good $W$ and with high probability over the orientations, every $k$-central path of $\Psi$ passes through a product gate whose rank is bounded through the imbalances between $y$- and $z$-variables in groups of its children, with $k=t^{\Omega(1/d)}$, provided $\abs\Psi<2^{t^{\eps/d}}$ for a small absolute $\eps>0$. That rank bound uses only the variable sets of the children, the dimension bound and the multiplicativity of rank, so it holds for every assignment of constants to the variables outside $W$. (Their weakness is a property of the computed polynomials, and in general it does change with the constants; what is uniform is this particular certificate.) So if $\abs\Psi<2^{t^{\eps/d}}$, there is a choice of $W$, pairs and orientations such that the restricted formula is $k$-weak for every assignment of constants outside $W$. Fix it, and choose the constants by Lemma~\ref{lem:digon}, applied to the vertex-disjoint $4$-cycles through the pairs: the pairs lie in different rows and columns, and each pair spans a $2\times2$ block of its own, whose four edges form such a cycle. By~\cite[Theorem~3.1]{RazYehudayoff09}, the restricted polynomial has rank at most $\abs\Psi2^{m-k/2}<2^m$ across $Y|Z$, while by Lemma~\ref{lem:digon} it has rank $2^m$. Hence $\abs\Psi\ge2^{t^{\eps/d}}$, and $\abs C\ge(\abs\Psi/(d+1)^2)^{1/(2d+1)}/O(1)=2^{t^{\Omega(1/d)}}$ in the stated range of $d$.
+\end{proof}
+
+\begin{theorem}[formulas]\label{thm:signed-formula}
+Let $G$ be a connected graph with a $K_{t,t}$ minor. A signed decomposable formula that computes a function support-exact for $G$ has size $t^{\Omega(\log t)}$.
+\end{theorem}
+
+\begin{proof}
+As for Theorem~\ref{thm:signed-depth}, with Raz's argument~\cite{Raz09} in place of that of Raz and Yehudayoff. After Lemma~\ref{lem:minor-restrict}, the formula is a syntactically multilinear formula of size $O(\abs C)$ in which every variable of $K_{t,t}$ occurs. Raz's restriction pairs $m=\lceil t^{1/3}\rceil$ variables, each pair in a common row or column and different pairs in different rows and columns, and shows that a formula of size $t^{\eps\log t}$ is, with positive probability over the pairs and their orientations, weak in a sense defined through imbalances between $y$- and $z$-variables only, and that weak formulas have rank below $2^m$. Neither step depends on the constants. Complete each pair $rc,rc'$ to the $4$-cycle $rcr'c'$ with a row $r'$, or a column, used by no pair and by no other cycle; there are enough, since the pairs use at most $2m\le t-m$ rows and $2m$ columns for large $t$. Lemma~\ref{lem:digon} then gives constants for which the restricted function has rank $2^m$.
+\end{proof}
+
+For sums of structured circuits we need a split that is balanced for all the vtrees at once, and a rank bound that does not need smoothness. A circuit with real weights is \emph{aligned} with a vtree $V$ whose leaves are single edges if its leaves are constants or functions of one variable, and every product node has exactly two children, whose scopes lie in $\mathrm{Var}(v_1)$ and $\mathrm{Var}(v_2)$ for the two children $v_1,v_2$ of some node of $V$. Sums need not be smooth. Circuits structured as in Definition~\ref{def:structured}, with singleton blocks, are aligned.
+
+\begin{lemma}[frontier rank]\label{lem:frontier}
+Let $C$ be aligned with $V$, let $v$ be a node of $V$ and $S:=\mathrm{Var}(v)$. Then $\operatorname{rank}M_{S,E\setminus S}(f_C)\le\abs C$.
+\end{lemma}
+
+\begin{proof}
+Call a node $g$ inside, outside or straddling as its scope is contained in $S$, is disjoint from $S$, or neither; constants are outside. If the output is not straddling, the rank is at most $1$. Let $I$ be the set of inside nodes with a straddling parent. We show by induction in topological order that every straddling node $g$ has $f_g=\sum_{u\in I}f_u(x_S)h_{u,g}(x_{E\setminus S})+h_{0,g}(x_{E\setminus S})$. Leaves do not straddle. For a sum node, add the expansions of the straddling children, the inside children (which lie in $I$) and the outside children. For a product node, the scopes of its children lie in $\mathrm{Var}(v_1)$ and $\mathrm{Var}(v_2)$ for the children $v_1,v_2$ of some node $u$ of $V$. The sets $\mathrm{Var}(\cdot)$ are laminar, $\mathrm{Var}(u)$ meets $S$ and is not contained in it, so $v$ lies strictly below $u$, say $S\subseteq\mathrm{Var}(v_1)$. Then the second child is outside, and the first is inside, outside or straddling; multiply. So the rank is at most $\abs I+1$. Each node of $I$ has its own wire to a straddling parent, and the output is a further node, so $\abs I+1\le\abs C$.
+\end{proof}
+
+\begin{lemma}[splits balanced for several vtrees]\label{lem:vtree-refine}
+Let $V_1,\dots,V_r$ be vtrees whose leaves are the elements of a set $E$, and let $E_0\subseteq E$ with $\abs{E_0}\ge2$. There are nodes $v_k$ of $V_k$ with sets $S_k:=\mathrm{Var}(v_k)$, sets $S'_k\in\{S_k,E\setminus S_k\}$, and disjoint $P,Q\subseteq E_0$ with $\abs P=\abs Q\ge3^{-r}\abs{E_0}$, such that $P\subseteq S'_k$ and $Q\cap S'_k=\emptyset$ for every $k$.
+\end{lemma}
+
+\begin{proof}
+For $U\subseteq E_0$ with $\abs U\ge2$ and a vtree $V$, walk down from the root of $V$ to the child with more elements of $U$ while the current set contains more than $2\abs U/3$ of them. The first node $v$ where this fails has $\abs U/3<\abs{\mathrm{Var}(v)\cap U}\le2\abs U/3$, since its parent had more than $2\abs U/3$ and $v$ has at least half of them. Apply this to $U=E_0$ in $V_1$, and let $P$ and $Q$ be equal-sized subsets of $S_1\cap E_0$ and $E_0\setminus S_1$, of size $n_1\ge\abs{E_0}/3$. Given $P,Q$ of size $n\ge1$, apply it to $U=P\cup Q$ in $V_{k+1}$ with $S:=\mathrm{Var}(v)$, and put $a=\abs{P\cap S}$, $b=\abs{P\setminus S}$, $c=\abs{Q\cap S}$, $d=\abs{Q\setminus S}$. Then $a+b=c+d=n$ and $2n/3<a+c\le4n/3$. If $\min(a,d)$ and $\min(b,c)$ were both below $n/3$, then one of $a+b$, $c+d$ would be below $2n/3$, or $a+c<2n/3$, or $a+c>4n/3$. So one of the pairs $(P\cap S,Q\setminus S)$, with $S'=S$, and $(P\setminus S,Q\cap S)$, with $S'=E\setminus S$, has both sizes at least $n/3$; trim it to equal size $n'\ge n/3$, which is at least $1$. The relations for earlier $k$ survive, since $P$ and $Q$ only shrink.
+\end{proof}
+
+Fixed balanced splits do not work in place of this adaptive choice: for a partition of $E_0$ into four equal parts $P_1,\dots,P_4$, the three balanced sets $P_1\cup P_j$, $j=2,3,4$, admit no large $P$ and $Q$ separated by all three.
+
+\begin{theorem}[sums of structured circuits]\label{thm:signed-sums}
+Let $G$ be a connected graph with a $K_{t,t}$ minor, and let $C_1,\dots,C_r$ be circuits with real weights, $C_k$ aligned with its own vtree $V_k$ whose leaves are the edges of $G$. If $f_{C_1}+\dots+f_{C_r}$ is support-exact for $G$, then
+\[
+  \sum_{k=1}^r\abs{C_k}\ \ge\ 2^m,\qquad m\ge t\,3^{-r}/4-1 .
+\]
+\end{theorem}
+
+\begin{proof}
+Restrict by Lemma~\ref{lem:minor-restrict} to the edge set $E_0$ of $K_{t,t}$, viewed inside $E(G)$, and apply Lemma~\ref{lem:vtree-refine} to $E_0$, which gives $P$ and $Q$ of size at least $t^23^{-r}$. Choose edges $e_1\in P$ and $f_1\in Q$ with no common endpoint, then $e_2\in P$ and $f_2\in Q$ avoiding the endpoints of $e_1,f_1$ and of each other, and so on. After $i$ choices at most $4it$ edges of each set meet a used vertex, so the choice continues while $\abs Q>(4i+2)t$, which gives $m\ge(t3^{-r}-2)/4\ge t3^{-r}/4-1$ pairs. The $4$-cycles through $e_i$ and $f_i$ are vertex-disjoint, so Lemma~\ref{lem:digon} gives a restriction $\rho$ under which $f|_\rho$ has rank $2^m$ across $Y=\{e_i\}$ and $Z=\{f_i\}$. For each $k$, $Y\subseteq S'_k$ and $Z\cap S'_k=\emptyset$, so $M_{Y,Z}(f_{C_k}|_\rho)$ is a submatrix of $M_{S_k,E\setminus S_k}(f_{C_k})$ or of its transpose, and has rank at most $\abs{C_k}$ by Lemma~\ref{lem:frontier}. Rank is subadditive.
+\end{proof}
+
+To apply these results we need large complete minors in expanders. Krivelevich and Nenadov~\cite{KrivelevichNenadov21} study complete minors in graphs without sparse cuts. The form we use is~\cite[Theorem~8.4]{Krivelevich19}, a joint result with Nenadov whose proof is given in the survey: for every $\alpha>0$ there are $c,n_0>0$ such that every graph on $N\ge n_0$ vertices with maximum degree $D$ and edge expansion at least $\alpha D$ has a complete minor of order $c\sqrt N$. With $\alpha:=h/D$, deleting edges of the complete minor gives the following.
+
+\begin{corollary}[unstructured exact representation on expanders]\label{cor:signed-unstructured}
+Fix $D$ and $h>0$. There are $c',N_0>0$ such that every connected graph $G$ with $N\ge N_0$ vertices, maximum degree at most $D$ and $h(G)\ge h$ contains $K_{t,t}$ as a minor with $t\ge c'\sqrt N$. Consequently every signed decomposable circuit computing a function support-exact for $G$, for instance a nonzero multiple of $\UST(G)$, has size
+\begin{enumerate}[label=(\alph*)]
+\item $2^{N^{\Omega(1/d)}}$ if it has product-depth $d=o(\log N/\log\log N)$;
+\item $N^{\Omega(\log N)}$ if it is a formula;
+\item at least $2^{c'3^{-r}\sqrt N/4-1}$ in total if it is a sum of $r$ circuits, each aligned with its own vtree.
+\end{enumerate}
+\end{corollary}
+
+So depth-$3$ and depth-$4$ signed decomposable circuits, of the forms $\Sigma\Pi\Sigma$ and $\Sigma\Pi\Sigma\Pi$, need size $2^{N^{\Omega(1)}}$, and a sum of structured circuits of total size $2^{N^\delta}$ with $\delta<\frac12$ needs $r\ge(\frac12-\delta-o(1))\log_3N$ summands. The same proofs apply to syntactically multilinear circuits computing $\mathrm{ST}_G$, or $\mathrm{ST}_G$ times a nonzero constant, with one change: instead of Lemma~\ref{lem:minor-restrict}, set the variables of the trees $T_u$ in its proof to $1$ and the other edges outside $\iota(E(K_{t,t}))$ to $0$, and apply the restriction of Lemma~\ref{lem:digon} in $G$ to the cycles obtained from the $4$-cycles by joining their edges through the trees $T_u$. In its proof, choose $T$ to consist of the trees $T_u$ and edges of $\iota(E(K_{t,t}))$, which is possible since contracting the $T_u$ turns the paths $C_i-f_i$ into vertex-disjoint paths of $K_{t,t}$; then the restriction agrees with the first one. Each such cycle $C_i$ contributes the factor $x_{e_i}+x_{f_i}+(\abs{C_i}-2)x_{e_i}x_{f_i}$, whose $2\times2$ coefficient matrix $\left(\begin{smallmatrix}0&1\\1&\abs{C_i}-2\end{smallmatrix}\right)$ has rank $2$, so the restricted polynomial again has rank $2^m$.
+
+\paragraph{Sums of structured circuits without minors.} Corollary~\ref{cor:signed-unstructured}(c) loses a square root by passing to a complete minor, and like every restriction argument it says nothing about approximation. Both losses go away for sums of structured circuits if the cycles of Lemma~\ref{lem:digon} are replaced by the pendant gadgets of Section~\ref{sec:signed-expanders}. The gadgets must now have their marked edges in the sets $P$ and $Q$ of Lemma~\ref{lem:vtree-refine}, which can be far apart, so single vertices no longer suffice; we build larger gadgets around short paths and keep them far apart so that deleting them preserves expansion. The constants this gives are astronomically small.
+
+\begin{lemma}[robust short connectors]\label{lem:connector}
+Let $G$ have $N$ vertices, maximum degree at most $D$ and $h(G)\ge h>0$, let $\beta\in(0,1]$, let $X,X'\subseteq V$ with $\abs X,\abs{X'}\ge\beta N$, and let $Z\subseteq V$ with $\abs Z\le h\beta N/(4D)$. Put $t_*:=\lfloor\ln(1/\beta)/\ln(1+h/(2D))\rfloor+1$. Then $G-Z$ contains a path with at most $2t_*+1$ vertices from $X\setminus Z$ to $X'\setminus Z$.
+\end{lemma}
+
+\begin{proof}
+Put $A_0:=X\setminus Z$ and $A_{t+1}:=A_t\cup N_{G-Z}(A_t)$. Since $h\le D$, $\abs{A_0}\ge\beta N(1-h/(4D))\ge3\beta N/4$. If $\abs{A_t}\le N/2$, then at least $\abs{\partial A_t}/D\ge h\abs{A_t}/D$ vertices outside $A_t$ have a neighbour in $A_t$, and at most $\abs Z\le h\abs{A_0}/(2D)\le h\abs{A_t}/(2D)$ of them lie in $Z$, so $\abs{A_{t+1}}\ge(1+h/(2D))\abs{A_t}$. As $(1+h/(2D))^{t_*}>1/\beta$, this gives $\abs{A_{t_*}}>N/2$; the sets increase, so this also holds if some earlier $A_t$ exceeds $N/2$. The same holds for the sets $A'_t$ grown from $X'\setminus Z$, so $A_{t_*}$ and $A'_{t_*}$ meet, at a vertex within distance $t_*$ of both $X\setminus Z$ and $X'\setminus Z$ in $G-Z$.
+\end{proof}
+
+For a nonempty connected $U\subsetneq V$ of a connected graph, let $X$ be the vertex set of a largest component of $G-U$ and $B(U):=V\setminus X$, the \emph{blob} of $U$.
+
+\begin{lemma}[blobs]\label{lem:blob}
+Let $G$ have maximum degree at most $D$ and $h(G)\ge h>0$, and let $U\subsetneq V$ be nonempty and connected. Then $G[B(U)]$ is connected, $\abs{B(U)\setminus U}\le\abs{\partial U}/h\le D\abs U/h$, and every vertex of $B(U)$ is within distance $\lfloor D\abs U/h\rfloor$ of $U$.
+\end{lemma}
+
+\begin{proof}
+Every component of $G-U$ has a neighbour in $U$, since $G$ is connected; this gives the first claim. A component $C\ne X$ of $G-U$ has $\abs C\le\abs X$, so $\abs C\le N/2$ and $h\abs C\le\abs{\partial C}$, and every edge of $\partial C$ lies in $\partial U$. Summing over these components gives the second claim. A vertex of such a $C$ is joined inside $C$ to a neighbour of $U$ by a path with at most $\abs C-1$ edges, so its distance to $U$ is at most $\abs C\le D\abs U/h$.
+\end{proof}
+
+\begin{lemma}[bond gadgets]\label{lem:bond}
+Let $G$ be simple and 2-connected, $U\subsetneq V$ nonempty and connected, and $e\ne f$ edges each with an end in $B(U)$. Then there is $Y\subseteq B(U)$ with $G[Y]$ and $G-Y$ connected and $e,f\in\partial Y$.
+\end{lemma}
+
+\begin{proof}
+Let $K:=G/X$ be the multigraph obtained by contracting $X$ to a vertex $\gamma$ and deleting loops. It is connected and loopless, $e$ and $f$ are edges of $K$, and $K-\gamma=G[B(U)]$. We find a partition $V(K)=Y\sqcup Z$ with $\gamma\in Z$, $K[Y]$ and $K[Z]$ connected, such that $e$ and $f$ both join $Y$ to $Z$. This suffices: $Y\subseteq B(U)$, $G[Y]=K[Y]$, and $G-Y$ is connected because $K[Z]$ and $G[X]$ are.
+
+If $\abs{B(U)}=1$, then $Y:=B(U)$ works. Otherwise $\abs{V(K)}\ge3$ and $K-v$ is connected for every vertex $v$: $K-\gamma$ is connected by Lemma~\ref{lem:blob}, and for $v\in B(U)$, $K-v$ arises from the connected graph $G-v$ by contracting the connected set $X$. We first find disjoint connected seeds $Y_0,Z_0$ such that $e$ and $f$ join $Y_0$ to $Z_0$. If $e$ and $f$ have the same ends $a,a'$, take $\{a\}$ and $\{a'\}$. If they share exactly one end, $e=xy$ and $f=xz$, take $\{x\}$ and the vertex set of a $y$--$z$ path in $K-x$. If $e=aa'$ and $f=bb'$ have four distinct ends, no single vertex $v$ meets every path from $\{a,a'\}$ to $\{b,b'\}$, since $K-v$ is connected and keeps a vertex of each pair; by Menger's theorem~\cite[Thm.~3.3.1]{Diestel17} there are two disjoint such paths, one starting at $a$ and one at $a'$, and we take their vertex sets. Then, as long as some vertex is unassigned, add an unassigned vertex with a neighbour in one of the two sets to that set. Both sets stay connected. Finally swap the names so that $\gamma\in Z$.
+\end{proof}
+
+This is the classical fact that in a 2-connected graph any two edges lie on a common bond~\cite[Ch.~4]{Oxley11}, applied to $G/X$; the proof above is the one the checks run.
+
+\begin{lemma}[deleting separated gadgets]\label{lem:sep-delete}
+Let $G$ have $N$ vertices, maximum degree at most $D$ and $h(G)\ge h>0$. Let $Y_1,\dots,Y_K\subseteq V$ be nonempty with $G-Y_i$ connected, $\abs{Y_i}\le L$ and $\abs{\partial Y_i}\le D'$, where $N>2L$. Suppose $\operatorname{dist}(Y_i,Y_j)\ge\sigma+1$ for $i\ne j$, where $\sigma\ge2$ and $\lfloor\sigma/2\rfloor\ge(D'+1)/h$. Put $H:=G-\bigcup_iY_i$ and $h':=h/(D'+1)$. Then every $S\subseteq V(H)$ with $0<\abs S\le\abs{V(H)}/2$ has $\abs{\partial_HS}\ge h'\abs S$. If $G$ is 2-connected, then $H$ has at least two vertices, so $h(H)\ge h'$, $H$ is connected, and $\lambda_2(L_H)\ge\mu(D,h')$ by Lemma~\ref{lem:cheeger}. The same holds for every subfamily of the $Y_i$.
+\end{lemma}
+
+\begin{proof}
+The $H$-boundaries of the components of $H[S]$ partition $\partial_HS$, so we may assume that $S$ is connected. Then $\abs S\le N/2$, so $\abs{\partial_GS}\ge h\abs S$, and the edges of $\partial_GS\setminus\partial_HS$ go to the sets $Y_i$. Let $j$ be the number of sets $Y_i$ joined to $S$ by an edge. If $j=0$, then $\partial_HS=\partial_GS$. If $j=1$, with set $Y$, then $\abs{\partial_HS}\ge h\abs S-D'$. Also $\abs{\partial_HS}\ge1$: since $\abs S\le N/2$ and $\abs Y<N/2$ there is a vertex outside $S\cup Y$, and since $G-Y$ is connected some edge of $G-Y$ leaves $S$; its other end is in no other $Y_i$, so it is in $V(H)\setminus S$. If $\abs S\le1/h'$ the bound $1\ge h'\abs S$ suffices; otherwise $(h-h')\abs S>(h-h')/h'=D'$, so $h\abs S-D'>h'\abs S$. If $j\ge2$, pick $u_1,\dots,u_j\in S$ with $u_i$ adjacent to the $i$-th of these sets; then $\operatorname{dist}_G(u_i,u_{i'})\ge\sigma-1$. With $\rho:=\lfloor\sigma/2\rfloor-1$, the balls of radius $\rho$ around the $u_i$ in $G[S]$ are disjoint, and each has at least $\rho+1$ vertices, since $G[S]$ is connected and contains a vertex at distance more than $\rho$ from $u_i$. So $\abs S\ge j\lfloor\sigma/2\rfloor\ge j(D'+1)/h$, the number of edges from $S$ to the $Y_i$ is at most $jD'\le(h-h')\abs S$, and $\abs{\partial_HS}\ge h'\abs S$.
+
+For the second claim, if $K\ge1$ let $N(Y_1)$ be the set of vertices outside $Y_1$ with a neighbour in $Y_1$. It lies in $V(H)$, since the other sets are at distance at least $3$, and it is nonempty. If it were a single vertex and $V\setminus(Y_1\cup N(Y_1))$ were nonempty, that vertex would be a cut vertex. Otherwise $\abs{N(Y_1)}\ge2$ or $N(Y_1)=V\setminus Y_1$, which has $N-L\ge2$ vertices. Every hypothesis is inherited by subfamilies.
+\end{proof}
+
+\begin{theorem}[packing pendant gadgets]\label{thm:packing}
+Let $G$ be a simple 2-connected graph with $N$ vertices, $M$ edges, maximum degree at most $D$ and $h(G)\ge h>0$, and let $\delta\in(0,\frac12]$. Put
+\begin{gather*}
+  \beta:=\frac{2\delta}D,\quad t_*:=\Bigl\lfloor\frac{\ln(1/\beta)}{\ln(1+h/(2D))}\Bigr\rfloor+1,\quad\ell:=2t_*+1,\quad L:=\Bigl\lfloor\ell\Bigl(1+\frac Dh\Bigr)\Bigr\rfloor,\quad D':=DL,\\
+  h':=\frac h{D'+1},\quad\lambda_0:=\mu(D,h'),\quad\sigma:=2\Bigl\lceil\frac{D'+1}h\Bigr\rceil,\quad s:=\sigma+\Bigl\lfloor\frac{D\ell}h\Bigr\rfloor,\quad c:=\frac{h\beta}{8LD^{s+1}} .
+\end{gather*}
+If $N\ge2L+1$, then for all disjoint $P,Q\subseteq E$ with $\abs P,\abs Q\ge\delta M$ there are $K\ge\lfloor cN\rfloor+1$ sets $Y_1,\dots,Y_K\subseteq V$ and edges $e_i\in P$, $f_i\in Q$ such that
+\begin{enumerate}[label=(\arabic*)]
+\item $G[Y_i]$ and $G-Y_i$ are connected, $\abs{Y_i}\le L$, and $e_i,f_i\in\partial Y_i$;
+\item $\operatorname{dist}(Y_i,Y_j)\ge\sigma+1\ge3$ for $i\ne j$, so no edge joins two of the sets and no vertex has neighbours in two of them;
+\item for every $I\subseteq[K]$, the graph $H_I:=G-\bigcup_{i\in I}Y_i$ has at least two vertices, $h(H_I)\ge h'$ and $\lambda_2(L_{H_I})\ge\lambda_0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$G$ has minimum degree at least $2$, so $M\ge N$, and a vertex meets at most $D$ edges of $P$, so the set $V(P)$ of ends of edges of $P$ has $\abs{V(P)}\ge2\abs P/D\ge\beta N$; likewise for $Q$. Start with $Z_0:=\emptyset$, and while $\abs{Z_k}\le h\beta N/(4D)$ do the following. Lemma~\ref{lem:connector} with $X=V(P)$, $X'=V(Q)$ and $Z=Z_k$ gives a path $U_{k+1}\subseteq V\setminus Z_k$ with at most $\ell$ vertices from an end $x$ of an edge $e_{k+1}\in P$ to an end $x'$ of an edge $f_{k+1}\in Q$; $e_{k+1}\ne f_{k+1}$ as $P\cap Q=\emptyset$, and $U_{k+1}\ne V$ as $\ell<N$. Lemma~\ref{lem:bond} gives $Y_{k+1}\subseteq B(U_{k+1})$ with property~(1), where $\abs{Y_{k+1}}\le\ell(1+D/h)$ by Lemma~\ref{lem:blob}, hence $\abs{Y_{k+1}}\le L$. Put $Z_{k+1}:=Z_k\cup\{v:\operatorname{dist}(v,Y_{k+1})\le s\}$. Since $D\ge2$, a set $Y$ has at most $\abs Y\sum_{i\le s}D^i\le2LD^s$ vertices within distance $s$, so $\abs{Z_k}\le2kLD^s$, and the step runs for every $k\le cN$. Hence $K\ge\lfloor cN\rfloor+1$.
+
+For $j<k$, the path $U_k$ avoids $Z_{k-1}$, so $\operatorname{dist}(U_k,Y_j)\ge s+1$, and $Y_k$ lies within distance $\lfloor D\ell/h\rfloor$ of $U_k$ by Lemma~\ref{lem:blob}. So $\operatorname{dist}(Y_k,Y_j)\ge\sigma+1$. Finally $\abs{\partial Y_i}\le DL=D'$, $N>2L$ and $\lfloor\sigma/2\rfloor\ge(D'+1)/h$, so Lemma~\ref{lem:sep-delete} gives~(3).
+\end{proof}
+
+\begin{theorem}[sums of structured circuits on expanders]\label{thm:signed-sums-linear}
+Let $G$ be a simple 2-connected graph with $N$ vertices, maximum degree at most $D$ and $h(G)\ge h>0$. Let $C_1,\dots,C_r$ be circuits with real weights, $C_k$ aligned with its own vtree $V_k$ whose leaves are the edges of $G$, and $f:=f_{C_1}+\dots+f_{C_r}$. Take the parameters of Theorem~\ref{thm:packing} with $\delta:=3^{-r}$, assume $N\ge2L+1$, and put
+\[
+  p:=D^{-(L-1)}\,\frac1{DL}\,\Bigl(1+\frac2{\lambda_0}\Bigr)^{-(DL-1)},\qquad n:=\lfloor cN/2\rfloor,\qquad g:=\lfloor p^2n\rfloor .
+\]
+\begin{enumerate}[label=(\alph*)]
+\item If $f$ is support-exact for $G$, then $\sum_k\abs{C_k}\ge2^{\lfloor cN\rfloor+1}$.
+\item If $\frac12\norm{P-f}_1\le\eps$ and $n\ge1$, then $\sum_k\abs{C_k}\ge2^g\bigl(1-2\eps/(1-e^{-p^2n/4})\bigr)$, and if moreover $\sum_xf(x)=1$, then $\sum_k\abs{C_k}\ge2^g[1-\eps-e^{-p^2n/4}]_+^2$.
+\end{enumerate}
+For fixed $D$ and $h$, $\ln(1/c)=O(r)$ and $\ln(1/p)=O(r\log r)$. So for fixed $r$ the total size is $2^{\Omega(N)}$, both for support-exact representation and at every fixed error $\eps<\frac12$, or $\eps<1$ with normalization.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:vtree-refine} with $E_0:=E$ gives nodes $v_k$, sets $S'_k$, and disjoint $P,Q$ with $\abs P=\abs Q\ge3^{-r}M$ such that $P\subseteq S'_k$ and $Q\cap S'_k=\emptyset$ for every $k$. Theorem~\ref{thm:packing} gives sets $Y_1,\dots,Y_K$ with $K\ge\lfloor cN\rfloor+1$. With $e_i$ as $e_U$ and $f_i$ as $f_U$, they are gadgets for the split $A:=S'_1$, $B:=E\setminus S'_1$, and they form an admissible family. For every $k$ and every set $R$ of points on which only the marked edges vary, the matrix of $f_{C_k}$ with rows indexed by the values on the $e_i$ and columns by the values on the $f_i$ is a submatrix of $M_{S'_k,E\setminus S'_k}(f_{C_k})$, which is $M_{S_k,E\setminus S_k}(f_{C_k})$ or its transpose; by Lemma~\ref{lem:frontier} its rank is at most $\abs{C_k}$, and by subadditivity the corresponding matrix of $f$ has rank at most $\sum_k\abs{C_k}$.
+
+(a) Fix to $1$ the edges of a spanning tree of $H_{[K]}$ and of each $G[Y_i]$, and fix to $0$ the other edges of $H_{[K]}$ and of the $G[Y_i]$ and the edges of $\partial Y_i\setminus\{e_i,f_i\}$. By~(2), every edge of $G$ is now fixed except the $e_i$ and $f_i$, and these join $Y_i$ to $H_{[K]}$. A completion is a spanning tree if and only if it contains exactly one of $e_i,f_i$ for every $i$: with neither, $Y_i$ is cut off, and with both, there is a cycle. As $f$ is support-exact, the matrix of the restricted $f$ with rows indexed by $(x_{e_i})_i$ and columns by $(x_{f_i})_i$ has exactly one nonzero entry in each row and each column, so it has rank $2^K$.
+
+(b) Pair $2n$ of the gadgets, and let $W$ be their union, so $H:=G-W$ has $\lambda_2(L_H)\ge\lambda_0$ by~(3). Lemma~\ref{lem:pendant-prob} with $\kappa'=2\kappa\le2/\lambda_0$ gives $p_{Y_i}\ge p$, since $\abs{Y_i}\le L$, $\abs{\partial Y_i}\le DL$ and $\frac1d(1+\kappa')^{-(d-1)}$ decreases in $d$. By Lemmas~\ref{lem:pendant-blocks} and~\ref{lem:pendant-pairs}, the blocks are disjoint permutation blocks, on each of which only the marked edges vary, and $\delta(g)\le\Pr[\mathrm{Bin}(n,2p^2)<p^2n]\le e^{-p^2n/4}$. Apply Theorem~\ref{thm:block-approx}. The orders of $\ln(1/c)$ and $\ln(1/p)$ follow from $\ell,L,\sigma,s=\Theta(r)$ and $1/\lambda_0=O(L^2)$ by Lemma~\ref{lem:cheeger}.
+\end{proof}
+
+Support-exactness fixes only the support of $f$, not its values, which is why (a) needs only the zero pattern of the restricted function. Theorem~\ref{thm:signed-sums-linear} applies to every 2-connected bounded-degree expander, at every girth, because the gadgets are pendant blobs rather than cycles. Its constants are astronomically small. For $D=3$, $h=0.2$ and $r=1$, the connectors have at most $93$ vertices, the gadgets at most $1488$, the separation is $\sigma=44650$, $\log_{10}c\approx-2.2\cdot10^4$, and the exponent of (b) is about $p^2cN/2$ with $\log_{10}(p^2c/2)\approx-1.1\cdot10^5$; each further summand lowers $\log_{10}c$ by about $1.6\cdot10^4$. Corollary~\ref{cor:signed-unstructured}(c) has the better dependence on $r$, $3^{-r}$ against $e^{-O(r)}$ with a huge constant, and is far better at any realistic $N$. Comparing exponents to leading order in $r$, and ignoring the unspecified constant of~\cite{Krivelevich19}, the bound of (a) wins only when $\ln N$ exceeds about $7\cdot10^4\,r$ for $D=3$ and $h=0.2$; this is a heuristic comparison, not a theorem. The losses come from worst-case choices: the separation $\sigma\approx2DL/h$ is needed only for the case $j\ge2$ of Lemma~\ref{lem:sep-delete}, the blocked balls cost $D^s$, and Lemma~\ref{lem:pendant-prob} sees only $\lambda_2(H)$.
+
+These bounds have limits. Theorems~\ref{thm:signed-depth} and~\ref{thm:signed-formula} are for support-exact representation only: a restriction conditions on an event of probability $e^{-\Theta(N)}$, so total-variation guarantees do not survive it, and we claim no approximate version (Section~\ref{sec:signed-barriers}). Theorem~\ref{thm:signed-sums-linear} survives approximation because it uses disjoint blocks instead of a restriction. None of these bounds covers planar families, such as the grid of Corollary~\ref{cor:grid}, which have no $K_{3,3}$ minor and are not expanders, nor bounded-degree graphs that are 2-connected but far from expanders. The minor-based bounds lose a square root in passing from $G$ to $K_{t,t}$; Theorem~\ref{thm:signed-sums-linear} works directly in $G$, but only for sums of structured circuits and with astronomically small constants. And general signed decomposable circuits, with sharing and unbounded depth, remain open; by Proposition~\ref{prop:signed-multilinear} they are as hard as syntactically multilinear circuits for $\mathrm{ST}_G$. We have not found these transfers in the literature, but they are short and may be folklore. Closest in spirit to Theorems~\ref{thm:signed-sums} and~\ref{thm:signed-sums-linear} are lower bounds for sums of set-multilinear branching programs with different orders~\cite{ChatterjeeKushSarafShpilka24}, which use a polynomial designed for the purpose.
+
+\subsection{Cancellation}
+
+Approximation is at least as hard to rule out as exact representation. We show that a small unstructured circuit must cancel most of its mass.
+
+\begin{theorem}[cancellation]\label{thm:signed-cancel}
+Let $G$ be a connected graph with $M\ge2$ edges, $P=\UST(G)$, and $\beta_*$ the largest $\beta(P;A|B)$ over balanced splits. Let $C$ be a smooth decomposable circuit with real weights whose leaves are real functions of arity at most $2M/3$, computing $f$ with $\lambda:=\sum_xf(x)>0$. Let $C^+$ be $C$ with every weight and leaf function replaced by its absolute value, and $Z^+:=\sum_xf_{C^+}(x)$. If $\eps:=\frac12\norm{P-f/\lambda}_1<1$, then
+\[
+  \abs C\ \ge\ (1-\eps)^2\,\frac\lambda{Z^+}\,\frac1{\beta_*^2} .
+\]
+\end{theorem}
+
+\begin{proof}
+By induction, $f_{C^+}\ge\abs{f_g}$ pointwise at every node $g$, since $\abs{\sum w_ig_i}\le\sum\abs{w_i}\abs{g_i}$ and $\abs{gh}=\abs g\abs h$. So $Z^+\ge\sum_x\abs{f(x)}\ge\lambda$. The circuit $C^+$ is a smooth decomposable PC of size $\abs C$ with leaves of arity at most $2M/3$. Let $Q^+:=f_{C^+}/Z^+$. Since $\sqrt{ab}\ge\min(a,b)$ for $a,b\ge0$,
+\begin{align*}
+  \BC(P,Q^+)&\ge\sum_x\sqrt{P(x)\frac{\abs{f(x)}}{Z^+}}=\sqrt{\frac\lambda{Z^+}}\sum_x\sqrt{P(x)\frac{\abs{f(x)}}\lambda}\\
+  &\ge\sqrt{\frac\lambda{Z^+}}\sum_x\min\Bigl(P(x),\frac{f(x)}\lambda\Bigr)=\sqrt{\frac\lambda{Z^+}}\,(1-\eps),
+\end{align*}
+where the last step uses $\min(a,b)=(a+b-\abs{a-b})/2$ and $\sum P=\sum f/\lambda=1$. On the other hand, Lemma~\ref{lem:decomp} writes $f_{C^+}$ as a sum of at most $\abs C$ nonnegative products across balanced splits, and the proof of Lemma~\ref{lem:overlap} bounds $\BC(P,Q^+)$ itself by $\beta_*\sqrt{\abs C}$. Since $1-\eps>0$, squaring gives the claim.
+\end{proof}
+
+On the graphs of Theorem~\ref{thm:main}, a circuit of polynomial size with $\eps<1$ must have $Z^+/\lambda\ge(1-\eps)^2e^{cN}/\abs C$: its absolute-value circuit carries exponentially more mass than the function it computes. Theorem~\ref{thm:signed-cancel} does not rule such circuits out, and any lower bound for unstructured circuits with subtraction has to handle them.
+
+The cancellation can be moved into a single subtraction at the output. Let $C$ have binary product nodes (binarizing at most doubles the size), and replace each node $v$ by two nodes $v^+,v^-$: for a sum $v=\sum_iw_iu_i$, put $v^\pm:=\sum_{w_i\ge0}w_iu_i^\pm+\sum_{w_i<0}\abs{w_i}u_i^\mp$, where an empty sum is a sum node with weight $0$ on one child, which keeps the scope; for a product $v=u_1u_2$, put $v^+:=u_1^+u_2^++u_1^-u_2^-$ and $v^-:=u_1^+u_2^-+u_1^-u_2^+$; for a leaf $\ell$, put $\ell^\pm:=\max(\pm\ell,0)$. By induction $f_{v^+}-f_{v^-}=f_v$ and $f_{v^+}+f_{v^-}=f_{v^{\mathrm{abs}}}$, where $v^{\mathrm{abs}}$ is the copy of $v$ in $C^+$, and the scopes, so smoothness and decomposability, are unchanged. So $f_C=g-h$ for nonnegative smooth decomposable circuits $g,h$ that share their nodes, of total size $O(\abs C)$, with $\sum g+\sum h=Z^+$; conversely $g-h$ is a circuit of size $\abs g+\abs h+O(1)$ with these masses. A signed circuit with cancellation ratio $K:=Z^+/\lambda$ is therefore the same, up to a constant factor in size, as a difference of two nonnegative circuits with total mass $K\lambda$, and Theorem~\ref{thm:signed-cancel} reads $\log\abs C+\log K\ge\log(1/\beta_*^2)-2\log\frac1{1-\eps}$, which is $cN-O(1)$ on the graphs of Theorem~\ref{thm:main}. This trade-off is for smooth circuits with $\lambda>0$ that approximate $\UST(G)$ in total variation. It says nothing about circuits for $\mathrm{ST}_G$ or about support-exact circuits, whose masses are unrelated to those of $\UST(G)$: on a triangle, $\mathrm{ST}_G(1,1,1)=3$ while the indicator of spanning trees vanishes at the all-ones point. Without a bound on $K$, by Proposition~\ref{prop:signed-multilinear}, the problem is as hard as lower bounds for general syntactically multilinear circuits.
+
+Proposition~\ref{prop:signed-splits} gives a version of Theorem~\ref{thm:signed-cancel} that counts only cancellation between terms on different splits. The proof of Lemma~\ref{lem:decomp} is syntactic: with real weights it gives the same expansion $f_C=\sum_{u\in\cU}f_uh_u$, with real $f_u,h_u$. Binarize $C$ and fix all choices in that proof. Identify a split $A|B$ with $B|A$, group the terms by their split $\pi$, $f_\pi:=\sum_{u:\,A_u|E\setminus A_u=\pi}f_uh_u$, and put $\Lambda_\times:=\sum_\pi\norm{f_\pi}_1/\lambda$, where $\lambda:=\sum_xf_C(x)$.
+
+\begin{proposition}[cancellation across splits]\label{prop:signed-cross}
+Let $G$, $p$ and $n$ be as in Corollary~\ref{cor:signed-approx}, and $g:=\lfloor p^2n\rfloor$. Let $C$ be a smooth decomposable circuit with real weights whose leaves have arity at most $2M/3$, with $\lambda>0$ and $\frac12\norm{P-f_C/\lambda}_1\le\eps$. Then, with $\Lambda_\times$ defined from the fixed decomposition above,
+\[
+  \bigl[1-\eps-\abs Ce^{-p^2n/4}\bigr]_+^2\ \le\ \abs C\,\Lambda_\times\,2^{-g} .
+\]
+\end{proposition}
+
+\begin{proof}
+$\operatorname{rank}M_\pi(f_\pi)$ is at most the number $r_\pi$ of terms on $\pi$, and $\sum_\pi r_\pi=\abs\cU\le\abs C$; in particular there are at most $\abs C$ splits. Every split $M/3<\abs{A_u}\le2M/3$ carries blocks with $\delta\le e^{-p^2n/4}$, as in the proof of Corollary~\ref{cor:signed-approx}. Apply Proposition~\ref{prop:signed-splits} to the functions $f_\pi/\lambda$.
+\end{proof}
+
+Running the same decomposition on $C^+$ gives $\abs{f_u}\le f^+_u$ and $\abs{h_u}\le h^+_u$ pointwise with $\sum_uf^+_uh^+_u=f_{C^+}$, so $\Lambda_\times\le Z^+/\lambda$. For $\eps<1$ fixed and $\abs C\le e^{p^2n/8}$, Proposition~\ref{prop:signed-cross} gives $\log\abs C+\log\Lambda_\times\ge g\ln2-2\ln\frac1{1-\eps}-o(1)$: a small approximating circuit must cancel between different splits, while terms on the same split may cancel each other at no cost. For a structured circuit whose choices follow the vtree, all terms lie on one split, so $\Lambda_\times=\norm{f_C}_1/\lambda\le1+2\eps$ by Lemma~\ref{lem:fact-n}, and the proposition recovers Theorem~\ref{thm:signed-o2} up to the constants. It refines the bookkeeping of Theorem~\ref{thm:signed-cancel} rather than dominating it, since its exponent $p^2n$ is much smaller than $cN$. Unlike $Z^+$, $\Lambda_\times$ depends on the decomposition and not only on the computed function: for a normalized product distribution $H$, the circuit $(K+1)H-KH$ has $\Lambda_\times=1$ if both copies of $H$ are binarized alike and $2K+1$ if they are binarized along different balanced splits. So $\Lambda_\times$ is unbounded already at product-depth $1$.
+
+\begin{remark}[slices do not lower cancellation]\label{rem:padding}
+One might hope to split into a low-cancellation case, handled by Theorem~\ref{thm:signed-cancel}, and a high-cancellation case handled by restricting to slices, as in Section~\ref{sec:signed-restricted}. This fails. Let $\rho$ range over the assignments to a fixed set of edges, and let $Z^+_\rho$ and $\lambda_\rho$ be the sums of $f_{C^+}$ and of $f_C$ over the slice of $\rho$. Then $\sum_\rho Z^+_\rho=Z^+$ and $\sum_\rho\lambda_\rho=\lambda$, so slicing redistributes cancellation without removing it, and padding puts it on every slice: if $C$ computes $P$ with nonnegative weights, then $C+cU-cU$, with $U$ the uniform distribution on $\{0,1\}^E$ (a product of $M$ sums) and $c:=2^{M+N}$, computes the same function with size $\abs C+O(M)$, and every slice that fixes $k\le M$ edges and has $P$-mass $P(\rho)>0$ has $Z^+_\rho/\lambda_\rho=1+2c2^{-k}/P(\rho)\ge1+2^{N+1}$. Nor can slices of a signed approximation be normalized: replacing $P$ on one slice $\rho$ by $P-2P(\rho)u$, with $u$ a distribution on the slice, gives error $P(\rho)$, which may be tiny, and slice mass $\lambda_\rho=-P(\rho)<0$. For rank arguments neither issue arises, because Theorem~\ref{thm:block-approx} sums over disjoint blocks without normalizing them.
+\end{remark}
+
+\subsection{What blocks the unstructured case}\label{sec:signed-barriers}
+
+For unstructured circuits, approximate versions of Theorems~\ref{thm:signed-depth} and~\ref{thm:signed-formula} remain open. Theorem~\ref{thm:block-approx} does not need a common split, so it reduces them to a statement about ranks inside blocks.
+
+\begin{proposition}[transfer]\label{prop:transfer}
+Let $\mathcal R$ be a family of disjoint permutation blocks of $P$ with total $P$-mass at least $1-\delta$, and let $Q$ be a real function with $\sum_xQ(x)=1$, $\frac12\norm{P-Q}_1\le\eps$ and $\operatorname{rank}Q|_R\le\eta n_R$ for every $R\in\mathcal R$. Then $[1-\eps-\delta]_+^2\le\eta$.
+\end{proposition}
+
+\begin{proof}
+Theorem~\ref{thm:block-approx}(a) with $g=0$, and $\tau^{-1}\sum_Rr_R\le\eta\tau^{-1}\sum_Rn_R\le\eta$.
+\end{proof}
+
+So exact rank deficiency in most blocks, rather than in one restriction, would give lower bounds at every error $\eps<1$. The restriction arguments of Section~\ref{sec:signed-restricted} do not supply it, and two obstructions show why simple variants cannot.
+
+\emph{Norm-type measures bound mass, not size.} Let $\nu$ be a nonnegative, subadditive and absolutely homogeneous functional on real functions on $\{0,1\}^E$, such as a trace norm or $\gamma_2$ norm at a fixed split. Balanced product terms are closed under scaling, so $\sup\nu$ over them is $0$ or $\infty$, and a termwise certificate $\nu(T)\le\kappa\,m(T)$ for a homogeneous mass $m$ gives only $\sum_um(T_u)\ge\nu(Q)/\kappa$ for a decomposition $Q=\sum_uT_u$: a lower bound on the mass of the decomposition, not on the number of terms. Turning it into a size bound needs a bound on the mass, which is the role of $Z^+/\lambda$ in Theorem~\ref{thm:signed-cancel}, and circuits have no such bound in terms of size: $\prod_{i\le n}\bigl((1+Kx_i)+(-Kx_i)\bigr)$ computes $1$ with $O(n)$ wires and product-depth $1$ for every $K\ge0$, while its absolute-value circuit has value $(1+2K)^n$ at the all-ones point. This does not exclude scale-invariant ratios or arguments that use the approximation more cleverly.
+
+\begin{proposition}[one circuit fills every block of a fixed family]\label{prop:dv}
+Fix a split $A|B$, pairwise vertex-disjoint mixed cycles $C_1,\dots,C_m$ with $e_k\in A$ and $f_k\in B$ on $C_k$, and any pairing, and let the blocks be those of Lemma~\ref{lem:signed-blocks}. Put $\Psi(x):=\prod_{k\le m}\bigl(1-\prod_{a\in E(C_k)}x_a\bigr)$. Then $\Psi$ is computed by a smooth decomposable circuit with real weights, product-depth $2$ and $O(M)$ wires, and $\Psi=\tau P$ on every set $R$ of Lemma~\ref{lem:signed-blocks}; in particular $\operatorname{rank}\Psi|_R=n_R$ is full.
+\end{proposition}
+
+\begin{proof}
+Write each factor as $\prod_{a\in E(C_k)}1_a-\prod_{a\in E(C_k)}x_a$, with $1_a$ the constant $1$ on scope $\{a\}$, and multiply the factors with constant leaves $1_a$ for the edges on no cycle. On a cell of $R$, a cycle outside the good pairs has its edges fixed by $F$, as in a spanning tree, so it is not complete and its factor is $1$. At a good pair $(i,j)$ both arcs are present, so $C_i$ is complete exactly when the cell chooses $(e_i,f_i)$ and $C_j$ exactly when it chooses $(e_j,f_j)$. So the product is $1$ on the tree cells of $R$ and $0$ on the others.
+\end{proof}
+
+So no assertion of rank deficiency that ignores the approximation can hold on a fixed family of cycle blocks, whatever the pairing and orientation. This does not contradict Theorem~\ref{thm:signed-o2}: $\Psi$ is structured only for vtrees that keep each cycle together, and the mixed cycles at a balanced split of such a vtree are different cycles. Nor does it give a small approximation: $\Psi/\tau$ is not normalized, and on the $8$-prism with four square gadgets its total mass is about $86$. Restriction proofs in the style of Raz and of Raz and Yehudayoff instead choose the pairing at random. Pair blocks pay for disjointness with double visibility: each row bit of a pair is visible through two edges, $e_i$ and $e_j$, and at a balanced product of fan-in two with a random placement of the special edges the visible-bit count is about $\frac32g$, which exceeds the $g$ bits of a block, so counting visible bits gives nothing there; this blocks that counting argument, not every proof. Blocks of single cycles see each bit once but overlap, and then the off-support mass of $Q$ can sit on cells shared by many blocks. We know no block design with both properties. A sufficient condition in the spirit of Proposition~\ref{prop:transfer} would be a circuit-independent distribution over block systems from a packing of short cycles such that, for every circuit of product-depth $d$ and size $s$, some system has $\operatorname{rank}Q|_R\le s\,2^{-g_R^{a/d}}n_R$ on all its blocks outside $P$-mass $\exp(-N^{b_d})$, with $a>0$ independent of $d$; on graphs with $N^{1-o(1)}$ disjoint pairs of cycles of length at most $c\log_DN+1$, where $c<\frac12$, this would give $s\ge2^{N^{\Omega(1/d)}}$ at every $\eps<1$ for normalized outputs. Such graphs are a restricted class: Lemma~\ref{lem:good-pairs} keeps polynomially many good pairs only for $c<\frac12$, which excludes expanders of girth $(\frac43-o(1))\log_{D-1}N$. We state this only as a direction; we have no evidence that it holds.

@@ -1,8 +1,66 @@
 \section{Limits of the method and two variants}\label{sec:limits}
 
-\subsection{Why some cycle condition is needed}
+\subsection{Blocks: why expansion alone is not enough}
 
-All our bounds go through $\max_{A|B}\beta(P;A|B)$ over balanced splits. Pendant edges make this quantity useless.
+All our bounds go through $\max_{A|B}\beta(P;A|B)$ over balanced splits. The block structure of $G$ decides when this quantity equals one.
+
+A \emph{block} of a connected graph is a maximal connected subgraph that has no cut vertex of its own. Every edge lies in exactly one block, a bridge forms a block with one edge, and a block with at least two edges is 2-connected. We use three standard facts~\cite[Ch.~3]{Diestel17}. Every cycle lies in a single block. The block graph is a tree; by induction on the number of blocks, removing the vertices of a leaf block other than its cut vertex, this gives $\sum_i(\abs{V(G_i)}-1)=N-1$ for the blocks $G_1,\dots,G_m$. Any two edges of a 2-connected graph lie on a common cycle; this follows from Menger's theorem applied to the graph in which the two edges are subdivided, which is again 2-connected.
+
+\begin{lemma}[block factorization]\label{lem:blocks}
+An edge set $T$ is a spanning tree of $G$ if and only if $T\cap E(G_i)$ is a spanning tree of $G_i$ for every block $G_i$. Hence $\UST(G)$ is the product of the laws $\UST(G_i)$ on the edge sets $E(G_i)$.
+\end{lemma}
+
+\begin{proof}
+Write $T_i:=T\cap E(G_i)$. Every cycle lies in one block, so $T$ is acyclic if and only if every $T_i$ is. If every $T_i$ is a spanning tree of $G_i$, then $T$ is acyclic with $\sum_i(\abs{V(G_i)}-1)=N-1$ edges, so it is a spanning tree. Conversely, if $T$ is a spanning tree, then each $T_i$ is acyclic, so $\abs{T_i}\le\abs{V(G_i)}-1$, and $\sum_i\abs{T_i}=N-1$ forces equality; an acyclic graph with one edge fewer than vertices is a spanning tree. The uniform distribution on a product set is the product of the uniform distributions.
+\end{proof}
+
+\begin{proposition}[the block criterion]\label{prop:blocks}
+Let $G$ be a connected simple graph with $M$ edges and blocks $G_1,\dots,G_m$, and let $A|B$ be a split. Then $\beta(\UST(G);A|B)=1$ if and only if every block has all its edges in $A$ or all in $B$. Consequently, some balanced split has $\beta=1$ if and only if some union of blocks has between $M/3$ and $2M/3$ edges, and this happens if and only if no block has more than $2M/3$ edges.
+\end{proposition}
+
+\begin{proof}
+If every block lies on one side, Lemma~\ref{lem:blocks} makes $T\cap A$ and $T\cap B$ independent, so $P=\UST(G)$ is itself a product across $A|B$ and $\beta=\BC(P,P)=1$. Conversely, suppose $\beta=1$. The maximum defining $\beta$ is attained (Lemma~\ref{lem:LP}), and $\BC(P,q)=1$ for probability distributions only if $P=q$, by the equality case of the Cauchy--Schwarz inequality. So $P$ is a product across $A|B$, and its support $\cT(G)$ is a rectangle: if $a\cup b$ and $a'\cup b'$ are spanning trees with $a,a'\subseteq A$ and $b,b'\subseteq B$, then $a'\cup b$ is a spanning tree. Suppose some block contains edges $e\in A$ and $f\in B$, and let $C$ be a cycle through both. Grow the path $E(C)\setminus\{e\}$ greedily to a spanning tree $T_1=(E(C)\setminus\{e\})\cup X$. No edge of $X$ has both endpoints in $V(C)$, since such an edge closes a cycle with the path. So $T_2:=(E(C)\setminus\{f\})\cup X$ is also connected with $N-1$ edges, hence a spanning tree. Now $(T_2\cap A)\cup(T_1\cap B)$ contains every edge of $C$ in $A$, because those differ from $f$, and every edge of $C$ in $B$, because those differ from $e$. So it contains the cycle $C$ and is not a tree, a contradiction.
+
+For the second statement, a balanced split with $\beta=1$ is a union of blocks with between $M/3$ and $2M/3$ edges on side $A$. If some block has more than $2M/3$ edges, every union of blocks has more than $2M/3$ or fewer than $M/3$ edges. If every block has at most $2M/3$ edges, either some block has at least $M/3$, or all have fewer and we add blocks one at a time until the total first reaches $M/3$, at which point it is below $2M/3$.
+\end{proof}
+
+A positive fraction of edges in small blocks is not enough to give $\beta=1$. Let $G$ be $K_4$ with one pendant edge. The blocks have $6$ and $1$ edges, $M=7$, and a balanced side has $3$ or $4$ edges, so no union of blocks is balanced and $\beta<1$ for every balanced split. Exhaustive enumeration gives $\max\beta=0.75$ over balanced splits, attained for instance when $A$ is a triangle of $K_4$ (Appendix~\ref{app:checks}). For bounded-degree expanders the block structure decides everything, because blocks inherit expansion.
+
+\begin{lemma}[blocks inherit expansion]\label{lem:block-expansion}
+Let $G$ be connected and let $G_1$ be a block of $G$ with at least two edges. Then $h(G_1)\ge h(G)$.
+\end{lemma}
+
+\begin{proof}
+First, every edge of $G$ with both endpoints in $V(G_1)$ lies in $G_1$: such an edge $xy\notin E(G_1)$, together with a path of $G_1$ from $y$ to $x$, which has length at least two since $G$ is simple, would form a cycle with edges in two blocks. Second, every component $K$ of $G-V(G_1)$ has exactly one neighbour $v_K$ in $V(G_1)$: it has one because $G$ is connected, and if it had two, $x\ne y$, a path from $x$ through $K$ to $y$ and a path of $G_1$ from $y$ to $x$ would form a cycle with edges in two blocks.
+
+Let $S\subseteq V(G_1)$ with $0<\abs S\le\abs{V(G_1)}/2$, and let $S'$ be the union of $S$ and all components $K$ with $v_K\in S$. By the two facts, the edges of $G$ leaving $S'$ are exactly the edges of $G_1$ leaving $S$, so $\abs{\partial_GS'}=\abs{\partial_{G_1}S}$. If $\abs{S'}\le N/2$, then $\abs{\partial_{G_1}S}\ge h(G)\abs{S'}\ge h(G)\abs S$. Otherwise $V\setminus S'$ is nonempty, has at most $N/2$ vertices, contains $V(G_1)\setminus S$ and has the same boundary, so $\abs{\partial_{G_1}S}\ge h(G)\abs{V(G_1)\setminus S}\ge h(G)\abs S$.
+\end{proof}
+
+\begin{theorem}[block dichotomy]\label{thm:blocks}
+Let $G$ be a connected simple graph with $N$ vertices, $M\ge2$ edges, maximum degree at most $D$ and $h(G)\ge h>0$, let $G_1$ be a block with the largest number $M_1$ of edges, and let $c=c(D,h)$ be as in Theorem~\ref{thm:touch}.
+\begin{enumerate}[label=(\alph*)]
+\item If $M_1\le2M/3$, some balanced split has $\beta=1$, and a product node with two leaves of arity at most $2M/3$ represents $\UST(G)$ exactly.
+\item If $M_1>2M/3$, then every balanced split satisfies $\beta(\UST(G);A|B)^2\le e^{-3c(M_1-2M/3)}$, and some balanced split has $\beta(\UST(G);A|B)^2\ge2^{-(M_1-2M/3)-1}$.
+\item Let $C$ be a smooth decomposable PC with nonnegative weights, each of whose leaves depends on at most $2M_1/3$ variables of $E(G_1)$, for instance a circuit with univariate leaves. If $M_1\ge2$ and $\TV(\UST(G),Q_C)\le\eps<1$, then $\abs C\ge(1-\eps)^2e^{c\abs{V(G_1)}}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) By Proposition~\ref{prop:blocks} there is a union $U$ of blocks with between $M/3$ and $2M/3$ edges, and $\UST(G)$ is the product of its marginals on $U$ and on $E\setminus U$ by Lemma~\ref{lem:blocks}. Store each marginal in one leaf.
+
+(b) Since $M_1>2M/3\ge4/3$, $G_1$ has at least two edges, so it is 2-connected, with maximum degree at most $D$ and $h(G_1)\ge h$ by Lemma~\ref{lem:block-expansion}. Let $A|B$ be balanced. The restrictions $x_A\mapsto x_{A\cap E(G_1)}$ and $x_B\mapsto x_{B\cap E(G_1)}$ act on the two sides separately, so Lemma~\ref{lem:dpi} bounds $\beta(\UST(G);A|B)$ by $\beta$ of the law of $T\cap E(G_1)$ across $A\cap E(G_1)\,|\,B\cap E(G_1)$, and this law is $\UST(G_1)$ by Lemma~\ref{lem:blocks}. Since $\abs B\le2M/3$, the set $A\cap E(G_1)$ has at least $M_1-2M/3$ edges, and likewise for $B$. Apply Theorem~\ref{thm:touch} to $G_1$ with $m_0=M_1-2M/3$.
+
+For the lower bound, let $k:=\lceil M/3\rceil-(M-M_1)$, so $1\le k\le M_1-2M/3+1$. Let $A$ consist of all edges outside $G_1$ and $k$ edges of $G_1$, and let $A_1:=A\cap E(G_1)$ and $B:=E\setminus A\subseteq E(G_1)$. Then $\abs A=\lceil M/3\rceil\le2M/3$ since $M\ge2$, so the split is balanced. Write $P=P_0\otimes P_1$ with $P_0$ the law on $E\setminus E(G_1)$ and $P_1=\UST(G_1)$ (Lemma~\ref{lem:blocks}). Let $a^*$ be a most likely value of $x_{A_1}$ under $P_1$, so $P_1(x_{A_1}=a^*)\ge2^{-k}$, and take the product $q:=(P_0\otimes\delta_{a^*})\otimes P_1(x_B\in\cdot\,|\,x_{A_1}=a^*)$. Then
+\[
+  \BC(P,q)=\sum_{x_B}\sqrt{P_1(a^*,x_B)\,\frac{P_1(a^*,x_B)}{P_1(x_{A_1}=a^*)}}=\sqrt{P_1(x_{A_1}=a^*)}\ge2^{-k/2}.
+\]
+
+(c) Replace every leaf of $C$ by its sum over the values of its variables outside $E(G_1)$. Each scope $X_v$ becomes $X_v\cap E(G_1)$, so smoothness and decomposability are preserved and the size does not grow. By induction over the circuit, using smoothness at sum nodes and decomposability at product nodes, the new circuit $C_1$ computes the sum of $f_C$ over the variables outside $E(G_1)$, so $Q_{C_1}$ is the marginal of $Q_C$ on $E(G_1)$; this is the standard computation of marginals in such circuits~\cite{ChoiVergariVdB20}. Its leaves have arity at most $2M_1/3$. Total variation does not increase under taking marginals, and the marginal of $\UST(G)$ on $E(G_1)$ is $\UST(G_1)$. Apply Theorem~\ref{thm:main} to $G_1$, which is 2-connected with maximum degree at most $D$ and $h(G_1)\ge h$ by Lemma~\ref{lem:block-expansion}.
+\end{proof}
+
+So for bounded-degree expanders, and circuits whose leaves have arity up to $2M/3$, the bound from balanced splits is $e^{-\Theta(M_1-2M/3)}$ when $M_1>2M/3$ and trivial otherwise, and in the trivial case a constant-size circuit exists. With univariate leaves the threshold disappears: by (c), one 2-connected block with linearly many vertices already forces exponential size. 2-connectivity of $G$ is the case $M_1=M$ of (b).
+
+For example, attach a pendant edge to every vertex of a 2-connected $d$-regular expander on $n$ vertices. Then $M=(d/2+1)n$ and $M_1=dn/2$, so $M_1-2M/3=(d-4)n/6$. For $d\ge5$, part (b) gives exponential decay of $\beta$, and for $d\le4$ the pendant edges form a balanced union of blocks. The next proposition is the case $d\le4$, with the expansion of $G$ checked.
 
 \begin{proposition}[pendant edges]\label{prop:pendant}
 Let $H$ be a connected graph with $v\ge2$ vertices, at most $2v$ edges, maximum degree $\Delta$ and $h(H)\ge h_0>0$. Let $G$ be obtained by attaching a new vertex of degree one to every vertex of $H$. Then $G$ has maximum degree $\Delta+1$ and $h(G)\ge\min(1,h_0)/3$. Let $A$ be the set of pendant edges and $B=E(H)$. Then $A|B$ is balanced and $\beta(\UST(G);A|B)=1$.
@@ -12,7 +70,7 @@ Let $H$ be a connected graph with $v\ge2$ vertices, at most $2v$ edges, maximum 
 Every spanning tree contains every pendant edge, so $\UST(G)$ is the product of the point mass on $x_A=\one$ and the law of $\UST(H)$ on $x_B$, and $\beta=1$. The split is balanced because $\abs A=v$, $\abs B=\abs{E(H)}$, $v-1\le\abs{E(H)}\le2v$ and $v\ge2$. For the expansion, let $S$ consist of $a$ vertices of $H$ and $b$ pendant vertices, with $0<a+b\le v$. A pendant edge is in $\partial S$ when exactly one of its endpoints is in $S$; there are at least $\abs{a-b}$ such edges. If $a\le v/2$, then $\abs{\partial S}\ge h_0a+\abs{a-b}$, which is at least $h_0(a+b)/3$ if $b\le2a$ and at least $b-a\ge(a+b)/3$ if $b>2a$. If $a>v/2$, then $v-a\ge b$, so $\abs{\partial S}\ge h_0(v-a)+(a-b)\ge h_0b+(a-b)$. This is at least $(a+b)/3$ if $a\ge2b$ and at least $h_0(a+b)/3$ if $a<2b$.
 \end{proof}
 
-For a cubic expander $H$ this gives a bounded-degree expander $G$ on which the method proves nothing. This does not show that $\UST(G)$ has small circuits. It shows that a lower bound for $G$ is at least as hard as one for $H$: a circuit for $\UST(H)$, multiplied by the indicator leaves $[x_e=1]$ of the pendant edges, is a circuit for $\UST(G)$ with $O(v)$ extra size and the same total-variation error. If $H$ has large girth, the question for $H$ is open (Section~\ref{sec:open}). The linking condition of Definition~\ref{def:linked} excludes bridges (Lemma~\ref{lem:linked-basic}), and more generally forces every edge onto a short cycle.
+So expansion and bounded degree do not suffice for any bound that is uniform over balanced splits. Here the obstruction is real for circuits with leaves of arity $2M/3$: since $\abs{E(H)}\le2M/3$, one leaf that stores $\UST(H)$, multiplied by the indicator leaves $[x_e=1]$ of the pendant edges, represents $\UST(G)$ exactly with size $O(v)$. For circuits with univariate leaves it is not: if $H$ is 2-connected, Theorem~\ref{thm:blocks}(c) gives $\abs C\ge(1-\eps)^2e^{c(\Delta,h_0)v}$. The linking condition of Definition~\ref{def:linked} excludes bridges (Lemma~\ref{lem:linked-basic}), and more generally forces every edge onto a short cycle.
 
 \subsection{Frozen regions and large girth}
 
@@ -26,20 +84,169 @@ Let $I\subseteq E$ be acyclic, and let $T_0$ be a spanning tree with $I\subseteq
 A completion $J\subseteq I$ must satisfy $\abs J=N-1-\abs{T_0\setminus I}=\abs I$, so $J=I$.
 \end{proof}
 
-So a bound like Lemma~\ref{lem:local}, which must hold for every outside configuration, needs a region that contains a cycle. In a graph of girth $g$, any such region spans at least $g$ vertices, and at most $N/g$ vertex-disjoint cycles exist. With the regions $I(C)$ used here, Theorem~\ref{thm:cut} gives an exponent of at most about $(N/g)D^{-2(g-1)}$ in a $D$-regular graph. This tends to zero once $g\ge(\frac12+\eta)\log_DN$ for a fixed $\eta>0$, which is the regime of the best explicit expanders~\cite{LPS88}. Random regular graphs have very few short cycles, so the method gives nothing there either. This is a limit of our local lemma, not a lower bound on circuit size. A different choice of regions, or bounds that hold only for typical outside configurations, might still work.
+So a bound like Lemma~\ref{lem:local}, which must hold for every outside configuration, needs a region that contains a cycle. In a graph of girth $g$, any such region spans at least $g$ vertices, and at most $N/g$ vertex-disjoint cycles exist. With the regions $I(C)$ used here, Theorem~\ref{thm:cut} gives an exponent of at most about $(N/g)D^{-2(g-1)}$ in a $D$-regular graph. This tends to zero once $g\ge(\frac12+\eta)\log_DN$ for a fixed $\eta>0$, which is the regime of the best explicit expanders~\cite{LPS88}. Random regular graphs have very few short cycles, so the local route gives nothing there either.
+
+A star is acyclic too, so conditioning on everything outside a star can also freeze it. Given $T\setminus S(w)$, the rest of $T$ must join $w$ to each component of $(V\setminus\{w\},T\setminus S(w))$ by exactly one edge, so if every such component meets the star in exactly one edge, $T\cap S(w)$ is determined. Section~\ref{sec:vertex} avoids this in two ways. Lemma~\ref{lem:touch} conditions only on the stars of the other vertices of a sparse set $W$, not on everything outside $S(w)$. And it bounds the conditional probability by effective resistances in $G-W$, which depend on the whole graph and which the spectral gap of $G-W$ controls at every girth (Lemmas~\ref{lem:touch-flow} and~\ref{lem:delete}). This is how Theorem~\ref{thm:main} covers random regular graphs and Ramanujan graphs, which an earlier version of this paper listed as open.
 
 \subsection{Unbounded degree}
 
-On the complete graph $K_n$, Lemma~\ref{lem:local} gives $p=(n-1)^{-2}$ for triangles, and at most $n/3$ vertex-disjoint triangles exist. The resulting exponent $rp^2$ is $O(n^{-3})$, and longer cycles are worse, so the method as it stands gives nothing. The known exponential lower bounds for $\UST(K_n)$~\cite{MartensMedabalimi14,ZhangHoltzenVdB20} are for exact representation; see Section~\ref{sec:related}.
+On the complete graph $K_n$ the cycle bits give almost nothing: for triangles Theorem~\ref{thm:cut} gives $q_k=(n-1)^{-3}$, at most $n/3$ vertex-disjoint triangles exist, and the resulting exponent is $O(n^{-2})$. Longer cycles are worse. Theorem~\ref{thm:touch-cut} needs an independent set $W$, and the independent sets of $K_n$ have one vertex. Section~\ref{sec:complete} gets around both problems. It conditions on the tree edges inside a set $W$ and averages (Lemma~\ref{lem:avg-cond}), so independence is not needed, and its star-deletion bound (Lemma~\ref{lem:kn-star}) has the form of Lemma~\ref{lem:touch-flow} with the spectral gap of $G-W$. In $K_n$ that gap is $n-r$, of the order of the degree, so the factor $(1+1/\lambda_U)^{-d_A}$ stays above $e^{-1}$ instead of decaying exponentially in the degree. This gives $2^{\Omega(n)}$ for every balanced split of $K_n$ (Theorem~\ref{thm:complete}) and for every graph with $\lambda_2(L_G)\ge\kappa n$ (Corollary~\ref{cor:dense}), and Proposition~\ref{prop:two-cliques} shows that minimum degree $n/2$ alone does not suffice. Between bounded degree and linear spectral gap we have no good bound. Theorem~\ref{thm:dense} conditions on fewer than $\lambda_2$ vertices, so it gives little unless $\lambda_2$ grows linearly. The constant $c(D,h)$ of Theorem~\ref{thm:touch} decays like $(D+1)^{-4(D+1)}e^{-10(D+1)}$ for fixed $h\ge1$, and even the spectral constant $c_\lambda(D)$ decays like $D^{-4}$. The lower bounds of~\cite{MartensMedabalimi14,ZhangHoltzenVdB20} for $\UST(K_n)$ are discussed in Section~\ref{sec:related}.
+
+\subsection{How far star bits can go}\label{sec:star-limits}
+
+The constant of Theorem~\ref{thm:touch} is polynomial in $h$ for fixed $D$, but the degree $5D+4$ grows with $D$. We show that some growth is forced for every bound obtained from star bits. Call a \emph{star-bit certificate} any bound $\beta(\UST(G);A|B)\le\prod_k\gamma_k$ obtained from Lemmas~\ref{lem:dpi} and~\ref{lem:chain} applied to the bits $(a_{w_k},b_{w_k})$ of an ordered set $(w_1,\dots,w_r)$ of mixed vertices, independent or not. Theorem~\ref{thm:touch-cut} bounds the $\gamma_k$ of such a certificate further.
+
+\begin{lemma}[limits of star bits]\label{lem:star-limit}
+In a star-bit certificate, $\gamma_k^2\ge1-\pi_k$ with $\pi_k:=\min(\Pr[a_{w_k}=1],\Pr[b_{w_k}=1])$. Any numbers $p_A(w),p_B(w)$ admissible in Theorem~\ref{thm:touch-cut} satisfy $p_A(w)\le\Pr[a_w=1]$ and $p_B(w)\le\Pr[b_w=1]$.
+\end{lemma}
+
+\begin{proof}
+If $N\ge2$, no spanning tree avoids the whole star of $w$, so every conditional law $K$ of $(a_{w_k},b_{w_k})$ has $K(1,1)=0$. The row $a=0$ of $\sqrt K$ has squared norm $K(0,0)+K(0,1)=1-K(1,\cdot)$, and the operator norm is at least the norm of any row. The conditional probability of $a_{w_k}=1$ given the past averages to $\Pr[a_{w_k}=1]$, so some past with positive probability has it at most $\Pr[a_{w_k}=1]$; there $\gamma_k^2\ge1-\Pr[a_{w_k}=1]$. Columns give the same with $b$. For the second claim, average the conditional bound of Lemma~\ref{lem:touch} over $\sigma$.
+\end{proof}
+
+\begin{lemma}[bare paths]\label{lem:bare-path}
+Let $w$ be a vertex, and suppose that each edge $e_j=wu_{j,1}$ of $S_A(w)$, $1\le j\le a$, starts a path $w,u_{j,1},\dots,u_{j,L}$ whose interior vertices $u_{j,1},\dots,u_{j,L-1}$ have degree $2$ in $G$. Then $\Pr[a_w=1]\le L^{-a}$.
+\end{lemma}
+
+\begin{proof}
+Let $G_j:=G-\{e_1,\dots,e_j\}$. If some $e_j$ is a bridge of $G_{j-1}$, then $\Pr[a_w=1]=0$. Otherwise, conditionally on $e_1,\dots,e_{j-1}\notin T$, the tree is uniform on $G_{j-1}$, and by Kirchhoff's formula and the parallel law $e_j\notin T$ has probability $1-R_{G_{j-1}}(u_{j,1},w)=1/(1+R_{G_j}(u_{j,1},w))$. In $G_j$ the vertex $u_{j,1}$ is joined to the rest of the graph only through the path $u_{j,1},\dots,u_{j,L}$, so a unit flow from $u_{j,1}$ to $w$ sends a unit through each of its $L-1$ edges, and $R_{G_j}(u_{j,1},w)\ge L-1$ by Thomson's principle (fact~\ref{E:thomson}). Multiply the $a$ factors, each at most $1/L$.
+\end{proof}
+
+The \emph{hub graph} $G_{L,n}=G_{L,n}(a,b)$ has integer parameters $a,b\ge2$, $L\ge2$ and $n\ge2$, with $an$ and $bn$ even. Fix $h_0>0$ and two 2-connected cubic graphs $X_A$ and $X_B$, the cores, with exactly $an$ and $bn$ vertices and edge expansion at least $h_0$. Such cores exist for all large even sizes with an absolute $h_0$: a random cubic graph is 3-connected and has edge expansion at least an absolute constant with probability tending to one~\cite{Wormald81,Bollobas88}. Add $n$ new vertices, the hubs. Join each hub by $a$ paths of length $L$ to vertices of $X_A$ and by $b$ paths of length $L$ to vertices of $X_B$, with new interior vertices, so that every core vertex is the endpoint of exactly one path. Let $A$ be $E(X_A)$ together with the edges of the paths to $X_A$, and $B$ the rest. Then $G_{L,n}$ is 2-connected: after deleting one vertex, every other vertex is still joined to a core, each core stays connected, and the two cores stay joined through a hub other than the deleted vertex. Its maximum degree is $D=\max(a+b,4)$, it has $N=n(1+(a+b)L)$ vertices, the hubs are exactly its mixed vertices, and for $a=b$ the split is balanced, with $\abs A=\abs B$. The $L-1$ interior vertices of one path have two boundary edges, so $h(G_{L,n})\le2/(L-1)$.
+
+\begin{proposition}[hub graphs]\label{prop:hub}
+On $G_{L,n}$ with the split $A|B$, every star-bit certificate satisfies $\prod_k\gamma_k^2\ge\exp(-\frac43nL^{-\min(a,b)})$, and every bound of Theorem~\ref{thm:touch-cut} on $\beta^2$ is at least $\exp(-4\ln2\cdot nL^{-(a+b)})$. So a bound $\beta^2\le e^{-cN}$ proved by star bits has $c\le\frac43L^{-\min(a,b)}/((a+b)(L-1))$, and one proved by Theorem~\ref{thm:touch-cut} has $c\le4\ln2\cdot L^{-(a+b)}/((a+b)(L-1))$.
+\end{proposition}
+
+\begin{proof}
+The mixed vertices are the $n$ hubs, so a certificate has at most $n$ factors. Every edge at a hub starts a bare path of length $L$, so by Lemma~\ref{lem:bare-path} $\Pr[a_w=1]\le L^{-a}$ and $\Pr[b_w=1]\le L^{-b}$. By Lemma~\ref{lem:star-limit}, $\gamma_k^2\ge1-\pi_k$ with $\pi_k\le L^{-\min(a,b)}\le\frac14$, and $-\ln(1-\pi)\le\frac43\pi$ for $\pi\le\frac14$. For Theorem~\ref{thm:touch-cut}, $p_Ap_B\le L^{-(a+b)}\le\frac1{16}$, and $f(x):=-\ln\frac{1+\sqrt{1-4x}}2$ is convex with $f(0)=0$ and $f(\frac14)=\ln2$, so $f(x)\le4\ln2\cdot x$ on $[0,\frac14]$; the bound of the theorem on $\beta^2$ is $\exp(-\sum_kf(p_Ap_B))$. Divide the exponents by $N\ge n(a+b)(L-1)$.
+\end{proof}
+
+With $a=b=D/2$ the caps are $O(L^{-D/2}/(DL))$ and $O(L^{-D}/(DL))$. To turn them into statements about $h$ we need the matching lower bound $h(G_{L,n})=\Omega(1/L)$, uniformly in $n$. This is where the pinned core sizes matter: if the cores were much larger than $an$ and $bn$, the cut around $X_A$ would make $h(G_{L,n})L$ tend to $0$. We first bound the expansion of a subdivision.
+
+\begin{lemma}[subdivided edges]\label{lem:subdivide}
+Let $H$ be a connected graph, $F\subseteq E(H)$ and $L\ge1$, and let $G$ arise from $H$ by replacing each $f\in F$ by a path of length $\ell_f\in[1,L]$ with new interior vertices. Let $\nu:=\max_{\emptyset\ne S_0\subseteq V(H)}e_F(S_0)/\abs{S_0}$, where $e_F(S_0)$ counts the edges of $F$ with both ends in $S_0$. Then
+\[
+  h(G)\ \ge\ \frac{h(H)}{1+(L-1)(\nu+h(H))} .
+\]
+\end{lemma}
+
+\begin{proof}
+For $L=1$, $G=H$. Let $L\ge2$, $\emptyset\ne S\subseteq V(G)$ and $S_0:=S\cap V(H)$, and suppose first that $\abs{S_0}\le\abs{V(H)}/2$. Call a path of $F$ inside, crossing or outside if two, one or none of its ends lie in $S_0$. Each of the $c:=e_H(S_0,V(H)\setminus S_0)$ edges of $H$ leaving $S_0$ gives a boundary edge of $S$ in $G$, on its own path if it is subdivided. Each of the $o$ outside paths that have an interior vertex in $S$ gives two more, on that path. So $\abs{\partial_GS}\ge c+2o$. The vertices of $S$ are those of $S_0$, at most $(L-1)e_F(S_0)\le(L-1)\nu\abs{S_0}$ interior vertices of inside paths, at most $(L-1)c$ of crossing paths and at most $(L-1)o$ of outside paths. If $S_0=\emptyset$, then $c=0$ and the ratio is at least $2/(L-1)$. Otherwise $\abs{S_0}\le c/h(H)$, and
+\[
+  \frac{\abs{\partial_GS}}{\abs S}\ \ge\ \frac{c+2o}{c\,\bigl((1+(L-1)\nu)/h(H)+L-1\bigr)+(L-1)o}\ \ge\ \min\Bigl(\frac{h(H)}{1+(L-1)(\nu+h(H))},\ \frac2{L-1}\Bigr),
+\]
+and the first term is the smaller, since it is below $1/(L-1)$. If $\abs{S_0}>\abs{V(H)}/2$ and $\abs S\le\abs{V(G)}/2$, the complement $S^c$ has $\abs{S^c\cap V(H)}<\abs{V(H)}/2$ and $\abs{S^c}\ge\abs S$, so $\abs{\partial S}/\abs S\ge\abs{\partial S^c}/\abs{S^c}$, which the first case bounds.
+\end{proof}
+
+\begin{proposition}[expansion of hub graphs]\label{prop:hub-expansion}
+Let $h_1:=\min(h_0,1)$ and $m:=\min(a,b)$. For all $L\ge2$ and $n\ge2$,
+\[
+  \frac{2h_1m}{5(a+b+1)L}\ \le\ h(G_{L,n})\ \le\ \frac2{L-1} .
+\]
+\end{proposition}
+
+\begin{proof}
+The upper bound was shown above. Let $H$ be $G_{1,n}$, in which every path is a single edge; each core vertex has exactly one hub neighbour $\eta(x)$. We first show $h(H)\ge\eta_0:=h_1m/(2(a+b+1))$. Let $0<\abs S\le\abs{V(H)}/2=n(a+b+1)/2$, and put $\alpha:=\abs{S\cap X_A}/(an)$, $\alpha':=\abs{S\cap X_B}/(bn)$ and $\kappa:=\abs{S\cap\text{hubs}}/n$, so $\abs S/n=a\alpha+b\alpha'+\kappa$. An edge $x\eta(x)$ with $x\in X_A$ leaves $S$ when exactly one of $x,\eta(x)$ is in $S$. There are $a\alpha n$ vertices $x\in X_A\cap S$ and $a\kappa n$ vertices $x\in X_A$ with $\eta(x)\in S$, so at least $an\abs{\alpha-\kappa}$ such edges leave $S$, and at least $h_0an\min(\alpha,1-\alpha)$ edges of $X_A$ do. With the same count for $X_B$,
+\[
+  \frac{\abs{\partial S}}n\ \ge\ a\bigl[h_1\min(\alpha,1-\alpha)+\abs{\alpha-\kappa}\bigr]+b\bigl[h_1\min(\alpha',1-\alpha')+\abs{\alpha'-\kappa}\bigr] .
+\]
+If $\alpha,\alpha'\le\frac12$, each bracket is at least $h_1\max(\alpha,\kappa)$, because $h_1\le1$, so $\abs{\partial S}/n\ge\frac{h_1}2(a\alpha+b\alpha'+(a+b)\kappa)\ge\frac{h_1}2\abs S/n$. If $\alpha>\frac12\ge\alpha'$, then either $\kappa\le\alpha-\frac14$ and the first bracket is at least $\frac14$, or $\kappa>\frac14$ and the second is at least $h_1\kappa>h_1/4$; so $\abs{\partial S}/n\ge h_1m/4$, while $\abs S/n\le(a+b+1)/2$. The case $\alpha'>\frac12\ge\alpha$ is symmetric. If $\alpha,\alpha'>\frac12$, then $\kappa<\frac12$ because $\abs S\le\abs{V(H)}/2$, and the first bracket is at least $\frac14$ if $\kappa\le\frac14$ and at least $h_1(1-\alpha)+h_1(\alpha-\kappa)\ge h_1/2$ otherwise; again $\abs{\partial S}/n\ge h_1m/4$. In all cases $\abs{\partial S}/\abs S\ge\eta_0$.
+
+$G_{L,n}$ arises from $H$ by subdividing the hub--core edges $F$ into paths of length $L$. Each edge of $F$ has a core end that lies on no other edge of $F$, so $e_F(S_0)\le\abs{S_0}$ and $\nu\le1$. Lemma~\ref{lem:subdivide} gives $h(G_{L,n})\ge h(H)/(1+(L-1)(1+h(H)))\ge h(H)/(L(1+h(H)))$. The function $x/(1+x)$ increases and $\eta_0\le\frac14$, so $h(G_{L,n})\ge\eta_0/((1+\eta_0)L)\ge4\eta_0/(5L)$.
+\end{proof}
+
+\begin{corollary}[star bits are not polynomial in $h$]\label{cor:hub}
+Let $\kappa_0:=2h_1m/(5(a+b+1))$ and $h:=h(G_{L,n})$. On $G_{L,n}$ with the split $A|B$, a bound $\beta^2\le e^{-cN}$ proved by star bits has $c\le\frac8{3(a+b)}(h/\kappa_0)^{m+1}$, and one proved by Theorem~\ref{thm:touch-cut} has $c\le\frac{8\ln2}{a+b}(h/\kappa_0)^{a+b+1}$. For $a=b=D/2$ these are $O_D(h^{D/2+1})$ and $O_D(h^{D+1})$, while $h\to0$ as $L\to\infty$, uniformly in $n$.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:hub-expansion}, $L\ge\kappa_0/h$, so $L^{-k}\le(h/\kappa_0)^k$, and $1/(L-1)\le2/L\le2h/\kappa_0$. Insert into Proposition~\ref{prop:hub}.
+\end{proof}
+
+So star bits cannot give $c(D,h)\ge\operatorname{poly}(h)$ with a degree independent of $D$, even on 2-connected, balanced, bounded-degree graphs, and the exponent $5D+4$ of Theorem~\ref{thm:touch} is within a factor of about $5$ of what Theorem~\ref{thm:touch-cut} can give. This is a limit of the bits, not of $\beta$. The cycle bits do worse on these graphs. A mixed cycle must change colour at two hubs, and at each it traverses a whole path of each colour, so it has at least $4(L-1)$ vertices of degree $2$, and the quantity $q_k$ of Theorem~\ref{thm:cut} is at most $2^{-4(L-1)}$; that theorem gives at most $\exp(-\Omega(1/h))$ here. Edge bits do better, as we show next.
+
+\subsection{Edge pairs on the hub graphs}\label{sec:edge-pairs}
+
+In $G_{L,n}$ the two sides interact only at the hubs, and the first edges of an $A$-path and a $B$-path at a hub are negatively correlated under the uniform spanning tree. Their conditional law given a past is again the law of two edges under a uniform spanning tree, so Lemma~\ref{lem:two-by-two-general}\ref{tbt:cov} applies at every step. No forbidden cell is needed.
+
+\begin{lemma}[two edges at a vertex]\label{lem:edge-pair-law}
+Let $K$ be a connected multigraph, $T\sim\UST(K)$, and let $e,f$ be distinct edges with a common endpoint $w$ and other endpoints $u$ and $v$ (possibly $u=v$). Put $q_e:=\Pr[e\notin T]$, $q_f:=\Pr[f\notin T]$ and
+\[
+  Y:=\tfrac12\bigl(R_K(u,w)+R_K(v,w)-R_K(u,v)\bigr),\qquad R_K(u,u):=0 .
+\]
+Then $Y\ge0$, $\mathrm{Cov}(\one[e\in T],\one[f\in T])=-Y^2$, and the law $K_{ef}$ of the two indicators has $\Delta\ge2Y^2$, and $\Delta\ge Y^2/(2\sqrt{q_eq_f})$ if $q_eq_f>0$, with $\Delta$ as in Lemma~\ref{lem:two-by-two-general}.
+\end{lemma}
+
+\begin{proof}
+Orient $e$ from $u$ to $w$ and $f$ from $v$ to $w$. By the transfer-current theorem~\cite{BurtonPemantle93}, $\Pr[e,f\in T]=\Pr[e\in T]\Pr[f\in T]-Y(e,f)Y(f,e)$, where $Y(e,f)$ is the current through $f$ when a unit current enters at $u$ and leaves at $w$, and $Y(f,e)=Y(e,f)$ for unit conductances~\cite[Ch.~4]{LyonsPeres16}. Let $L_w$ be the Laplacian of $K$ with the row and column of $w$ deleted. The potential of that current with $\phi(w)=0$ is $\phi=L_w^{-1}\one_u$, so $Y(e,f)=\phi(v)=(L_w^{-1})_{vu}$. This is nonnegative, because $L_w^{-1}$ is the Green function of the random walk killed at $w$, and expanding $R_K(u,v)=(\one_u-\one_v)^\top L_w^{-1}(\one_u-\one_v)$ with $R_K(u,w)=(L_w^{-1})_{uu}$ and $R_K(v,w)=(L_w^{-1})_{vv}$ gives $(L_w^{-1})_{uv}=Y$. So the covariance is $-Y^2$, and Lemma~\ref{lem:two-by-two-general}\ref{tbt:cov} gives $\Delta\ge2Y^2$. For the second bound, $K_{01}\le q_e$, $K_{10}\le q_f$, $K_{11}\le1$ and $K_{00}=q_eq_f-Y^2\le q_eq_f$, where $K_{00}$ is the probability that neither edge is in $T$, so $\sqrt{K_{00}K_{11}}+\sqrt{K_{01}K_{10}}\le2\sqrt{q_eq_f}$.
+\end{proof}
+
+\begin{lemma}[a resistance criterion]\label{lem:edge-pair-res}
+In the setting of Lemma~\ref{lem:edge-pair-law}, let $\rho$ be the smaller of $R_{K-e}(u,w)$ and $R_{K-f}(v,w)$, let $R':=R_{K-w}(u,v)$, with the value $\infty$ for disconnected vertices. Then
+\[
+  Y\ \ge\ \frac\rho{1+\rho}-\frac{R'}{2+R'}=\frac{2\rho-R'}{(1+\rho)(2+R')},
+\]
+where $\infty/(c+\infty):=1$.
+\end{lemma}
+
+\begin{proof}
+By the parallel law, $R_K(u,w)=R_{K-e}(u,w)/(1+R_{K-e}(u,w))\ge\rho/(1+\rho)$, and likewise for $v$. Deleting the edges at $w$ other than $e$ and $f$ does not decrease $R_K(u,v)$ by~\ref{E:rayleigh}, and leaves the network $K-w$ in parallel with the path $u,w,v$ of resistance $2$, so $R_K(u,v)\le2R'/(2+R')$. Insert into the definition of $Y$.
+\end{proof}
+
+\begin{theorem}[edge-pair chain]\label{thm:edge-pair}
+Let $G$ be a connected graph with a split $A|B$, and let $w_1,\dots,w_r$ be vertices, each with edges $e_k=u_kw_k\in A$ and $f_k=v_kw_k\in B$, where all $2r$ edges are distinct. For a pattern $\sigma$ of in and out on $\{e_j,f_j:j<k\}$ with positive probability, let $K_\sigma$ be the multigraph of Lemma~\ref{lem:markov}, and let $Y_\sigma$ and $q_{e,\sigma},q_{f,\sigma}$ be the quantities of Lemma~\ref{lem:edge-pair-law} for $e_k,f_k$ in $K_\sigma$ when neither is a loop there. Put $B_\sigma:=0$ if one of the two bits $\one[e_k\in T]$, $\one[f_k\in T]$ is constant under $\UST(K_\sigma)$, and otherwise $B_\sigma:=Y_\sigma^2\max\bigl(2,\,1/(2\sqrt{q_{e,\sigma}q_{f,\sigma}})\bigr)$, and let $\Delta_k:=\min_\sigma B_\sigma$. Then
+\[
+  \beta\bigl(\UST(G);A|B\bigr)^2\ \le\ \prod_{k=1}^r\bigl(1-\Delta_k^2\bigr)\ \le\ \exp\Bigl(-\sum_k\Delta_k^2\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+The bits $x_k:=\one[e_k\in T]$ are functions of $x_A$, and $y_k:=\one[f_k\in T]$ of $x_B$. By Lemma~\ref{lem:dpi}, $\beta$ is at most the norm of the square root of the joint law of the bits, which Lemma~\ref{lem:chain} bounds by $\prod_k\gamma_k$. A joint past of positive probability is a pattern $\sigma$ as in the statement, and given it, $T\setminus\{e_j,f_j:j<k\}$ is a uniform spanning tree of $K_\sigma$ by Lemma~\ref{lem:markov}. If one of the bits is constant given $\sigma$ (for instance because $e_k$ or $f_k$ became a loop), the conditional law has norm at most $1$ and $B_\sigma=0$. Otherwise both marginals lie strictly between $0$ and $1$, so $q_{e,\sigma}q_{f,\sigma}>0$, and Lemmas~\ref{lem:edge-pair-law} and~\ref{lem:two-by-two-general} bound the squared norm by $1-B_\sigma^2$. So $\gamma_k^2\le1-\Delta_k^2$.
+\end{proof}
+
+No novelty is claimed for the ingredients: the theorem combines our chain rule with the transfer-current theorem and the spatial Markov property. On the hub graphs it gives a bound of degree $3$ in $1/h$ for the gadget's own split.
+
+\begin{proposition}[edge pairs on hub graphs]\label{prop:hub-pairs}
+Let $a=b\ge2$, $k:=2a-1$, $n\ge13$ and $L\ge3$, and let $\lambda_A,\lambda_B$ be the Laplacian spectral gaps of the cores, with $L\ge4k(1/\lambda_A+1/\lambda_B)$. At each hub $w$ let $e_w$ and $f_w$ be the first edges of one $A$-path and one $B$-path. Then for every hub, in every order, and for every past $\sigma$ on the pairs of the other hubs,
+\[
+  Y_\sigma\ \ge\ \frac1{3(a+b)L},\qquad q_{e,\sigma},q_{f,\sigma}<\frac1L,
+\]
+and
+\[
+  \beta\bigl(\UST(G_{L,n});A|B\bigr)^2\ \le\ e^{-c_{\mathrm{split}}N},\qquad c_{\mathrm{split}}\ \ge\ \frac1{405(a+b)^5L^3}\ \ge\ \frac{h^3}{10935\,D^5},
+\]
+where $h=h(G_{L,n})$ and $D=a+b$. The hypothesis on $L$ holds for $L\ge48k/h_0^2$, since $\lambda_A,\lambda_B\ge h_0^2/6$ by Lemma~\ref{lem:cheeger}.
+\end{proposition}
+
+\begin{proof}
+Fix a hub $w$ with $e=uw$ and $f=vw$, where $u$ and $v$ are the first interior vertices of the paths $P_e$ to $x_u\in X_A$ and $P_f$ to $y_v\in X_B$. The past only involves first edges at other hubs, so in $K_\sigma$ neither $e$ nor $f$ is a loop, and $w$ and the interiors of its paths are untouched. Apply Lemma~\ref{lem:edge-pair-res} in $K_\sigma$.
+
+\emph{The bound on $\rho$.} In $K_\sigma-e$ the vertex $u$ hangs from $x_u$ by a path of $L-1$ edges, so $R_{K_\sigma-e}(u,w)=L-1+R_{K_\sigma-e}(x_u,w)$. Identify, for $1\le j\le L-1$, the $k$ vertices at distance $j$ from $w$ on the other $k$ paths at $w$, and identify all vertices off these paths, other than $w$, with $x_u$. This does not increase the resistance by~\ref{E:rayleigh}, and leaves $L$ bundles of $k$ parallel edges in series. So $R_{K_\sigma-e}(x_u,w)\ge L/k$, and the same holds for $v$. Hence $\rho\ge L-1+L/k$, and $q_e=1/(1+R_{K_\sigma-e}(u,w))<1/L$ by Lemma~\ref{lem:one-edge}, and likewise for $q_f$.
+
+\emph{The bound on $R'$.} Build a unit flow from $u$ to $v$ in $K_\sigma-w$: along $P_e$ to $x_u$, with energy $L-1$; inside $X_A$ from $x_u$ to the uniform distribution on the core ends of the $(n-1)(a-1)$ $A$-paths of the other hubs that carry no edge of a pair, with energy at most $2/\lambda_A$ by~\ref{E:flow}; along these paths to their hubs, with energy $L/((n-1)(a-1))$; from each of these hubs out along its $b-1$ free $B$-paths, with energy $L/((n-1)(b-1))$; inside $X_B$ to $y_v$, with energy at most $2/\lambda_B$; and along $P_f$ to $v$. The past deletes or contracts only first edges of pair paths at other hubs. The flow uses none of them, and contracting an edge merges two vertices at which the flow is conserved, so it is still a unit flow from $u$ to $v$ in $K_\sigma-w$, and by~\ref{E:thomson}, $R'\le2(L-1)+R_{\mathrm{mid}}$ with
+\[
+  R_{\mathrm{mid}}:=\frac2{\lambda_A}+\frac2{\lambda_B}+\frac L{n-1}\Bigl(\frac1{a-1}+\frac1{b-1}\Bigr)\ \le\ \frac L{2k}+\frac{2L}{(n-1)(a-1)}\ \le\ \frac Lk,
+\]
+using the hypothesis on $L$ and $4k\le12(a-1)\le(n-1)(a-1)$.
+
+\emph{Combination.} The bound of Lemma~\ref{lem:edge-pair-res} increases in $\rho$ and decreases in $R'$, so
+\[
+  Y_\sigma\ \ge\ \frac{2L/k-R_{\mathrm{mid}}}{(L+L/k)(2L+R_{\mathrm{mid}})}\ \ge\ \frac{L/k}{(L+L/k)(2L+L/k)}=\frac k{(k+1)(2k+1)L}\ \ge\ \frac1{3(a+b)L}.
+\]
+Lemma~\ref{lem:edge-pair-law} with $q_eq_f<L^{-2}$ gives $B_\sigma\ge Y_\sigma^2L/2\ge1/(18(a+b)^2L)$, and Theorem~\ref{thm:edge-pair} over the $n$ hubs gives $\beta^2\le\exp(-n/(324(a+b)^4L^2))$. Finally $N=n(1+(a+b)L)\le\frac54n(a+b)L$, and $L\le3/h$ since $h\le2/(L-1)\le3/L$ for $L\ge3$.
+\end{proof}
+
+On the hub graphs with $a=b=D/2$ the three certificates give, for this split, exponents of order $h^{D/2+1}$ (star bits, Corollary~\ref{cor:hub}), $\exp(-\Omega(1/h))$ (cycle bits) and $h^3/D^5$ (edge pairs). Proposition~\ref{prop:hub-pairs} covers only the gadget's own split, and only $L$ above a threshold that depends on the cores; it says nothing about other balanced splits of these graphs. Whether edge pairs give $c\ge1/\operatorname{poly}(D,1/h)$ for every balanced split of every 2-connected expander is Conjecture~\ref{conj:pairs} in Section~\ref{sec:open}. The numbers are not small. For $a=b=2$ and cubic cores with $h_0\approx0.1$, the hypothesis needs $L$ in the tens of thousands.
 
 \subsection{What is and is not used}
 
-The proof uses three properties of the uniform spanning tree: a forbidden local pattern (no cycle), the spatial Markov property in the form of Lemma~\ref{lem:contract}, and the fact that, given everything outside the edges incident to a short cycle, each path obtained by deleting one edge of the cycle keeps probability bounded below. Nothing determinantal is used; the determinant appears only in the upper bound. The transfer-current theorem of Burton and Pemantle~\cite{BurtonPemantle93}, which makes the edge set of the uniform spanning tree a determinantal process, plays no role.
+The local argument uses three properties of the uniform spanning tree: a forbidden local pattern (no cycle), the spatial Markov property in the form of Lemma~\ref{lem:contract}, and the fact that, given everything outside the edges incident to a short cycle, each path obtained by deleting one edge of the cycle keeps probability bounded below. The vertex-touch argument uses the dual forbidden pattern (no isolated vertex), the spatial Markov property (Lemma~\ref{lem:markov}), and Kirchhoff's formula $\Pr[e\in T]=R(e^+,e^-)$ for a single edge, with Rayleigh monotonicity. Kirchhoff's formula is the one-edge case of the transfer-current theorem of Burton and Pemantle~\cite{BurtonPemantle93}, which makes the edge set of the uniform spanning tree a determinantal process. Neither argument uses the determinantal structure beyond this one-edge case, and the determinant itself appears only in the upper bound. The transfer-current theorem is used beyond the one-edge case in two places: through Hadamard's inequality in Lemma~\ref{lem:forest-mgf}, and for two edges in Section~\ref{sec:edge-pairs}.
 
 We do not know how to run this argument for uniform perfect matchings. There, conditioning on the outside of a small region can force the matching inside it. For example, in the grid, if the outside leaves unmatched exactly two vertices next to a unit square, and these are adjacent to two neighbouring corners of the square, the completion is unique. The dimer paper~\cite{Blaschke26Dimers} used a global argument with kernel estimates instead. Its bound $e^{\Theta(\sqrt n)}$ for $n$ edges is $e^{\Theta(L)}$ on the $L\times L$ grid, the same order as Corollary~\ref{cor:grid}.
 
 \begin{remark}[weighted spanning trees]\label{rem:weighted}
-Let $P_w(T)\propto\prod_{e\in T}w_e$ with $w_e\in[w_{\min},w_{\max}]$, $w_{\min}>0$. In the proof of Lemma~\ref{lem:local}, the numerator is at least $w_{\min}^{\abs C-1}\prod_jW_j$, where $W_j$ is the total weight of the edges at $K_j$, and the parent-edge encoding bounds the denominator by $\prod_jW_j\prod_{y\ne x_0}\sum_{e\ni y}w_e$. So the local bound becomes $(w_{\min}/(Dw_{\max}))^{\abs C-1}$, and Theorems~\ref{thm:cut} and~\ref{thm:general} hold with this $p$.
+Let $P_w(T)\propto\prod_{e\in T}w_e$ with $w_e\in[w_{\min},w_{\max}]$, $w_{\min}>0$. In the proof of Lemma~\ref{lem:local}, the numerator is at least $w_{\min}^{\abs C-1}\prod_jW_j$, where $W_j$ is the total weight of the edges at $K_j$, and the parent-edge encoding bounds the denominator by $\prod_jW_j\prod_{y\ne x_0}\sum_{e\ni y}w_e$. So the local bound becomes $(w_{\min}/(Dw_{\max}))^{\abs C-1}$. In Lemma~\ref{lem:star-frame}, Kirchhoff's formula reads $\Pr[e\in T]=w_eR(e^+,e^-)$ and the indicator of $v$ has energy $\sum_{f\ni v}w_f$, so the bound becomes $w_e/\sum_{f\ni v}w_f\ge w_{\min}/(Dw_{\max})$. So Theorem~\ref{thm:cut} holds with $p_k:=(w_{\min}/(Dw_{\max}))^{\abs{C_k}-1}$ and $w_k:=(w_{\min}/(Dw_{\max}))^{\abs{C_k}}$, and Theorem~\ref{thm:general} with $(w_{\min}/(Dw_{\max}))^{\ell}$ in place of $D^{-\ell}$. The vertex-touch argument also extends. With conductances $w_e$, Kirchhoff's formula reads $\Pr[e\in T]=w_eR(e^+,e^-)$, Lemma~\ref{lem:one-edge} becomes $\Pr[e\notin T]=1/(1+w_eR')$, and the weighted resistances are at most $1/w_{\min}$ times the unweighted ones. The proof of Lemma~\ref{lem:touch} then gives $p_A(w)p_B(w)\ge(1+(w_{\max}/w_{\min})(1+\rho_w))^{-\deg(w)}$, and the weighted analogue of Theorem~\ref{thm:touch-cut} holds with these bounds. We have not redone the constants of Theorem~\ref{thm:touch} in the weighted case.
 \end{remark}
 
 \subsection{Uniform spanning forests}
@@ -51,7 +258,7 @@ Let $\Phi\sim\USF(G)$, let $C$ be a cycle, $e\in E(C)$ and $x_0\in V(C)$, and le
 \[
   \Pr\bigl[\,\Phi\cap E(C)=E(C)\setminus\{e\}\ \bigm|\ \Phi\setminus I(C)=F\,\bigr]\ \ge\ \prod_{y\in V(C)\setminus\{x_0\}}\frac1{\deg(y)+1}\ \ge\ (D+1)^{-(\abs C-1)} .
 \]
-Consequently Theorem~\ref{thm:cut} holds for $\USF(G)$ with $p_k$ replaced by $\max_{x_0}\prod_{y\ne x_0}(\deg(y)+1)^{-1}$, and Theorem~\ref{thm:general} holds for $\USF(G)$ with $p=(D+1)^{-(\ell-1)}$.
+Consequently Theorem~\ref{thm:cut} holds for $\USF(G)$ with $q_k$ replaced by $\bigl(\max_{x_0}\prod_{y\ne x_0}(\deg(y)+1)^{-1}\bigr)^2$, and Theorem~\ref{thm:general} holds for $\USF(G)$ with $(D+1)^{-2(\ell-1)}$ in place of $D^{-\ell}$.
 \end{proposition}
 
 \begin{proof}
@@ -61,7 +268,19 @@ Define $K_1,\dots,K_s$ and $\mathcal M_F$ as in Lemma~\ref{lem:contract}, and le
 
 \emph{Denominator.} Root each component of a forest $J$ of $\mathcal M_F$ at $x_0$ if it contains $x_0$, and at any fixed node otherwise. Record for each node other than $x_0$ its parent edge, or the symbol ``root''. The forest $J$ is the set of recorded edges, so the encoding is injective. The node $K_j$ has at most $d_j+1$ possible records and $y\in V(C)\setminus\{x_0\}$ has at most $\deg(y)+1$. So there are at most $\prod_j(d_j+1)\prod_{y\ne x_0}(\deg(y)+1)$ forests.
 
-The rest of the proof of Theorem~\ref{thm:cut} uses only that $\Phi$ contains no cycle, that the past is a function of $\Phi\setminus I(C_k)$, and the local bound.
+The part of the proof of Theorem~\ref{thm:cut} that uses Lemma~\ref{lem:local} uses only that $\Phi$ contains no cycle, that the past is a function of $\Phi\setminus I(C_k)$, and the local bound. The star bound of Lemma~\ref{lem:star-frame}, and with it $w_k$, does not carry over: a forest need not meet a star.
 \end{proof}
 
-This bound has been checked exactly on small graphs (Appendix~\ref{app:checks}). It gives a $2^{\Omega(N)}$ lower bound for approximating $\USF(G)$ on prisms and squares of expanders, but this is not a separation. Counting spanning forests is \#P-hard for general graphs~\cite{JVW90}, and we know of no polynomial-size generating circuit for $\USF$ on these families.
+This bound has been checked exactly on small graphs (Appendix~\ref{app:checks}). It gives a $2^{\Omega(N)}$ lower bound for approximating $\USF(G)$ on prisms and squares of expanders, but this is not a separation. Counting spanning forests is \#P-hard for general graphs~\cite{JVW90}, and we know of no polynomial-size generating circuit for $\USF$ on these families. The vertex-touch argument of Section~\ref{sec:vertex} does not apply to $\USF$: a spanning forest can leave a vertex isolated, so $a_w=b_w=1$ is allowed.
+
+\subsection{Matroids: balance and locality}\label{sec:mat-limits}
+
+Two hypotheses of Section~\ref{sec:matroid} cannot simply be dropped.
+
+\emph{Balance.} Lemma~\ref{lem:mat-global} needs negative correlation in minors, and it can fail without it. Let $S_8$ be the binary matroid represented over $\mathbb F_2$ by $[I_4\,|\,Q]$, where $Q$ has rows $0111$, $1011$, $1101$, $1111$. It has $48$ bases. For $e$ the fourth unit vector and $f$ the all-ones column, $28$ bases contain $e$, $20$ contain $f$ and $12$ contain both, and $12\cdot48=576>560=28\cdot20$. So $e$ and $f$ are positively correlated and $S_8$ is not balanced, in line with the theorem of Choe and Wagner~\cite{ChoeWagner03} that a binary matroid is balanced exactly when it has no $S_8$ minor. Huh, Schr\"oter and Wang~\cite{HSW22} show that positive correlation between two elements of a matroid is bounded by a constant factor, but it does occur. An exhaustive check over all $\abs F,\abs S\le2$ in $S_8$ finds $4$ of $1624$ cases in which one of the two inequalities of Lemma~\ref{lem:mat-global} fails, the worst with ratio $14/15$ between the two sides (Appendix~\ref{app:checks}). We do not know whether Theorem~\ref{thm:mat-global} itself fails for some matroid that is not balanced. The local Theorems~\ref{thm:mat-local} and~\ref{thm:mat-pc} hold for every matroid.
+
+\emph{Locality.} Theorem~\ref{thm:mat-pc} needs pieces with small frames that interfere with few other pieces, and matroid connectivity does not provide them. In the uniform matroid $U_{k,2k}$, every $k$ of the $2k$ elements form a basis. It is connected, since any two elements lie on a common circuit of size $k+1$. Each frame $E\setminus\operatorname{cl}(K\setminus\{e,\pi(e)\})$ of a circuit $K$ has $k+1$ elements, so every territory is $E$. For a split $X|Y$, the law of $(B\cap X,B\cap Y)$ is uniform on pairs with $\abs{B\cap X}+\abs{B\cap Y}=k$, so $\sqrt\mu$ is block diagonal with constant blocks indexed by $j=\abs{B\cap X}$, and
+\[
+  \beta\bigl(U(U_{k,2k});X|Y\bigr)^2\ =\ \max_j\Pr\bigl[\abs{B\cap X}=j\bigr]\ \ge\ \frac1{k+1}.
+\]
+For $k=3,\dots,7$ and $\abs X=k$ the value is between $0.35$ and $0.52$. Indeed $U(U_{k,2k})$ has a deterministic smooth decomposable PC with $O(k^2)$ nodes, which reads the elements in order and tracks how many have been chosen. So the hypotheses of Theorem~\ref{thm:mat-pc} are not implied by connectivity.
