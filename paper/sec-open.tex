@@ -1,0 +1,13 @@
+\section{Open questions}\label{sec:open}
+
+\begin{enumerate}
+\item \emph{Large girth.} Does the uniform spanning tree of a bounded-degree expander of girth $\Omega(\log N)$, such as a Ramanujan graph~\cite{LPS88} or a random regular graph, need $2^{\Omega(N)}$-size nonnegative decomposable PCs at constant total-variation error? Our local lemma needs short cycles (Section~\ref{sec:limits}); a proof here would need a different source of conditional non-degeneracy, perhaps along long cycles with bounds that hold only for typical outside configurations.
+
+\item \emph{Unbounded degree.} Is there a constant-error exponential lower bound for $\UST(K_n)$, with $n$ vertices and $\binom n2$ variables? Exact representation is known to need $2^{\Omega(n)}$ size~\cite{MartensMedabalimi14}. Our method gives nothing here. More generally, how does the exponent depend on the degree in families such as products or powers of expanders with growing degree?
+
+\item \emph{Constants.} The constant in Example~\ref{ex:cubic} is about $2\cdot10^{-8}$. What is the correct exponent for, say, prisms of cubic Ramanujan graphs or for the $L\times L$ grid? Natural improvements are a sharper local lemma, using all mixed cycles rather than a vertex-disjoint subfamily, and a direct bound on $\opnorm{\sqrt\mu}$ for the joint law of all cycle bits.
+
+\item \emph{Other models.} Does the bound extend to nonnegative circuits that are decomposable but not smooth, with a size measure independent of smoothing? To structured or deterministic variants with sharper constants? To squared or subtractive circuits~\cite{LoconteEtAl24,WangVdB25}, where the overlap lemma no longer applies?
+
+\item \emph{Other determinantal distributions.} The proof uses only a forbidden local pattern and a spatial Markov property. Which other distributions with determinant-based inference, such as uniform bases of other regular matroids, or rooted spanning forests, whose weighted count is $\det(L+qI)$, admit the same local argument on expander-like families?
+\end{enumerate}

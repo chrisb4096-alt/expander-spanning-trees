@@ -1,0 +1,76 @@
+\section{Cycle bits and the local lemma}\label{sec:trees}
+
+This section proves the bound on $\beta(\UST(G);A|B)$ for a single split, in terms of a family of crossing cycles. It is the only part of the paper that uses spanning trees.
+
+Fix a split $E=A\sqcup B$. A cycle $C$ is \emph{mixed} if $E(C)$ meets both $A$ and $B$. For a mixed cycle define the two bits
+\[
+  u_C(x_A):=\one\bigl[E(C)\cap A\subseteq x_A\bigr],\qquad v_C(x_B):=\one\bigl[E(C)\cap B\subseteq x_B\bigr],
+\]
+where we identify $x_A$ with the set of edges of $A$ it contains. The bit $u_C$ depends only on the $A$-part of $x$ and $v_C$ only on the $B$-part. If $x$ is a spanning tree, then $u_C(x)=v_C(x)=1$ would mean $E(C)\subseteq x$, which is impossible. So under $\UST(G)$ the cell $(1,1)$ has probability zero.
+
+\subsection{The spatial Markov property at a cycle}
+
+Recall that $I(C)$ is the set of edges with an endpoint in $V(C)$. The next lemma describes the conditional law of $T\cap I(C)$ given the rest of the tree. It is a standard consequence of the uniformity of $T$; we include the proof.
+
+\begin{lemma}[conditional law near a cycle]\label{lem:contract}
+Let $C$ be a cycle of $G$ and let $F\subseteq E\setminus I(C)$ satisfy $\Pr[T\setminus I(C)=F]>0$. Then $F$ is a forest in which every vertex of $C$ is isolated. Let $K_1,\dots,K_s$ be the vertex sets of the connected components of the graph $(V\setminus V(C),F)$. Let $\mathcal M_F$ be the multigraph with node set $V(C)\cup\{K_1,\dots,K_s\}$ and one edge for each $e\in I(C)$, joining the nodes that contain the endpoints of $e$. Then $\mathcal M_F$ has no loops, every edge of $\mathcal M_F$ has an endpoint in $V(C)$, and conditionally on $T\setminus I(C)=F$, the set $T\cap I(C)$ is uniformly distributed over the edge sets of spanning trees of $\mathcal M_F$.
+\end{lemma}
+
+\begin{proof}
+$F$ is contained in a tree, so it is a forest. Every edge at a vertex of $C$ lies in $I(C)$, so these vertices are isolated in $F$, and every edge of $I(C)$ has an endpoint in $V(C)$. Such an endpoint forms a node of its own, so no edge of $\mathcal M_F$ is a loop.
+
+Since $T$ is uniform and $T=F\cup J$ with $J:=T\cap I(C)$, the conditional law of $J$ is uniform over the sets $J\subseteq I(C)$ for which $F\cup J$ is a spanning tree. We show that these are exactly the spanning trees of $\mathcal M_F$. The graph $(V,F)$ has $\abs{V(C)}+s$ components, so $\abs F=N-\abs{V(C)}-s$, and $\mathcal M_F$ has $\abs{V(C)}+s$ nodes. Each component of $F$ is connected, so $F\cup J$ is connected if and only if $J$ connects $\mathcal M_F$. A connected graph on $N$ vertices is a tree if and only if it has $N-1$ edges, and $\abs F+\abs J=N-1$ if and only if $\abs J=\abs{V(C)}+s-1$. So $F\cup J$ is a spanning tree if and only if $J$ is a connected spanning subgraph of $\mathcal M_F$ with one edge fewer than the number of nodes, that is, a spanning tree of $\mathcal M_F$.
+\end{proof}
+
+Let $d_j\ge0$ be the number of edges of $\mathcal M_F$ at the node $K_j$. Since $\mathcal M_F$ has a spanning tree, $d_j\ge1$ for every $j$.
+
+\begin{lemma}[local completion]\label{lem:local}
+Let $C$ be a cycle of $G$, let $e\in E(C)$, and let $F$ be as in Lemma~\ref{lem:contract}. For every $x_0\in V(C)$,
+\[
+  \Pr\bigl[\,T\cap E(C)=E(C)\setminus\{e\}\ \bigm|\ T\setminus I(C)=F\,\bigr]\ \ge\ \prod_{y\in V(C)\setminus\{x_0\}}\frac1{\deg(y)}\ \ge\ D^{-(\abs C-1)} .
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:contract} the conditional probability is the fraction of spanning trees $J$ of $\mathcal M_F$ with $J\cap E(C)=E(C)\setminus\{e\}$.
+
+\emph{Numerator.} Let $J$ consist of the path $E(C)\setminus\{e\}$ together with exactly one edge of $\mathcal M_F$ at each node $K_j$. The path spans $V(C)$. Every edge at $K_j$ joins $K_j$ to a vertex of $V(C)$, so $J$ is connected, and it has $\abs C-1+s$ edges, one fewer than the number of nodes. So $J$ is a spanning tree. It contains no chord of $C$, so $J\cap E(C)=E(C)\setminus\{e\}$. Distinct choices give distinct sets, so there are $\prod_jd_j$ such trees.
+
+\emph{Denominator.} Root a spanning tree $J$ of $\mathcal M_F$ at $x_0$. Every node other than $x_0$ has a unique parent edge in $J$, which is an edge of $\mathcal M_F$ at that node, and $J$ is the set of parent edges. So the map from $J$ to its list of parent edges is injective. The node $K_j$ has $d_j$ possible parent edges. A vertex $y\in V(C)\setminus\{x_0\}$ has at most $\deg(y)$, because all edges of $G$ at $y$ lie in $I(C)$ and these are its edges in $\mathcal M_F$. So $\mathcal M_F$ has at most $\prod_jd_j\prod_{y\ne x_0}\deg(y)$ spanning trees.
+
+Dividing gives the first inequality, and $\abs{V(C)\setminus\{x_0\}}=\abs C-1$ gives the second.
+\end{proof}
+
+Chords of $C$ only enlarge the denominator's choice sets, and parallel edges of $\mathcal M_F$ are kept distinct throughout. The case $s=0$ uses empty products. The bound is uniform over all outside configurations $F$, and this uniformity is what the chain rule needs.
+
+\begin{remark}
+The lemma conditions on $T$ outside \emph{all} edges incident to $C$, not just outside $E(C)$. This matters. If one conditioned only on $T\setminus E(C)$, the cycle could freeze. For example, let $C$ be a triangle and let a further vertex $w$ be joined to all three vertices of $C$. Given that all three edges at $w$ are in $T$, no edge of $C$ can be. Lemma~\ref{lem:local} leaves those three edges free.
+\end{remark}
+
+\subsection{The bound for one split}
+
+\begin{theorem}[affinity bound for a split]\label{thm:cut}
+Let $G$ be a connected graph with maximum degree $D$, let $E=A\sqcup B$ be any split of its edges, and let $C_1,\dots,C_r$ be pairwise vertex-disjoint mixed cycles. For each $k$ put $p_k:=\max_{x_0\in V(C_k)}\prod_{y\in V(C_k)\setminus\{x_0\}}\deg(y)^{-1}$. Then
+\[
+  \beta\bigl(\UST(G);A|B\bigr)\ \le\ \prod_{k=1}^r\Bigl(\frac{1+\sqrt{1-4p_k^2}}2\Bigr)^{1/2}\ \le\ \prod_{k=1}^r\bigl(1-p_k^2\bigr)^{1/2}.
+\]
+In particular, if every $C_k$ has length at most $\ell$, then $\beta(\UST(G);A|B)\le\bigl(1-D^{-2(\ell-1)}\bigr)^{r/2}$.
+\end{theorem}
+
+\begin{proof}
+Let $T\sim\UST(G)$ and put $u_k:=u_{C_k}(T\cap A)$ and $v_k:=v_{C_k}(T\cap B)$. The vector $u=(u_1,\dots,u_r)$ is a function of $T\cap A$ and $v$ is a function of $T\cap B$. By Lemma~\ref{lem:dpi}, $\beta(\UST(G);A|B)\le\opnorm{\sqrt\mu}$, where $\mu$ is the joint law of $(u,v)$ with rows indexed by $u$ and columns by $v$. Order the pairs as $(u_1,v_1),\dots,(u_r,v_r)$; the order is fixed before $T$ is sampled. By Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two} it suffices to show that for every $k$ and every value $\pi$ of the past $(u_{<k},v_{<k})$ with positive probability,
+\[
+  \Pr\bigl[(u_k,v_k)=(1,1)\bigm|\pi\bigr]=0,\qquad\Pr\bigl[(u_k,v_k)=(0,1)\bigm|\pi\bigr]\ge p_k,\qquad\Pr\bigl[(u_k,v_k)=(1,0)\bigm|\pi\bigr]\ge p_k .
+\]
+The first holds because $T$ contains no cycle. For the others, let $F_k:=T\setminus I(C_k)$. An edge of $C_j$ with $j\ne k$ has both endpoints in $V(C_j)$, which is disjoint from $V(C_k)$, so $E(C_j)\cap I(C_k)=\emptyset$. Hence the past $(u_{<k},v_{<k})$ is a function of $F_k$, and the event $\{(u_{<k},v_{<k})=\pi\}$ is a union of events $\{F_k=F\}$. Pick $e_A\in E(C_k)\cap A$ and $e_B\in E(C_k)\cap B$. If $T\cap E(C_k)=E(C_k)\setminus\{e_A\}$, then $e_A\notin T$ while every edge of $E(C_k)\cap B$ is in $T$, so $(u_k,v_k)=(0,1)$. Likewise $E(C_k)\setminus\{e_B\}$ gives $(1,0)$. By Lemma~\ref{lem:local}, both events have conditional probability at least $p_k$ given every value $F$ of $F_k$ with positive probability. By the tower property the same bounds hold given $\pi$, since conditioning on $\pi$ averages the conditional laws given $F_k=F$ over the values $F$ compatible with $\pi$.
+\end{proof}
+
+The incident sets $I(C_j)$ and $I(C_k)$ may share an edge joining the two cycles. This does not matter, because the bits use cycle edges only. The theorem holds for every split, balanced or not, and every family of vertex-disjoint mixed cycles. The geometric input of Section~\ref{sec:geometry} is a lower bound on $r$ for balanced splits.
+
+\begin{corollary}[tree rectangles]\label{cor:rectangle}
+Let $R_A\subseteq2^A$ and $R_B\subseteq2^B$ be nonempty, and suppose that every set $a\cup b$ with $a\in R_A$, $b\in R_B$ is a spanning tree. Let $R$ be the set of these trees. Then $\UST(G)(R)\le\beta(\UST(G);A|B)^2$.
+\end{corollary}
+
+\begin{proof}
+The map $(a,b)\mapsto a\cup b$ is injective, since $A\cap B=\emptyset$. Let $q$ be the product of the uniform distributions on $R_A$ and $R_B$, so $q$ is uniform on $R$. Every element of $R$ has probability $1/\tau(G)$ under $P=\UST(G)$, so $\BC(P,q)=\abs R/\sqrt{\tau(G)\abs R}=\sqrt{P(R)}$. Now use $\BC(P,q)\le\beta$.
+\end{proof}

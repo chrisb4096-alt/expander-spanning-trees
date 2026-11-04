@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+
+\setlist{itemsep=2pt,topsep=4pt}
+
+% ---------- theorem environments ----------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{plain}
+
+% ---------- notation ----------
+\newcommand{\UST}{\mathrm{UST}}
+\newcommand{\USF}{\mathrm{USF}}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\BC}{\mathrm{BC}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\opnorm}[1]{\lVert #1\rVert_{\mathrm{op}}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\sqrtm}[1]{\sqrt{#1}^{\,\circ}}
+\emergencystretch=3em
+
+\title{Uniform spanning trees of expander prisms and squares\\ versus nonnegative probabilistic circuits}
+\author{Chris Blaschke\\Ax0s}
+\date{November 3, 2026. Preprint, not peer reviewed.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $H$ be a connected graph with maximum degree at most $\Delta$ and edge expansion at least $h_0>0$, and let $G$ be the prism $H\square K_2$ or the square $H^2$. Let $P$ be the uniform spanning tree of $G$, viewed as a distribution on the $M$ edge indicators, and let $N$ be the number of vertices. We prove that every smooth decomposable probabilistic circuit with nonnegative weights and leaves of arity at most $2M/3$ whose distribution is within total variation $\eps<1$ of $P$ has size at least $(1-\eps)^2e^{cN}$, with an explicit $c=c(\Delta,h_0)>0$. Determinism is not assumed. By the matrix-tree theorem, $P$ has a generating circuit of size polynomial in $N$, and all its marginals are ratios of determinants. Since $M=\Theta(N)$, the optimal size of nonnegative smooth decomposable circuits for these distributions is $2^{\Theta(M)}$ at every fixed error below one.
+
+The proof bounds, for every balanced split of the edges, the largest Bhattacharyya coefficient between $P$ and a product distribution across the split. We pass to two indicator bits per short cycle that crosses the split, and bound the square-root matrix of their joint law with an adaptive chain rule. The spatial Markov property of the uniform spanning tree gives the conditional lower bound on two local events needed for the chain rule. The information-theoretic tools are known: the chain rule is a case of an exercise in Polyanskiy and Wu, and the identification of the optimized affinity with a matrix norm is due to Lapidoth and Pfister. The circuit reduction is from our earlier paper on dimers. We believe the local cycle-bit reduction for spanning trees and the resulting constant-error bound for a natural distribution on sparse bounded-degree families are new. The constant $c$ is very small (about $2\cdot10^{-8}$ for a cubic example).
+\end{abstract}
+
+\tableofcontents
+
+\input{sec-intro}
+\input{sec-prelim}
+\input{sec-tools}
+\input{sec-trees}
+\input{sec-geometry}
+\input{sec-main}
+\input{sec-limits}
+\input{sec-related}
+\input{sec-open}
+
+\appendix
+\input{app-checks}
+
+\bibliographystyle{alphaurl}
+\bibliography{refs}
+
+\end{document}

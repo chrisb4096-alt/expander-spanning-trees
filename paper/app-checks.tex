@@ -1,0 +1,23 @@
+\section{Machine checks}\label{app:checks}
+
+None of the proofs depends on these computations. They test the lemmas on small graphs, recompute the constants in exact arithmetic, and show how loose the bounds are. Small graphs say nothing about rates in $N$, and the computations are not evidence for the asymptotic statements.
+
+The scripts are in the \texttt{verify/} folder of \url{https://github.com/chrisb4096-alt/expander-spanning-trees}, with their output in \texttt{verify/out/}. The command \texttt{verify/run\_all.sh} compiles the C++ helper with \texttt{g++}, runs every script with \texttt{uv run}, saves the output, and stops at the first failure. Every script exits with a nonzero status if a checked inequality fails, so a run that prints \texttt{ALL CHECKS PASSED} has checked everything listed below. The Python scripts use NumPy, SciPy and NetworkX where noted, and otherwise only the standard library.
+
+\begin{description}
+\item[\texttt{constants.py}] Corollary~\ref{cor:constants} and Example~\ref{ex:cubic} in exact rational arithmetic. For the cubic prism with $h(H)\ge1/5$ it checks $t\ge N/960$ (the other term is $N/732$), $r_0\ge N/11520$ and $r_0p^2\ge N/47185920$, and it prints the per-cycle factors $0.9998779222$ and $0.9998778924$ and the exponent $2.119535\cdot10^{-8}$. It checks that the closed forms of Corollary~\ref{cor:constants} lie below the exact value of $r_0p^2/N$ at $77$ pairs $(\Delta,h_0)$ with $2\le\Delta\le12$.
+
+\item[\texttt{check\_tensorization.py}] Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two} (NumPy). It builds $6000$ random laws on $(\{0,1\}^2)^r$ by the chain rule, with conditionals that depend on the whole past, have no mass on $(1,1)$ and mass at least $p$ on $(0,1)$ and $(1,0)$, including the extreme points of this polytope. It checks $\opnorm{\sqrt\mu}\le\prod_k\gamma_k\le((1+\sqrt{1-4p^2})/2)^{r/2}\le(1-p^2)^{r/2}$ up to floating-point tolerance $10^{-12}$.
+
+\item[\texttt{check\_chain.py} and \texttt{enum\_trees.cpp}] The whole chain of Theorem~\ref{thm:cut} on five graphs: the prisms over $K_4$, $C_6$ and $K_{3,3}$, the square of $C_{10}$, and the $4\times4$ grid, with $3456$ to $405000$ spanning trees, enumerated by the C++ helper (NumPy, SciPy). For each graph it first checks Lemma~\ref{lem:local} for every cycle of length at most $4$, every edge on it and every outside configuration; the smallest ratio of the true conditional probability to the bound is between $1.92$ and $2.67$. It then takes five balanced splits per graph, three random and two found by local search to make $\beta$ large, and checks
+\[
+  \beta(\UST(G);A|B)\le\opnorm{\sqrt\mu}\le\prod_k\gamma_k\le\prod_k(1-p_k^2)^{1/2}
+\]
+for a greedily chosen family of disjoint mixed cycles. On these $25$ instances the geometric mean of the $\gamma_k$ is between $0.94$ and $0.99$, while the bound per cycle is between $0.998$ and $0.99988$.
+
+\item[\texttt{check\_forest.py}] Lemma~\ref{lem:local} and Proposition~\ref{prop:forest} in exact integer arithmetic on eight small graphs with $3$ to $10$ vertices, for every cycle of length at most $4$, every edge on it and every outside configuration. It also checks the triangle: $7$ forests, conditional probability $1/7$, below the tree bound $1/4$ and above the forest bound $1/9$.
+
+\item[\texttt{independent\_check.py}] A separate implementation written for review (NumPy, NetworkX), sharing no code with the other scripts. It checks the chain inequality on $2805$ cases ($405$ exhaustive depth-two extreme-point assignments and $2400$ random chains); Lemma~\ref{lem:local} for cycles of length at most $4$ on all connected graphs with $3$ to $5$ vertices and four further graphs ($3858$ conditional inequalities, smallest ratio to the bound $4/3$); the chain of Theorem~\ref{thm:cut} for single cycles and ordered pairs of disjoint cycles on $2894$ balanced splits; and the geometric facts behind Lemmas~\ref{lem:mixed}, \ref{lem:prism} and~\ref{lem:square}, namely the expansion, linking and $\kappa$ bounds and the count of mixed cycles, for the prisms and squares of all connected graphs with $3$ or $4$ vertices and of $C_5$ ($18$ graphs, $103878$ balanced splits). Its line about the forest counterexample records a known value and is not a computation; \texttt{check\_forest.py} computes it.
+\end{description}
+
+The local lemma is loose by a factor of about $2$ on these graphs, and the chain bound by much more: the proved factor per cycle, $1-O(D^{-2(\ell-1)})$, is far closer to $1$ than the observed one. This is the main reason for the small constants in Section~\ref{sec:main}.

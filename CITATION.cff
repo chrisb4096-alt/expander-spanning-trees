@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Uniform spanning trees of expander prisms and squares versus nonnegative probabilistic circuits"
+authors:
+  - family-names: Blaschke
+    given-names: Chris
+    affiliation: Ax0s
+date-released: 2026-11-03
+version: "1.0"
+license: CC-BY-4.0
+repository-code: "https://github.com/chrisb4096-alt/expander-spanning-trees"
+url: "https://github.com/chrisb4096-alt/expander-spanning-trees"
+keywords:
+  - probabilistic circuits
+  - uniform spanning tree
+  - expanders
+  - lower bounds
+  - monotone circuits

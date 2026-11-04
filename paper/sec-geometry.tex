@@ -1,0 +1,98 @@
+\section{Geometry: many disjoint crossing cycles}\label{sec:geometry}
+
+Theorem~\ref{thm:cut} turns vertex-disjoint mixed short cycles into a bound on $\beta$. This section shows that, in the graphs of Theorem~\ref{thm:main}, every balanced split has linearly many of them. The condition we need is that short cycles tie together the edges at every vertex.
+
+\begin{definition}[linked graphs]\label{def:linked}
+Let $G$ be a connected graph with $N\ge3$ vertices, and let $\cC$ be a nonempty family of cycles of $G$. For a vertex $x$, let $\Lambda_x$ be the graph whose nodes are the edges at $x$, with $e\sim f$ when some cycle of $\cC$ contains both $e$ and $f$. The family $\cC$ \emph{links} $G$ if $\Lambda_x$ is connected for every vertex $x$. We write $\ell:=\max_{C\in\cC}\abs C$ and $\kappa:=\max_x\abs{\{C\in\cC:x\in V(C)\}}$.
+\end{definition}
+
+\begin{lemma}\label{lem:linked-basic}
+If $\cC$ links $G$, then every edge of $G$ lies on a cycle of $\cC$. In particular $G$ has no bridge, its minimum degree is at least $2$, and $1\le\kappa<\infty$.
+\end{lemma}
+
+\begin{proof}
+Let $e=xy$. Since $G$ is connected with at least three vertices, $x$ or $y$ has degree at least $2$, say $x$. Then $\Lambda_x$ is connected with at least two nodes, so $e$ is adjacent in $\Lambda_x$ to some other edge, which means that some cycle of $\cC$ contains $e$. An edge on a cycle is not a bridge, and every vertex has an edge on a cycle, hence degree at least $2$.
+\end{proof}
+
+The conditions $N\ge3$ and $\cC\ne\emptyset$ exclude $K_2$, which is vacuously linked by the empty family and has a bridge. Some condition of this kind is needed: Proposition~\ref{prop:pendant} shows that pendant edges defeat any bound that is uniform over balanced splits.
+
+\subsection{Mixed cycles in linked expanders}
+
+\begin{lemma}[mixed cycles]\label{lem:mixed}
+Let $G$ be a connected graph with $N\ge3$ vertices, maximum degree $D$ and edge expansion $h>0$, linked by a family $\cC$ with parameters $\ell,\kappa$. Colour the edges with two colours so that each colour class has at least $m_0>0$ edges, and let $t$ be the number of cycles of $\cC$ that contain edges of both colours. Then
+\[
+  t\ \ge\ \min\Bigl\{\frac{hN}{4D\ell},\ \frac{2m_0}{\ell D(1+D/h)}\Bigr\},
+\]
+and some $\lceil t/(\ell\kappa)\rceil$ of these mixed cycles are pairwise vertex-disjoint.
+\end{lemma}
+
+\begin{proof}
+Let $Z$ be the set of vertices of mixed cycles of $\cC$. Then $\abs Z\le\ell t$.
+
+\emph{Good vertices are monochromatic.} Let $x\notin Z$. Every cycle of $\cC$ through $x$ is monochromatic, so adjacent nodes of $\Lambda_x$ have the same colour. Since $\Lambda_x$ is connected, all edges at $x$ have one colour $c(x)$. If $x,y\notin Z$ are adjacent, then $c(x)=c(xy)=c(y)$. Hence for each connected component $K$ of $G-Z$, all edges with an endpoint in $K$ have the same colour.
+
+\emph{Case $\abs Z\ge hN/(4D)$.} Then $t\ge\abs Z/\ell\ge hN/(4D\ell)$.
+
+\emph{Case $\abs Z<hN/(4D)$.} Since $h\le D$, $\abs Z<N/4$. Suppose every component of $G-Z$ had at most $N/2$ vertices. If one of them has at least $N/4$ vertices, let $U$ be that component. Otherwise add components one at a time until the union first has at least $N/4$ vertices; this happens because $\abs{V\setminus Z}>3N/4$, and the union then has fewer than $N/2$ vertices. In both cases $U$ is a union of components with $N/4\le\abs U\le N/2$. Every edge of $\partial U$ has its other endpoint in $Z$, so
+\[
+  \frac{hN}4\le h\abs U\le\abs{\partial U}\le D\abs Z<\frac{hN}4,
+\]
+a contradiction. Hence $G-Z$ has a component $K$ with $\abs K>N/2$. Let $S:=V\setminus(K\cup Z)$. Then $\abs S<N/2$, and every edge of $\partial S$ goes to $Z$, so $h\abs S\le D\abs Z$. Therefore
+\[
+  \abs{V\setminus K}=\abs S+\abs Z\le(1+D/h)\abs Z .
+\]
+All edges with an endpoint in $K$ have the colour of $K$, so every edge of the other colour lies inside $V\setminus K$. There are at most $D\abs{V\setminus K}/2\le\ell D(1+D/h)t/2$ such edges, and at least $m_0$. This gives the second bound.
+
+\emph{Packing.} Choose mixed cycles greedily. A chosen cycle shares a vertex with at most $\ell\kappa$ cycles of $\cC$, itself included, because it has at most $\ell$ vertices and each lies on at most $\kappa$ cycles. Discard these and repeat. This produces at least $\lceil t/(\ell\kappa)\rceil$ pairwise vertex-disjoint mixed cycles.
+\end{proof}
+
+\subsection{Prisms and squares}
+
+\begin{lemma}[prisms]\label{lem:prism}
+Let $H$ be a connected simple graph with $n\ge3$ vertices, maximum degree at most $\Delta$ and edge expansion $h(H)\ge h_0>0$, and let $G=H\square K_2$. Then $N=2n$, $M=2\abs{E(H)}+n\ge N$, $D\le\Delta+1$, and $h(G)\ge\min(1,h_0)/3$. The family of $4$-cycles
+\[
+  Q_{uv}:=(u,0)\,(v,0)\,(v,1)\,(u,1),\qquad uv\in E(H),
+\]
+links $G$ with $\ell=4$ and $\kappa\le\Delta$.
+\end{lemma}
+
+\begin{proof}
+The counts are immediate, and $M\ge2(n-1)+n\ge2n$ since $H$ is connected and $n\ge2$.
+
+\emph{Linking.} The edges at $(v,0)$ are the rung $(v,0)(v,1)$ and the edges $(v,0)(u,0)$ for $u\sim v$ in $H$. Each $(v,0)(u,0)$ lies in $Q_{uv}$ together with the rung. So $\Lambda_{(v,0)}$ contains a spanning star centred at the rung, and is connected. The same holds at $(v,1)$. The vertex $(v,i)$ lies on $Q_{uv}$ for the $\deg_H(v)\le\Delta$ neighbours $u$ of $v$, and on no other cycle of the family.
+
+\emph{Expansion.} Let $S=S_0\times\{0\}\cup S_1\times\{1\}$ with $0<\abs S\le n$, and put $x=\abs{S_0}$, $y=\abs{S_1}$. By symmetry of the two layers we may assume $x\ge y$. If $x\le n/2$, the edges of the two copies of $H$ give $\abs{\partial S}\ge h_0x+h_0y$. If $x>n/2$, then $y\le n-x<n/2$, so the copy of $H$ in layer $1$ contributes at least $h_0y$ boundary edges, and each of the at least $x-y$ vertices $v\in S_0\setminus S_1$ contributes its rung. So $\abs{\partial S}\ge h_0y+(x-y)$. If $2y\le x$, this is at least $x/2\ge(x+y)/3$. If $2y>x$, it is at least $h_0y\ge h_0(x+y)/3$. In all cases $\abs{\partial S}\ge\min(1,h_0)\abs S/3$.
+\end{proof}
+
+\begin{lemma}[squares]\label{lem:square}
+Let $H$ be as in Lemma~\ref{lem:prism} and let $G=H^2$. Then $N=n$, $M\ge N-1\ge2N/3$, $D\le\Delta^2$, and $h(G)\ge h_0$. The family of triangles $\{u,v,w\}$ such that $u\,v\,w$ is a path in $H$ links $G$ with $\ell=3$ and $\kappa\le3\Delta(\Delta-1)/2$.
+\end{lemma}
+
+\begin{proof}
+A vertex has at most $\Delta$ neighbours in $H$ and at most $\Delta(\Delta-1)$ vertices at distance two, so $D\le\Delta^2$. $G$ contains $H$ on the same vertex set, so $\abs{\partial_GS}\ge\abs{\partial_HS}$ for every $S$, and $h(G)\ge h(H)\ge h_0$. $G$ is connected, so $M\ge N-1$, and $N-1\ge2N/3$ because $N\ge3$.
+
+\emph{Linking.} For a path $u\,v\,w$ in $H$, the vertices $u,v,w$ are pairwise at distance at most two, so they span a triangle of $G$. Let $x$ be a vertex. Any two $H$-edges $xu$, $xw$ at $x$ lie in the triangle of the path $u\,x\,w$. An edge $xw$ of $G$ that is not in $H$ joins vertices at distance two, so there is a path $x\,v\,w$ in $H$, and its triangle contains $xw$ and the $H$-edge $xv$. So every node of $\Lambda_x$ is adjacent to an $H$-edge at $x$, the $H$-edges at $x$ are pairwise adjacent, and $\Lambda_x$ is connected. The family is nonempty because $H$ is connected with $n\ge3$.
+
+\emph{The parameter $\kappa$.} Assign to each triangle of the family one path that generates it. A triangle through $x$ is assigned a path with centre $x$ or a path with endpoint $x$. There are at most $\binom\Delta2$ paths of the first kind and at most $\Delta(\Delta-1)$ of the second, so $\kappa\le3\Delta(\Delta-1)/2$.
+\end{proof}
+
+\subsection{The square grid}
+
+The grid is not an expander, but it is linked by its unit squares, and an isoperimetric inequality can replace expansion. Let $G_L$ be the $L\times L$ grid with $L\ge2$, so $N=L^2$, $M=2L(L-1)$ and $D=4$. At an interior vertex, the four edges and the four unit squares around it form a $4$-cycle in $\Lambda_x$; at boundary vertices $\Lambda_x$ is a path. So the unit squares link $G_L$ with $\ell=4$ and $\kappa=4$.
+
+\begin{lemma}[grid isoperimetry]\label{lem:grid-iso}
+For every $S\subseteq V(G_L)$ with $0<\abs S\le L^2/2$, $\abs{\partial S}\ge\min\{2\sqrt{\abs S},\,L/2\}$.
+\end{lemma}
+
+\begin{proof}
+Call a row full if it lies in $S$, empty if it misses $S$, and partial otherwise; the same for columns. A partial row contains two horizontally adjacent vertices, one in $S$ and one not, so it contributes a horizontal edge to $\partial S$; a partial column contributes a vertical one. Let $a$ and $b$ be the numbers of partial rows and columns.
+If some row is full and some row is empty, every column is partial, so $\abs{\partial S}\ge L$. If some row is full and no row is empty, then at most $\abs S/L\le L/2$ rows are full, so $a\ge L/2$. The same two cases apply to columns. In the remaining case no row and no column is full, so the rows and columns that meet $S$ are partial, $\abs S\le ab\le((a+b)/2)^2$, and $\abs{\partial S}\ge a+b\ge2\sqrt{\abs S}$.
+\end{proof}
+
+\begin{lemma}[mixed squares in the grid]\label{lem:grid-mixed}
+Let $L\ge2$. Colour the edges of $G_L$ with two colours so that each colour class has at least $M/3$ edges. Then at least $L/32$ unit squares contain edges of both colours, and some $\lceil L/512\rceil$ of them are pairwise vertex-disjoint.
+\end{lemma}
+
+\begin{proof}
+Let $Z$ be the set of vertices of mixed unit squares and $t$ their number, so $\abs Z\le4t$. As in Lemma~\ref{lem:mixed}, each component of $G_L-Z$ has all its incident edges of one colour. We show $\abs Z\ge L/8$, which gives $t\ge L/32$. Suppose $\abs Z<L/8$. Then $\abs Z<N/4$. If every component of $G_L-Z$ had at most $N/2$ vertices, the argument of Lemma~\ref{lem:mixed} gives a union $U$ of components with $N/4\le\abs U\le N/2$ and $\abs{\partial U}\le4\abs Z<L/2$. Lemma~\ref{lem:grid-iso} gives $\abs{\partial U}\ge\min\{2\sqrt{N/4},L/2\}=L/2$, a contradiction. So there is a component $K$ with $\abs K>N/2$. Let $U_1,U_2,\dots$ be the other components. Each has fewer than $N/2$ vertices, the sets $\partial U_i$ are disjoint, and all their edges end in $Z$, so $\sum_i\abs{\partial U_i}\le4\abs Z<L/2$. By Lemma~\ref{lem:grid-iso}, $\abs{U_i}\le\abs{\partial U_i}^2/4$, hence $\sum_i\abs{U_i}\le(\sum_i\abs{\partial U_i})^2/4\le4\abs Z^2$. Every edge of the colour not used at $K$ lies inside $V\setminus K$, which has at most $\abs Z+4\abs Z^2$ vertices, so there are at most $2\abs Z+8\abs Z^2<L/4+L^2/8$ such edges. But there are at least $M/3=2L(L-1)/3$, and $L/4+L^2/8\le2L(L-1)/3$ for $L\ge2$. This is a contradiction. The packing step is as in Lemma~\ref{lem:mixed} with $\ell\kappa=16$.
+\end{proof}

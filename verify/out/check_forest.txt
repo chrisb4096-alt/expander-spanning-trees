@@ -1,0 +1,9 @@
+C3: N=3 M=3 trees=3 forests=7 short cycles=1; tree bound: 3 conditional inequalities, min ratio 4/3; forest bound: 3 conditional inequalities, min ratio 9/7
+K4: N=4 M=6 trees=16 forests=38 short cycles=7; tree bound: 24 conditional inequalities, min ratio 27/16; forest bound: 24 conditional inequalities, min ratio 32/19
+prism_C3: N=6 M=9 trees=75 forests=314 short cycles=5; tree bound: 66 conditional inequalities, min ratio 27/16; forest bound: 66 conditional inequalities, min ratio 32/19
+prism_C4 (cube): N=8 M=12 trees=384 forests=2656 short cycles=6; tree bound: 360 conditional inequalities, min ratio 12/5; forest bound: 360 conditional inequalities, min ratio 160/67
+prism_C5: N=10 M=15 trees=1805 forests=21162 short cycles=5; tree bound: 1600 conditional inequalities, min ratio 12/5; forest bound: 2240 conditional inequalities, min ratio 160/67
+prism_K4: N=8 M=16 trees=3456 forests=14381 short cycles=20; tree bound: 2928 conditional inequalities, min ratio 48/25; forest bound: 3096 conditional inequalities, min ratio 175/93
+C7_square: N=7 M=14 trees=1183 forests=4019 short cycles=21; tree bound: 812 conditional inequalities, min ratio 48/25; forest bound: 812 conditional inequalities, min ratio 175/93
+two_triangles_bridge: N=6 M=7 trees=9 forests=98 short cycles=2; tree bound: 18 conditional inequalities, min ratio 4/3; forest bound: 42 conditional inequalities, min ratio 9/7
+triangle: 7 forests; Pr[F ∩ C = C - e] = 1/7 < 1/4 (tree bound), >= 1/9 (forest bound (D+1)^-(l-1))

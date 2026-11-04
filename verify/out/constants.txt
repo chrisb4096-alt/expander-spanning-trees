@@ -1,0 +1,4 @@
+cubic prism: t/N >= h'/192, r/N >= h'/2304, c >= h'/9437184 for h' in {1/100,...,1}
+h_H = 1/5: t/N >= 1/960 (other term 1/732), r/N >= 1/11520, c >= 1/(4096*11520) = 2.119276e-08 > 2e-8
+  per-cycle factor sqrt(1-1/4096) = 0.9998779222; sharper sqrt((1+sqrt(1-4/4096))/2) = 0.9998778924; -log(1-1/4096)/11520 = 2.119535e-08
+general closed forms for prisms and squares hold at 77 (Delta, h_H) pairs, Delta = 2..12

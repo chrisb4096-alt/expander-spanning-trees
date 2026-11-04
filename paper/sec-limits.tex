@@ -1,0 +1,67 @@
+\section{Limits of the method and two variants}\label{sec:limits}
+
+\subsection{Why some cycle condition is needed}
+
+All our bounds go through $\max_{A|B}\beta(P;A|B)$ over balanced splits. Pendant edges make this quantity useless.
+
+\begin{proposition}[pendant edges]\label{prop:pendant}
+Let $H$ be a connected graph with $v\ge2$ vertices, at most $2v$ edges, maximum degree $\Delta$ and $h(H)\ge h_0>0$. Let $G$ be obtained by attaching a new vertex of degree one to every vertex of $H$. Then $G$ has maximum degree $\Delta+1$ and $h(G)\ge\min(1,h_0)/3$. Let $A$ be the set of pendant edges and $B=E(H)$. Then $A|B$ is balanced and $\beta(\UST(G);A|B)=1$.
+\end{proposition}
+
+\begin{proof}
+Every spanning tree contains every pendant edge, so $\UST(G)$ is the product of the point mass on $x_A=\one$ and the law of $\UST(H)$ on $x_B$, and $\beta=1$. The split is balanced because $\abs A=v$, $\abs B=\abs{E(H)}$, $v-1\le\abs{E(H)}\le2v$ and $v\ge2$. For the expansion, let $S$ consist of $a$ vertices of $H$ and $b$ pendant vertices, with $0<a+b\le v$. A pendant edge is in $\partial S$ when exactly one of its endpoints is in $S$; there are at least $\abs{a-b}$ such edges. If $a\le v/2$, then $\abs{\partial S}\ge h_0a+\abs{a-b}$, which is at least $h_0(a+b)/3$ if $b\le2a$ and at least $b-a\ge(a+b)/3$ if $b>2a$. If $a>v/2$, then $v-a\ge b$, so $\abs{\partial S}\ge h_0(v-a)+(a-b)\ge h_0b+(a-b)$. This is at least $(a+b)/3$ if $a\ge2b$ and at least $h_0(a+b)/3$ if $a<2b$.
+\end{proof}
+
+For a cubic expander $H$ this gives a bounded-degree expander $G$ on which the method proves nothing. This does not show that $\UST(G)$ has small circuits. It shows that a lower bound for $G$ is at least as hard as one for $H$: a circuit for $\UST(H)$, multiplied by the indicator leaves $[x_e=1]$ of the pendant edges, is a circuit for $\UST(G)$ with $O(v)$ extra size and the same total-variation error. If $H$ has large girth, the question for $H$ is open (Section~\ref{sec:open}). The linking condition of Definition~\ref{def:linked} excludes bridges (Lemma~\ref{lem:linked-basic}), and more generally forces every edge onto a short cycle.
+
+\subsection{Frozen regions and large girth}
+
+Lemma~\ref{lem:local} conditions on everything outside a region, uniformly over the outside configuration. The next observation shows that the region must contain a cycle.
+
+\begin{proposition}[acyclic regions freeze]\label{prop:frozen}
+Let $I\subseteq E$ be acyclic, and let $T_0$ be a spanning tree with $I\subseteq T_0$. Then, conditionally on $T\setminus I=T_0\setminus I$, we have $T=T_0$ almost surely.
+\end{proposition}
+
+\begin{proof}
+A completion $J\subseteq I$ must satisfy $\abs J=N-1-\abs{T_0\setminus I}=\abs I$, so $J=I$.
+\end{proof}
+
+So a bound like Lemma~\ref{lem:local}, which must hold for every outside configuration, needs a region that contains a cycle. In a graph of girth $g$, any such region spans at least $g$ vertices, and at most $N/g$ vertex-disjoint cycles exist. With the regions $I(C)$ used here, Theorem~\ref{thm:cut} gives an exponent of at most about $(N/g)D^{-2(g-1)}$ in a $D$-regular graph. This tends to zero once $g\ge(\frac12+\eta)\log_DN$ for a fixed $\eta>0$, which is the regime of the best explicit expanders~\cite{LPS88}. Random regular graphs have very few short cycles, so the method gives nothing there either. This is a limit of our local lemma, not a lower bound on circuit size. A different choice of regions, or bounds that hold only for typical outside configurations, might still work.
+
+\subsection{Unbounded degree}
+
+On the complete graph $K_n$, Lemma~\ref{lem:local} gives $p=(n-1)^{-2}$ for triangles, and at most $n/3$ vertex-disjoint triangles exist. The resulting exponent $rp^2$ is $O(n^{-3})$, and longer cycles are worse, so the method as it stands gives nothing. The known exponential lower bounds for $\UST(K_n)$~\cite{MartensMedabalimi14,ZhangHoltzenVdB20} are for exact representation; see Section~\ref{sec:related}.
+
+\subsection{What is and is not used}
+
+The proof uses three properties of the uniform spanning tree: a forbidden local pattern (no cycle), the spatial Markov property in the form of Lemma~\ref{lem:contract}, and the fact that, given everything outside the edges incident to a short cycle, each path obtained by deleting one edge of the cycle keeps probability bounded below. Nothing determinantal is used; the determinant appears only in the upper bound. The transfer-current theorem of Burton and Pemantle~\cite{BurtonPemantle93}, which makes the edge set of the uniform spanning tree a determinantal process, plays no role.
+
+We do not know how to run this argument for uniform perfect matchings. There, conditioning on the outside of a small region can force the matching inside it. For example, in the grid, if the outside leaves unmatched exactly two vertices next to a unit square, and these are adjacent to two neighbouring corners of the square, the completion is unique. The dimer paper~\cite{Blaschke26Dimers} used a global argument with kernel estimates instead. Its bound $e^{\Theta(\sqrt n)}$ for $n$ edges is $e^{\Theta(L)}$ on the $L\times L$ grid, the same order as Corollary~\ref{cor:grid}.
+
+\begin{remark}[weighted spanning trees]\label{rem:weighted}
+Let $P_w(T)\propto\prod_{e\in T}w_e$ with $w_e\in[w_{\min},w_{\max}]$, $w_{\min}>0$. In the proof of Lemma~\ref{lem:local}, the numerator is at least $w_{\min}^{\abs C-1}\prod_jW_j$, where $W_j$ is the total weight of the edges at $K_j$, and the parent-edge encoding bounds the denominator by $\prod_jW_j\prod_{y\ne x_0}\sum_{e\ni y}w_e$. So the local bound becomes $(w_{\min}/(Dw_{\max}))^{\abs C-1}$, and Theorems~\ref{thm:cut} and~\ref{thm:general} hold with this $p$.
+\end{remark}
+
+\subsection{Uniform spanning forests}
+
+Let $\USF(G)$ be the uniform distribution over \emph{all} spanning forests of $G$, that is, all acyclic subsets of $E$, with any number of components. (We do not mean rooted forests, forests with a prescribed number of components, or the uniform spanning forest measures of infinite graphs.) It also forbids cycles, but Lemma~\ref{lem:local} does not carry over unchanged. On a triangle there are seven forests, so for each edge $e$ the probability that the forest is $E(C)\setminus\{e\}$ is $1/7$, below the value $1/4=D^{-(\abs C-1)}$ of Lemma~\ref{lem:local}. A different local bound holds.
+
+\begin{proposition}[forest local bound]\label{prop:forest}
+Let $\Phi\sim\USF(G)$, let $C$ be a cycle, $e\in E(C)$ and $x_0\in V(C)$, and let $F\subseteq E\setminus I(C)$ be a forest. Then
+\[
+  \Pr\bigl[\,\Phi\cap E(C)=E(C)\setminus\{e\}\ \bigm|\ \Phi\setminus I(C)=F\,\bigr]\ \ge\ \prod_{y\in V(C)\setminus\{x_0\}}\frac1{\deg(y)+1}\ \ge\ (D+1)^{-(\abs C-1)} .
+\]
+Consequently Theorem~\ref{thm:cut} holds for $\USF(G)$ with $p_k$ replaced by $\max_{x_0}\prod_{y\ne x_0}(\deg(y)+1)^{-1}$, and Theorem~\ref{thm:general} holds for $\USF(G)$ with $p=(D+1)^{-(\ell-1)}$.
+\end{proposition}
+
+\begin{proof}
+Define $K_1,\dots,K_s$ and $\mathcal M_F$ as in Lemma~\ref{lem:contract}, and let $d_j\ge0$ be the degree of $K_j$ in $\mathcal M_F$. For $J\subseteq I(C)$, the set $F\cup J$ is acyclic if and only if $J$ is acyclic in $\mathcal M_F$. Indeed, a cycle of $F\cup J$ must use edges of $J$, since $F$ is acyclic, and contracting the components of $F$ maps it to a closed trail in $\mathcal M_F$ that uses each of its $J$-edges once, which contains a cycle. Conversely, a cycle of $\mathcal M_F$ lifts to a cycle of $F\cup J$ by joining consecutive edges through the connected components of $F$. Since $\Phi$ is uniform, the conditional law of $\Phi\cap I(C)$ is uniform over the forests of $\mathcal M_F$.
+
+\emph{Numerator.} Take the path $E(C)\setminus\{e\}$, and for each $K_j$ either no edge or one of its $d_j$ edges. Each such set is a forest, so there are at least $\prod_j(d_j+1)$ forests with $J\cap E(C)=E(C)\setminus\{e\}$.
+
+\emph{Denominator.} Root each component of a forest $J$ of $\mathcal M_F$ at $x_0$ if it contains $x_0$, and at any fixed node otherwise. Record for each node other than $x_0$ its parent edge, or the symbol ``root''. The forest $J$ is the set of recorded edges, so the encoding is injective. The node $K_j$ has at most $d_j+1$ possible records and $y\in V(C)\setminus\{x_0\}$ has at most $\deg(y)+1$. So there are at most $\prod_j(d_j+1)\prod_{y\ne x_0}(\deg(y)+1)$ forests.
+
+The rest of the proof of Theorem~\ref{thm:cut} uses only that $\Phi$ contains no cycle, that the past is a function of $\Phi\setminus I(C_k)$, and the local bound.
+\end{proof}
+
+This bound has been checked exactly on small graphs (Appendix~\ref{app:checks}). It gives a $2^{\Omega(N)}$ lower bound for approximating $\USF(G)$ on prisms and squares of expanders, but this is not a separation. Counting spanning forests is \#P-hard for general graphs~\cite{JVW90}, and we know of no polynomial-size generating circuit for $\USF$ on these families.

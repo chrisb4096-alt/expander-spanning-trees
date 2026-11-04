@@ -1,0 +1,1 @@
+6000 random chains (modes {0: 1485, 1: 1536, 2: 1488, 3: 1491}): ||sqrt mu|| <= prod gamma_k <= gamma(p)^r <= (1-p^2)^(r/2) held; min slack -5.551e-16

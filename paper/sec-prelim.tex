@@ -1,0 +1,39 @@
+\section{Preliminaries}\label{sec:prelim}
+
+\paragraph{Graphs.} All graphs are finite. $G=(V,E)$ is connected and simple unless we say otherwise, with $N:=\abs V\ge2$, $M:=\abs E$ and maximum degree $D$. For $S\subseteq V$, $\partial S$ is the set of edges with exactly one endpoint in $S$. The edge expansion is
+\[
+  h(G):=\min\Bigl\{\frac{\abs{\partial S}}{\abs S}:\ S\subseteq V,\ 0<\abs S\le N/2\Bigr\}.
+\]
+Taking $\abs S=1$ shows $h(G)\le D$. A cycle $C$ is a simple cycle with vertex set $V(C)$ and edge set $E(C)$, and $\abs C:=\abs{E(C)}=\abs{V(C)}\ge3$. Two cycles are vertex-disjoint if their vertex sets are disjoint. For a cycle $C$, let
+\[
+  I(C):=\{e\in E:\ e\text{ has an endpoint in }V(C)\}
+\]
+be the set of edges incident to $C$. It contains $E(C)$ and every chord of $C$.
+
+\paragraph{Spanning trees.} Let $\cT(G)$ be the set of spanning trees and $\tau(G):=\abs{\cT(G)}$. We identify an edge set with its indicator vector in $\{0,1\}^E$. The uniform spanning tree $\UST(G)$ is the uniform distribution on $\cT(G)$, viewed as a distribution on $\{0,1\}^E$. We write $T$ for a random tree with this law.
+
+\paragraph{Splits and products.} An \emph{edge split} is a partition $E=A\sqcup B$. It is \emph{balanced} if $\abs A\ge M/3$ and $\abs B\ge M/3$. We write $x=(x_A,x_B)$ for $x\in\{0,1\}^E$. A \emph{product distribution across $A|B$} is $q=q^A\otimes q^B$, where $q^A$ and $q^B$ are probability distributions on $\{0,1\}^A$ and $\{0,1\}^B$. The product may put mass on non-trees.
+
+\paragraph{Distances.} For distributions $P,Q$ on a finite set, $\TV(P,Q)=\frac12\sum_x\abs{P(x)-Q(x)}$, so $1-\TV(P,Q)=\sum_x\min(P(x),Q(x))$. The Bhattacharyya coefficient is $\BC(P,Q)=\sum_x\sqrt{P(x)Q(x)}$. In the normalization of Polyanskiy and Wu, $H^2(P,Q)=2-2\BC(P,Q)$, and the R\'enyi divergence of order $\frac12$ is $D_{1/2}(P\|Q)=-2\log\BC(P,Q)$. The central quantity of this paper is
+\[
+  \beta(P;A|B):=\max\bigl\{\BC(P,q^A\otimes q^B)\bigr\},
+\]
+the maximum over all product distributions across $A|B$.
+
+\paragraph{Matrices.} For a nonnegative function $\mu$ on a product $\mathcal X\times\mathcal Y$ of finite sets, $\sqrt\mu$ denotes the $\mathcal X\times\mathcal Y$ matrix with entries $\sqrt{\mu(x,y)}$ (entrywise square root). $\opnorm W$ is the largest singular value of a matrix $W$.
+
+\subsection{Circuit models}\label{sec:models}
+
+We use the definitions of~\cite[Sec.~2.1]{Blaschke26Dimers}, which we repeat.
+
+\paragraph{Probabilistic circuits.} A \emph{probabilistic circuit} (PC) over $x\in\{0,1\}^M$ is a directed acyclic graph with one root and three kinds of node.
+\begin{itemize}
+\item \emph{Leaves} are nonnegative functions of at most $a$ of the variables. The \emph{arity} is $a$. Indicator leaves $[x_e=0]$ and $[x_e=1]$ are the usual choice.
+\item \emph{Sum nodes} compute a weighted sum of their children with nonnegative weights.
+\item \emph{Product nodes} multiply their children.
+\end{itemize}
+The \emph{scope} $X_v$ of a node $v$ is the set of variables appearing in leaves below $v$, and $v$ computes a function $f_v$ of $x_{X_v}$. The circuit computes $f_C:=f_{\mathrm{root}}\ge0$ and represents $Q_C:=f_C/\sum_xf_C(x)$. It is \emph{decomposable} if the children of each product node have pairwise disjoint scopes, and \emph{smooth} if the children of each sum node have equal scopes. It is \emph{deterministic} if the children of each sum node have pairwise disjoint supports. We never assume determinism.
+
+\paragraph{Size convention.} The size $\abs C$ is the number of nodes plus the number of wires. This is the convention under which the decomposition lemma (Lemma~\ref{lem:decomp}) gives at most $\abs C$ terms. For circuits of bounded fan-in, it differs from the node count by a constant factor. Remark~\ref{rem:nodes} explains how to obtain the same bound with nodes only.
+
+\paragraph{Arithmetic circuits.} A \emph{monotone arithmetic circuit} has binary $+$ and $\times$ gates, inputs $z_e$ ($e\in E$) and nonnegative real constants. It computes a formal polynomial, in which $z_e^2\ne z_e$. Its size is its number of nodes. The \emph{generating polynomial} of a distribution $Q$ on $\{0,1\}^E$ is $\sum_xQ(x)z^x$, where $z^x:=\prod_{e:x_e=1}z_e$. A \emph{probabilistic generating circuit}~\cite{ZhangJubaVdB21} is an arithmetic circuit, with subtraction allowed, that computes it.

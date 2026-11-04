@@ -1,0 +1,73 @@
+\section{Introduction}\label{sec:intro}
+
+Probabilistic circuits (PCs) represent a distribution on $\{0,1\}^M$ by an arithmetic circuit with nonnegative weights. Smoothness and decomposability are the structural conditions under which marginals can be computed in time linear in the circuit size~\cite{ChoiVergariVdB20}. Which tractable distributions fall outside this class? We study the uniform spanning tree. By Kirchhoff's matrix-tree theorem~\cite{Kirchhoff1847} its generating polynomial is a determinant, so it has a polynomial-size generating circuit with subtraction, in the sense of Zhang, Juba and Van den Broeck~\cite{ZhangJubaVdB21}. Exact representation of uniform spanning trees of the complete graph by decomposable circuits needs exponential size~\cite{MartensMedabalimi14,ZhangHoltzenVdB20}. Those results concern exact representation or vanishing error on the complete graph, where the number of variables is quadratic in the number of vertices.
+
+We prove a lower bound at constant total-variation error for bounded-degree graphs, without assuming determinism.
+
+\subsection{Main result}
+
+For a graph $H$, the edge expansion is $h(H)=\min\{\abs{\partial S}/\abs S:\ 0<\abs S\le\abs{V(H)}/2\}$, where $\partial S$ is the set of edges with exactly one endpoint in $S$. The prism $H\square K_2$ consists of two copies of $H$ joined by a perfect matching between corresponding vertices. The square $H^2$ has the vertices of $H$, with an edge between any two vertices at distance one or two in $H$. Circuit terms are defined in Section~\ref{sec:models}. The size of a circuit is the number of nodes plus the number of wires.
+
+\begin{theorem}[main theorem]\label{thm:main}
+Fix an integer $\Delta\ge2$ and a real $h_0>0$. Let $H$ be a connected simple graph with at least three vertices, maximum degree at most $\Delta$ and edge expansion $h(H)\ge h_0$. Let $G$ be either $H\square K_2$ or $H^2$, with $N$ vertices and $M$ edges, and let $P$ be the uniform distribution on the spanning trees of $G$, viewed as a distribution on $\{0,1\}^{E(G)}$. Let $C$ be a smooth decomposable probabilistic circuit with nonnegative weights over the $M$ edge variables, whose leaves have arity at most $2M/3$, and let $Q_C$ be its normalized distribution. If $\TV(P,Q_C)\le\eps<1$, then
+\[
+  \abs C\ \ge\ (1-\eps)^2\,e^{cN},
+\]
+where
+\[
+  c=\frac{\min(1,h_0)}{24\,\Delta(\Delta+1)^7(3\Delta+4)}\quad\text{for }G=H\square K_2,\qquad
+  c=\frac{8h_0}{243\,\Delta^{11}(\Delta-1)(h_0+\Delta^2)}\quad\text{for }G=H^2 .
+\]
+\end{theorem}
+
+The leaf-arity condition cannot be dropped: a single leaf of arity $M$ can store $P$. The bound $2M/3$ comes from the circuit reduction (Lemma~\ref{lem:decomp}).
+
+\begin{corollary}[separation]\label{cor:separation}
+Fix $\Delta$, $h_0>0$, $\eps<1$, and a family of graphs $H$ as in Theorem~\ref{thm:main}, and let $G$ be their prisms or squares.
+\begin{enumerate}[label=(\alph*)]
+\item Every nonnegative smooth decomposable PC with leaves of arity at most $2M/3$ that approximates $P$ within total variation $\eps$ has size $2^{\Omega(N)}=2^{\Omega(M)}$. Some such circuit has size $2^{O(M)}$, so $2^{\Theta(M)}$ is the optimal size.
+\item The generating polynomial $\sum_xP(x)\prod_{e:x_e=1}z_e$ has an arithmetic circuit with subtraction of size polynomial in $N$, and every marginal probability $P(x_S=a)$ can be computed in polynomial time (Proposition~\ref{prop:upper}).
+\end{enumerate}
+\end{corollary}
+
+Explicit families of constant-degree graphs with edge expansion bounded away from zero are classical; see the survey of Hoory, Linial and Wigderson~\cite{HLW06}, and the Ramanujan graphs of Lubotzky, Phillips and Sarnak~\cite{LPS88}. Their prisms and squares are explicit sparse families to which Theorem~\ref{thm:main} applies.
+
+Theorem~\ref{thm:main} is a special case of Theorem~\ref{thm:general}, which applies to every bounded-degree expander whose vertex neighbourhoods are tied together by short cycles (Definition~\ref{def:linked}). The same theorem gives $e^{\Omega(L)}$ for the $L\times L$ grid (Corollary~\ref{cor:grid}). Some cycle condition is necessary for an argument of this type. If a constant fraction of the edges are pendant edges, some balanced split has a product distribution with Bhattacharyya coefficient one (Proposition~\ref{prop:pendant}).
+
+The constants are tiny. For a cubic $H$ with $h(H)\ge1/5$, the prism gives $c\ge2\cdot10^{-8}$ (Example~\ref{ex:cubic}). In exact computations on small graphs the bounds we prove are far from tight (Appendix~\ref{app:checks}). The result is qualitative: the exponent is linear in the number of variables.
+
+We also record exact-support consequences (Corollary~\ref{cor:support}). Every nonnegative smooth decomposable PC with the same leaf-arity condition, and every monotone arithmetic circuit, whose support is exactly the set of spanning trees of $G$, with arbitrary positive values on that set, has size $e^{\Omega(N)}$.
+
+\subsection{What is known and what is new}\label{sec:intro-priority}
+
+The ingredients of the proof are known, and we credit them where they are used.
+\begin{itemize}
+\item For a joint distribution $\mu$ of $(X,Y)$, the largest Bhattacharyya coefficient between $\mu$ and a product distribution equals the top singular value of the entrywise square root of $\mu$. This is Lemma~6 of Lapidoth and Pfister~\cite{LapidothPfister19}, stated for their order-$\frac12$ dependence measure $J_{1/2}$.
+\item The adaptive chain rule we use (Lemma~\ref{lem:chain}) is a case of Exercise~I.42(b) in Polyanskiy and Wu~\cite{PolyanskiyWu25}, combined with the previous item. For independent pairs it is the additivity of $J_{1/2}$~\cite[Lemma~12]{LapidothPfister19}. Hellinger distance and its product structure are standard tools for communication lower bounds~\cite{BJKS04,Jayram09}.
+\item The reduction from circuits to products across balanced edge splits is the balanced decomposition and the first step of the overlap lemma from our earlier paper on dimers~\cite[Lemmas~7.1 and~7.2]{Blaschke26Dimers}. The decomposition itself is the standard balancing argument for syntactically multilinear circuits~\cite{RazYehudayoff08}, also stated for sum-product networks by Martens and Medabalimi~\cite[Thm.~38]{MartensMedabalimi14}.
+\end{itemize}
+Constant-error lower bounds against nonnegative decomposable circuits are also not new in general. Leland and Choi~\cite{LelandChoi25} prove one for \emph{deterministic} circuits. A generic $\exp(\Omega(n))$ separation from a random linear code, whose inference is easy by Gaussian elimination, follows from the rank bounds of de Colnet and Mengel~\cite{DeColnetMengel20}, as explained in~\cite[Sec.~10.4]{Blaschke26Dimers}. The dimer paper~\cite{Blaschke26Dimers} proves an $\exp(\Theta(\sqrt n))$ bound for the uniform domino tiling of the square grid. That paper also lists the robust spanning-tree question for expanders as open~\cite[Sec.~11, problem~5]{Blaschke26Dimers}.
+
+We believe the following are new.
+\begin{enumerate}[label=(\roman*)]
+\item The constant-error $2^{\Omega(N)}$ lower bound against nonnegative smooth decomposable PCs, without determinism, for uniform spanning trees of explicit sparse bounded-degree families. To our knowledge, no constant-error exponential lower bound against nondeterministic decomposable PCs was known for uniform spanning trees of any family, and none for a distribution of this kind whose inference reduces to determinants.
+\item The local cycle-bit reduction: for spanning trees, two indicator bits per crossing cycle, together with the spatial Markov property at the edges incident to the cycle, give the conditional non-degeneracy that the chain rule needs (Lemma~\ref{lem:local} and Theorem~\ref{thm:cut}).
+\end{enumerate}
+Our literature search was targeted, not exhaustive. The closest results we found are discussed in Section~\ref{sec:related}. In particular, Chattopadhyay, Datta, Ghosal and Mukhopadhyay~\cite{CDGM22} prove exact $2^{\Omega(n)}$ monotone lower bounds for directed spanning-tree polynomials of expanders, and M\'esz\'aros and Peled~\cite{MeszarosPeled26} prove that the uniform spanning tree of a graph with large minimum degree is close to a product-like process in expected edit distance. Neither statement concerns total variation for circuits; Section~\ref{sec:related} explains why neither contradicts nor implies ours.
+
+\subsection{Proof outline}\label{sec:outline}
+
+Fix a split $E=A\sqcup B$ of the edges. For a product distribution $q=q^A\otimes q^B$ write $\BC(P,q)=\sum_x\sqrt{P(x)q(x)}$, and let $\beta(P;A|B)$ be the largest value over all products. The circuit reduction (Section~\ref{sec:circuits}) gives
+\[
+  \abs C\ \ge\ (1-\eps)^2\Big/\max_{A|B\ \text{balanced}}\beta(P;A|B)^2 .
+\]
+So it suffices to show $\beta\le e^{-cN/2}$ for every split in which both sides have at least $M/3$ edges. The argument has four steps.
+\begin{enumerate}
+\item \emph{Cycle bits.} Take vertex-disjoint cycles $C_1,\dots,C_r$ that each contain edges of both $A$ and $B$. Put $u_i=\one[E(C_i)\cap A\subseteq T]$ and $v_i=\one[E(C_i)\cap B\subseteq T]$. The bits $u$ depend only on $T\cap A$ and the bits $v$ only on $T\cap B$. A tree contains no cycle, so $u_i=v_i=1$ never happens. Data processing gives $\beta(P;A|B)\le\opnorm{\sqrt\mu}$, where $\mu$ is the joint law of $(u,v)$ (Lemma~\ref{lem:dpi}).
+\item \emph{Chain rule.} If, given every possible value of the earlier pairs, the pair $(u_i,v_i)$ has probability at least $p$ of being $(0,1)$ and at least $p$ of being $(1,0)$, then $\opnorm{\sqrt\mu}\le(1-p^2)^{r/2}$ (Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two}). No independence between cycles is needed.
+\item \emph{Local completion.} Condition on the tree outside the edges incident to $C_i$. Removing any single prescribed edge from $C_i$ still leaves probability at least $D^{-(\abs{C_i}-1)}$, where $D$ is the maximum degree (Lemma~\ref{lem:local}). The earlier bits are functions of the outside, so the bound survives conditioning on them.
+\item \emph{Geometry.} In the prism and the square of an expander, every balanced split crosses $\Omega(N)$ vertex-disjoint short cycles (Lemma~\ref{lem:mixed}).
+\end{enumerate}
+Only step~3 uses spanning trees. The determinant enters only on the upper-bound side.
+
+\paragraph{Organization.} Sections~\ref{sec:prelim} and~\ref{sec:tools} give notation, circuit models and the known tools. Sections~\ref{sec:trees} and~\ref{sec:geometry} prove the local and geometric bounds. Section~\ref{sec:main} proves the main results, with constants, the upper bound and exact-support consequences. Section~\ref{sec:limits} discusses limitations and variants; Sections~\ref{sec:related} and~\ref{sec:open} cover related work and open questions. Appendix~\ref{app:checks} describes the machine checks.

@@ -1,0 +1,138 @@
+\section{Known tools}\label{sec:tools}
+
+This section collects the tools the proof uses. None of them is new. We give short proofs where this keeps the paper self-contained, and say where each statement comes from.
+
+\subsection{Affinity with products is a matrix norm}
+
+Let $\mu$ be a joint distribution of $(X,Y)$ on a finite product $\mathcal X\times\mathcal Y$. Write $\beta(\mu;X|Y)$ for the largest value of $\BC(\mu,a\otimes b)$ over probability distributions $a$ on $\mathcal X$ and $b$ on $\mathcal Y$. For a distribution $P$ on $\{0,1\}^E$ and a split $A|B$ we view $P$ as a joint law of $(x_A,x_B)$, so that $\beta(P;A|B)$ is the quantity defined in Section~\ref{sec:prelim}.
+
+\begin{lemma}[Lapidoth and Pfister~{\cite[Lemma~6]{LapidothPfister19}}]\label{lem:LP}
+$\beta(\mu;X|Y)=\opnorm{\sqrt\mu}$, where $\sqrt\mu$ is the $\mathcal X\times\mathcal Y$ matrix with entries $\sqrt{\mu(x,y)}$.
+\end{lemma}
+
+\begin{proof}
+For product $a\otimes b$, put $f=\sqrt a$ and $g=\sqrt b$. These are unit vectors, and $\BC(\mu,a\otimes b)=f^{\top}\sqrt\mu\,g\le\opnorm{\sqrt\mu}$. Conversely, $\opnorm{\sqrt\mu}=\max f^{\top}\sqrt\mu\,g$ over unit vectors, and since $\sqrt\mu$ has nonnegative entries the maximum is attained at nonnegative $f,g$. Then $a=f^2$ and $b=g^2$ are probability distributions with $\BC(\mu,a\otimes b)=\opnorm{\sqrt\mu}$.
+\end{proof}
+
+In the notation of~\cite{LapidothPfister19}, $J_{1/2}(X;Y)=-2\log\opnorm{\sqrt\mu}$ is the R\'enyi divergence of order $\frac12$ between $\mu$ and the closest product distribution. The rows and columns of $\sqrt\mu$ are indexed by the whole values of $X$ and $Y$. No independence between coordinates is assumed anywhere.
+
+\subsection{Data processing}
+
+\begin{lemma}[data processing]\label{lem:dpi}
+Let $\phi:\mathcal X\to\mathcal X'$ and $\psi:\mathcal Y\to\mathcal Y'$ be maps, and let $\mu'$ be the law of $(\phi(X),\psi(Y))$. Then $\beta(\mu;X|Y)\le\beta(\mu';\phi(X)|\psi(Y))=\opnorm{\sqrt{\mu'}}$.
+\end{lemma}
+
+\begin{proof}
+Let $a\otimes b$ be a product distribution, and let $a'$ and $b'$ be the laws of $\phi$ under $a$ and of $\psi$ under $b$. The fibre of $(x',y')$ is $\phi^{-1}(x')\times\psi^{-1}(y')$, and $\sum a(x)b(y)$ over this fibre is $a'(x')b'(y')$. By the Cauchy--Schwarz inequality on each fibre,
+\[
+  \BC(\mu,a\otimes b)=\sum_{x',y'}\ \sum_{\substack{x\in\phi^{-1}(x')\\ y\in\psi^{-1}(y')}}\sqrt{\mu(x,y)}\sqrt{a(x)b(y)}
+  \le\sum_{x',y'}\sqrt{\mu'(x',y')\,a'(x')b'(y')}=\BC(\mu',a'\otimes b').
+\]
+The right side is at most $\beta(\mu')$, and Lemma~\ref{lem:LP} identifies $\beta(\mu')$ with the norm.
+\end{proof}
+
+This is the data-processing inequality for $J_{1/2}$, applied on both sides~\cite[Lemma~4]{LapidothPfister19}. It is the step that lets us discard almost all of the tree. Coarsening can only increase the affinity with products, so it is the right direction for an upper bound on $\beta$. The two maps must act separately on the two sides; this is what keeps the image of a product distribution a product.
+
+\subsection{An adaptive chain rule}
+
+Let $(X_k,Y_k)_{k=1}^r$ be random variables with values in finite sets $\mathcal X_k\times\mathcal Y_k$ and joint law $\mu$. Put $X=(X_1,\dots,X_r)$ and $Y=(Y_1,\dots,Y_r)$, and view $\sqrt\mu$ as a matrix with rows indexed by values of $X$ and columns by values of $Y$. For each $k$ and each value $\pi$ of the joint past $(X_{<k},Y_{<k})$ that has positive probability, let $K_k(\cdot\,|\,\pi)$ be the conditional law of $(X_k,Y_k)$, viewed as an $\mathcal X_k\times\mathcal Y_k$ matrix, and put
+\[
+  \gamma_k:=\max_\pi\ \opnorm{\sqrt{K_k(\cdot\,|\,\pi)}} .
+\]
+
+\begin{lemma}[adaptive chain rule]\label{lem:chain}
+$\opnorm{\sqrt\mu}\le\gamma_1\gamma_2\cdots\gamma_r$.
+\end{lemma}
+
+\begin{proof}
+Induction on $r$. For $r=1$ the past is empty and $\gamma_1=\opnorm{\sqrt\mu}$. Let $r\ge2$, write $x=(x',x_r)$ and $y=(y',y_r)$, and let $\mu'$ be the law of the first $r-1$ pairs. Then $\mu(x,y)=\mu'(x',y')K_r(x_r,y_r\,|\,x',y')$ when $\mu'(x',y')>0$, and $\mu(x,y)=0$ otherwise. Let $f,g$ be unit vectors. For each $(x',y')$ with $\mu'(x',y')>0$, apply the definition of $\gamma_r$ to the vectors $f(x',\cdot)$ and $g(y',\cdot)$:
+\begin{align*}
+  \sum_{x,y}\sqrt{\mu(x,y)}f(x)g(y)
+  &=\sum_{x',y'}\sqrt{\mu'(x',y')}\sum_{x_r,y_r}\sqrt{K_r(x_r,y_r\,|\,x',y')}\,f(x',x_r)\,g(y',y_r)\\
+  &\le\gamma_r\sum_{x',y'}\sqrt{\mu'(x',y')}\,F(x')\,G(y'),
+\end{align*}
+where $F(x')=\norm{f(x',\cdot)}_2$ and $G(y')=\norm{g(y',\cdot)}_2$. Since $\norm F_2=\norm f_2=1$ and $\norm G_2=1$, the right side is at most $\gamma_r\opnorm{\sqrt{\mu'}}$. The conditional laws of $\mu'$ are those of $\mu$ for $k<r$, so induction gives $\opnorm{\sqrt{\mu'}}\le\gamma_1\cdots\gamma_{r-1}$.
+\end{proof}
+
+The key point is that $F$ depends only on $x'$ and $G$ only on $y'$, even though the kernel $K_r$ depends on both. By Lemma~\ref{lem:LP}, Lemma~\ref{lem:chain} says $J_{1/2}(X;Y)\ge\sum_k\min_\pi J_{1/2}(X_k;Y_k\,|\,\pi)$, where the minimum is over joint pasts. This is a special case of a known chain rule. Polyanskiy and Wu~\cite[Exercise~I.42(b)]{PolyanskiyWu25} ask the reader to show that
+\[
+  \BC(P_{Z^n},Q_{Z^n})\le\prod_{i=1}^n\sup_{h}\BC\bigl(P_{Z_i|Z^{i-1}=h},\,Q_{Z_i|Z^{i-1}=h}\bigr)
+\]
+for any two joint laws (they write $1-\frac12H^2$ for $\BC$). Take $Z_i=(X_i,Y_i)$, $P=\mu$, and $Q=a\otimes b$ a product across $X|Y$. Each conditional $Q_{Z_i|Z^{i-1}=h}$ is then a product across $X_i|Y_i$, so each factor is at most $\gamma_i$ by Lemma~\ref{lem:LP}. Maximizing over $Q$ gives Lemma~\ref{lem:chain}. For independent pairs the lemma is the additivity of $J_{1/2}$~\cite[Lemma~12]{LapidothPfister19}, or the multiplicativity of operator norms under tensor products.
+
+\begin{remark}[what ``adaptive'' means]\label{rem:adaptive}
+In Lemma~\ref{lem:chain} the kernels may depend on the entire joint past of both coordinates. The coordinates themselves, and their order, are fixed in advance. In our application the cycles and their order are chosen before the tree is sampled. Choosing the next statistic as a function of both parties' earlier bits would not be covered: such a choice is not a function of one side alone, so Lemma~\ref{lem:dpi} would not apply.
+\end{remark}
+
+The conditional hypothesis cannot be replaced by a hypothesis on marginals. Let $(X_1,Y_1)$ be $(0,1)$ or $(1,0)$ with probability $\frac12$ each, and copy it to every later pair. Each pair alone has norm $1/\sqrt2$, but $\opnorm{\sqrt\mu}=1/\sqrt2$ for every $r$. Lemma~\ref{lem:chain} is consistent with this, since after the first pair the kernels are point masses and $\gamma_k=1$.
+
+\begin{lemma}[one forbidden cell]\label{lem:two-by-two}
+Let $K$ be a distribution on $\{0,1\}^2$ with $K(1,1)=0$, $K(0,1)\ge p$ and $K(1,0)\ge p$. Then
+\[
+  \opnorm{\sqrt K}^2=\frac{1+\sqrt{1-4K(0,1)K(1,0)}}2\le\frac{1+\sqrt{1-4p^2}}2\le1-p^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+Write $a=K(0,0)$, $b=K(0,1)$, $c=K(1,0)$. The singular values $\sigma_1\ge\sigma_2$ of $\sqrt K=\left(\begin{smallmatrix}\sqrt a&\sqrt b\\ \sqrt c&0\end{smallmatrix}\right)$ satisfy $\sigma_1^2+\sigma_2^2=a+b+c=1$ and $\sigma_1\sigma_2=\abs{\det\sqrt K}=\sqrt{bc}$. So $\sigma_1^2$ is the larger root of $s^2-s+bc=0$, which is the stated formula, and it decreases in $bc\ge p^2$. The last step is $\sqrt{1-x}\le1-x/2$.
+\end{proof}
+
+The middle bound is attained by independent copies of the kernel with $K(0,1)=K(1,0)=p$, so for kernels with one forbidden cell, Lemmas~\ref{lem:chain} and~\ref{lem:two-by-two} lose nothing.
+
+\subsection{From circuits to balanced products}\label{sec:circuits}
+
+The circuit reduction is taken from our dimer paper~\cite[Sec.~7.1--7.2]{Blaschke26Dimers}. Only its first, distribution-free part is needed here. The matching-profile part of that paper is specific to perfect matchings and plays no role.
+
+\begin{lemma}[overlap with sums of products; first step of {\cite[Lemma~7.1]{Blaschke26Dimers}}]\label{lem:overlap}
+Let $P$ be any distribution on $\{0,1\}^E$, and let
+\[
+  Q=\sum_{u=1}^kg_u(x_{A_u})\,h_u(x_{B_u}),
+\]
+where $g_u,h_u\ge0$, each $A_u\sqcup B_u=E$ is a balanced split (the splits may differ between terms), and $\sum_xQ(x)=1$. Then
+\[
+  1-\TV(P,Q)\le\sqrt k\ \max_{A|B\ \mathrm{balanced}}\beta(P;A|B).
+\]
+\end{lemma}
+
+\begin{proof}
+Drop zero terms and write $g_uh_u=\lambda_uq_u$, where $q_u$ is a product distribution across $A_u|B_u$, $\lambda_u\ge0$ and $\sum_u\lambda_u=1$. Pointwise, $\min(P,Q)\le\sqrt{PQ}$ and $\sqrt{\sum_u\lambda_uq_u}\le\sum_u\sqrt{\lambda_uq_u}$. Hence
+\[
+  1-\TV(P,Q)=\sum_x\min(P(x),Q(x))\le\sum_u\sqrt{\lambda_u}\,\BC(P,q_u)\le\Bigl(\sum_u\sqrt{\lambda_u}\Bigr)\max_u\beta(P;A_u|B_u),
+\]
+and $\sum_u\sqrt{\lambda_u}\le\sqrt k$ by the Cauchy--Schwarz inequality.
+\end{proof}
+
+Mass that $Q$ puts outside the support of $P$ is allowed and never helps. Different terms may use different splits, because the final bound is uniform over balanced splits. This is why determinism is not needed.
+
+\begin{lemma}[balanced decomposition~{\cite[Lemma~7.2]{Blaschke26Dimers}}]\label{lem:decomp}
+Let $C$ be a smooth decomposable PC with nonnegative weights over $x\in\{0,1\}^E$, $\abs E=M\ge2$, whose leaves have arity at most $2M/3$. Then, as functions on $\{0,1\}^E$,
+\[
+  f_C=\sum_{u\in\cU}f_u(x_{A_u})\,h_u(x_{E\setminus A_u}),
+\]
+where each $f_u,h_u\ge0$, each $A_u$ satisfies $M/3<\abs{A_u}\le2M/3$, and $\abs\cU\le\abs C$, with size counted as nodes plus wires.
+\end{lemma}
+
+\begin{proof}
+We repeat the proof of~\cite{Blaschke26Dimers} with $M$ in place of $n$. Let $X$ be the scope of the root. If $\abs X\le2M/3$, pick any $A\supseteq X$ with $M/3<\abs A\le2M/3$; then $f_C=f_C(x_A)\cdot1$ is one term. Otherwise, replace each product node of fan-in $d$ by a chain of $d-1$ binary products. This preserves decomposability and the computed functions, and the number of nodes becomes at most the original number of nodes plus wires, that is, at most $\abs C$. Let $\cU$ be the set of nodes $u$ with $\abs{X_u}\in(M/3,2M/3]$, and put $A_u:=X_u$. We claim that every node $v$ with $\abs{X_v}>2M/3$ satisfies
+\[
+  f_v=\sum_{u\in\cU}f_u\,h_{u,v},\qquad h_{u,v}\ge0\ \text{a function of }x_{X_v\setminus X_u},
+\]
+and argue by induction in topological order. No leaf has scope larger than $2M/3$. At a sum node, smoothness gives $X_c=X_v$ for every child $c$, so $f_v=\sum_cw_cf_c=\sum_uf_u\bigl(\sum_cw_ch_{u,c}\bigr)$. At a product node $v=c_1\times c_2$ with $\abs{X_{c_1}}\ge\abs{X_{c_2}}$ we have $\abs{X_{c_1}}>M/3$. If $\abs{X_{c_1}}\le2M/3$, then $c_1\in\cU$ and $f_v=f_{c_1}f_{c_2}$. Otherwise $f_v=\sum_uf_u\,(h_{u,c_1}f_{c_2})$, and $(X_{c_1}\setminus X_u)\sqcup X_{c_2}=X_v\setminus X_u$ by decomposability. Apply the claim at the root. A function of $x_{X\setminus X_u}$ is also a function of $x_{E\setminus X_u}$.
+\end{proof}
+
+This is the standard balancing argument for syntactically multilinear circuits~\cite{RazYehudayoff08}. Martens and Medabalimi state the same form with at most $s^2$ terms for decomposable sum-product networks of size $s$ with univariate leaves~\cite[Thm.~38]{MartensMedabalimi14}; using their version would halve the exponent in our bounds.
+
+\begin{remark}[counting nodes only]\label{rem:nodes}
+The prefactor $\abs\cU\le\abs C$ uses the convention that size counts nodes plus wires, because binarizing a product node of fan-in $d$ creates $d-2$ new nodes. If size counts nodes only, the same bound $\abs\cU\le\#\text{nodes}$ holds without binarizing. At a product node $v$ with $\abs{X_v}>2M/3$, at most one child is high (scope above $2M/3$) and a high child excludes a medium one, since scopes are disjoint and add up to at most $M$. If a child is high, expand it as above. If a child is medium, select it. If all children are low (scope at most $M/3$), add children to a group one at a time until the union of their scopes first exceeds $M/3$; the union then has size at most $2M/3$. The product of the group is a nonnegative function of a medium scope, and we give it the label $v$. Every label is then an original node, so there are at most as many terms as nodes.
+\end{remark}
+
+\begin{corollary}[circuit reduction]\label{cor:reduction}
+Let $P$ be a distribution on $\{0,1\}^E$ and let $C$ be as in Lemma~\ref{lem:decomp}. If $1-\TV(P,Q_C)\ge\delta>0$, then
+\[
+  \abs C\ \ge\ \delta^2\Big/\max_{A|B\ \mathrm{balanced}}\beta(P;A|B)^2 .
+\]
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:decomp}, applied to $f_C/\sum_xf_C(x)$, writes $Q_C$ as a sum of $k\le\abs C$ nonnegative products across balanced splits ($\abs{A_u}>M/3$ and $\abs{E\setminus A_u}\ge M/3$). Lemma~\ref{lem:overlap} gives $\delta\le\sqrt k\max\beta$.
+\end{proof}
