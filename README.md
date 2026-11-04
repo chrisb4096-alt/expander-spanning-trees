@@ -1,5 +1,7 @@
 # Uniform spanning trees of expander prisms and squares versus nonnegative probabilistic circuits
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23934515.svg)](https://doi.org/10.5281/zenodo.23934515)
+
 Chris Blaschke (Ax0s), November 3, 2026. Preprint, not peer reviewed. [Read the paper (PDF).](paper/expander-spanning-trees.pdf)
 
 The uniform spanning tree of a graph is easy in one sense: by the matrix-tree theorem it has a polynomial-size generating circuit, and every marginal is a ratio of determinants. Those circuits use subtraction. This paper shows that on natural sparse graphs, nonnegative probabilistic circuits cannot approximate it at all unless they are exponentially large, even at constant total-variation error and without assuming determinism.
